@@ -2,7 +2,7 @@
  *  Murmure - Net-SNMP MIB Versatile Extender
  *  Developed by Christian Visintin
  * 
- * 	Copyright (C) 2018 Christian Visintin
+ * 	Copyright (C) 2018 - 2019 Christian Visintin
  *
  *	This file is part of "Murmure"
  *
@@ -17,3 +17,26 @@
  * 
  * You should have received a copy of the GNU General Public License
 **/
+
+#ifndef MIBPARSER_HPP
+#define MIBPARSER_HPP
+
+#include <murmure/mibtable.hpp>
+
+namespace murmure {
+
+template <typename primitiveType>
+
+class Mibparser {
+
+public:
+  Mibparser();
+  bool parseMibFile(std::string mibfile);
+
+private:
+  Mibtable* mibtable;
+
+};
+} // namespace murmure
+
+#endif

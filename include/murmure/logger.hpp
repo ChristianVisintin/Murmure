@@ -18,23 +18,26 @@
  * You should have received a copy of the GNU General Public License
 **/
 
-#ifndef INTEGER_HPP
-#define INTEGER_HPP
+#ifndef LOGGER_HPP
+#define LOGGER_HPP
 
-#include <murmure/primitives/primitive.hpp>
+#include <string>
+#include <sstream>
+#include <vector>
 
 namespace murmure {
+class Logger {
+public:
+  Logger(std::string logfile);
+  Logger(std::string logfile, bool stdout);
+  void log(std::string component, std::string logContent);
+  void log(std::string component, std::stringstream logStream);
+  void log(std::string component, std::vector<std::string> logContent);
 
-//Template for generic primitive value
-template <typename primitiveType>
-
-class Integer : Primitive {
-
-  public:
-  Integer(std::string value);
-
+private:
+  std::string logfile;
+  bool toStdout;
 };
-
 } // namespace murmure
 
 #endif

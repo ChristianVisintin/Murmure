@@ -2,7 +2,7 @@
  *  Murmure - Net-SNMP MIB Versatile Extender
  *  Developed by Christian Visintin
  * 
- * 	Copyright (C) 2018 Christian Visintin
+ * 	Copyright (C) 2018 - 2019 Christian Visintin
  *
  *	This file is part of "Murmure"
  *
@@ -17,3 +17,13 @@
  * 
  * You should have received a copy of the GNU General Public License
 **/
+
+#ifndef MODULE_HPP
+#define MODULE_HPP
+
+namespace murmure {
+class Module {
+};
+} // namespace murmure
+
+#endif

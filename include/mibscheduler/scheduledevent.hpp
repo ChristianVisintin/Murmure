@@ -18,23 +18,23 @@
  * You should have received a copy of the GNU General Public License
 **/
 
-#ifndef INTEGER_HPP
-#define INTEGER_HPP
+#ifndef SCHEDULEDEVENT_HPP
+#define SCHEDULEDEVENT_HPP
 
-#include <murmure/primitives/primitive.hpp>
+#include <mibscheduler/event.hpp>
+#include <mibscheduler/eventmode.hpp>
+#include <string>
+#include <vector>
 
 namespace murmure {
+class ScheduledEvent : Event {
+public:
+  ScheduledEvent(std::string oid, EventMode evMode, std::vector<std::string> commandList, int timeout);
+  int getTimeout();
 
-//Template for generic primitive value
-template <typename primitiveType>
-
-class Integer : Primitive {
-
-  public:
-  Integer(std::string value);
-
+private:
+  int timeout;
 };
-
 } // namespace murmure
 
 #endif

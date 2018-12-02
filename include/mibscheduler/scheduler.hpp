@@ -2,7 +2,7 @@
  *  Murmure - Net-SNMP MIB Versatile Extender
  *  Developed by Christian Visintin
  * 
- * 	Copyright (C) 2018 Christian Visintin
+ * 	Copyright (C) 2018 - 2019 Christian Visintin
  *
  *	This file is part of "Murmure"
  *
@@ -17,3 +17,38 @@
  * 
  * You should have received a copy of the GNU General Public License
 **/
+
+#ifndef SCHEDULER_HPP
+#define SCHEDULER_HPP
+
+#include <mibscheduler/event.hpp>
+#include <mibscheduler/scheduledevent.hpp>
+#include <murmure/mibtable.hpp>
+
+namespace murmure {
+
+template <typename primitiveType>
+
+class Scheduler {
+public:
+  Scheduler();
+  Scheduler(Mibtable* mTable);
+  ~Scheduler();
+  int fetchAndExec(std::string oid, EventMode mode);
+  bool startScheduler();
+  //Scheduler setups
+  bool parseScheduling(std::string filename);
+  bool parseScheduling(std::string oid, EventMode mode, std::vector<std::string> commandList, int timeout = 0);
+  bool addEvent(std::string oid, EventMode mode);
+  bool addEvent(std::string oid, EventMode mode, int timeout);
+  bool clearEvents();
+
+private:
+  int runScheduler();
+  std::vector<Event*> events;
+  std::vector<ScheduledEvent*> scheduledEvents;
+  Mibtable* mibtable;
+};
+} // namespace murmure
+
+#endif

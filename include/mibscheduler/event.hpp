@@ -2,7 +2,7 @@
  *  Murmure - Net-SNMP MIB Versatile Extender
  *  Developed by Christian Visintin
  * 
- * 	Copyright (C) 2018 Christian Visintin
+ * 	Copyright (C) 2018 - 2019 Christian Visintin
  *
  *	This file is part of "Murmure"
  *
@@ -17,3 +17,25 @@
  * 
  * You should have received a copy of the GNU General Public License
 **/
+
+#ifndef EVENT_HPP
+#define EVENT_HPP
+
+#include <mibscheduler/eventmode.hpp>
+#include <string>
+#include <vector>
+
+namespace murmure {
+class Event {
+public:
+  Event(std::string oid, EventMode evMode, std::vector<std::string> commandList);
+  int executeCommands();
+
+protected:
+  std::string oid;
+  EventMode mode;
+  std::vector<std::string> commandList;
+};
+} // namespace murmure
+
+#endif

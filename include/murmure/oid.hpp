@@ -2,7 +2,7 @@
  *  Murmure - Net-SNMP MIB Versatile Extender
  *  Developed by Christian Visintin
  * 
- * 	Copyright (C) 2018 Christian Visintin
+ * 	Copyright (C) 2018 - 2019 Christian Visintin
  *
  *	This file is part of "Murmure"
  *
@@ -17,3 +17,32 @@
  * 
  * You should have received a copy of the GNU General Public License
 **/
+
+#ifndef OID_HPP
+#define OID_HPP
+
+#include <murmure/accessmode.hpp>
+#include <murmure/primitives/primitive.hpp>
+#include <string>
+
+namespace murmure {
+
+template <typename primitiveType>
+
+class Oid {
+
+public:
+  Oid(std::string oid, std::string type, int access, std::string name = nullptr);
+  ~Oid();
+
+private:
+  std::string oid;       //OID which identifies this instance
+  std::string name;      //optional name for OID
+  AccessMode accessMode; //Access level for OID
+  std::string dataType;  //Type string
+  Primitive* data;       //Wrapper of value
+};
+
+} /* namespace murmure */
+
+#endif

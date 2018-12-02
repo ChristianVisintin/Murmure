@@ -2,7 +2,7 @@
  *  Murmure - Net-SNMP MIB Versatile Extender
  *  Developed by Christian Visintin
  * 
- * 	Copyright (C) 2018 Christian Visintin
+ * 	Copyright (C) 2018 - 2019 Christian Visintin
  *
  *	This file is part of "Murmure"
  *
@@ -17,3 +17,23 @@
  * 
  * You should have received a copy of the GNU General Public License
 **/
+
+#ifndef STRING_HPP
+#define STRING_HPP
+
+#include <murmure/primitives/primitive.hpp>
+
+namespace murmure {
+
+//Template for generic primitive value
+template <typename primitiveType>
+
+class String : Primitive {
+
+public:
+  String(std::string value);
+};
+
+} // namespace murmure
+
+#endif

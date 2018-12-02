@@ -18,23 +18,15 @@
  * You should have received a copy of the GNU General Public License
 **/
 
-#ifndef INTEGER_HPP
-#define INTEGER_HPP
-
-#include <murmure/primitives/primitive.hpp>
+#ifndef EVENTMODE_HPP
+#define EVENTMODE_HPP
 
 namespace murmure {
-
-//Template for generic primitive value
-template <typename primitiveType>
-
-class Integer : Primitive {
-
-  public:
-  Integer(std::string value);
-
+enum class EventMode {
+  GET,
+  SET,
+  AUTO
 };
-
-} // namespace murmure
+} /* namespace murmure */
 
 #endif

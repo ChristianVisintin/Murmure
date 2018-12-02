@@ -18,21 +18,27 @@
  * You should have received a copy of the GNU General Public License
 **/
 
-#ifndef INTEGER_HPP
-#define INTEGER_HPP
+#ifndef MIBTABLE_HPP
+#define MIBTABLE_HPP
 
-#include <murmure/primitives/primitive.hpp>
+#include <murmure/oid.hpp>
+#include <vector>
 
 namespace murmure {
 
-//Template for generic primitive value
 template <typename primitiveType>
 
-class Integer : Primitive {
+class Mibtable {
 
-  public:
-  Integer(std::string value);
+public:
+  Mibtable();
+  ~Mibtable();
+  bool loadMibTable();
+  void sortMibTable();
+  Oid* getOid(std::string oid);
 
+private:
+  std::vector<Oid*> oids;
 };
 
 } // namespace murmure
