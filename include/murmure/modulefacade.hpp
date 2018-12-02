@@ -18,37 +18,29 @@
  * You should have received a copy of the GNU General Public License
 **/
 
-#ifndef PRIMITIVE_HPP
-#define PRIMITIVE_HPP
+#ifndef MODULEFACADE_HPP
+#define MODULEFACADE_HPP
 
+#include <modules/module.hpp>
 #include <string>
+#include <vector>
 
 namespace murmure {
-
-//Data string definition CHECK: if correct
-#define PRIMITIVE_INTEGER "INTEGER"
-#define PRIMITIVE_STRING "STRING"
-#define PRIMITIVE_IPADRRESS "IPADDRESS"
 
 //Template for generic primitive value
 template <typename primitiveType>
 
-/**
- * Interface for all primitives types
- * 
- * All primitives must implement setValue, which converts a string (passed by net-snmp)
- * to primitiveType. Also getPrintableValue must be implemented, which converts the data
- * back to a printable value. getValue just returns the value
-**/
+class ModuleFacade {
 
-class Primitive {
 public:
-  virtual bool setValue(std::string value) = 0;
-  virtual primitiveType getValue() = 0;
-  virtual std::string getPrintableValue() = 0;
+  ModuleFacade();
+  ~ModuleFacade();
+  primitiveType getPrimitive(std::string typeName, uint8_t* realValue);
+  uint8_t* getRealValue(std::string typeName, primitiveType primitive);
 
-protected:
-  virtual primitiveType value;
+private:
+  bool loadModules();
+  std::vector<Module*> modules;
 };
 } // namespace murmure
 

@@ -21,8 +21,20 @@
 #ifndef MODULE_HPP
 #define MODULE_HPP
 
+#include <cinttypes>
+#include <murmure/primitives/primitive.hpp>
+#include <string>
+
 namespace murmure {
+
+//Template for generic primitive value
+template <typename primitiveType>
+
 class Module {
+
+public:
+  virtual primitiveType getPrimitiveValue(uint8_t* value) = 0;
+  virtual uint8_t* getRealValue(primitiveType primitive) = 0;
 };
 } // namespace murmure
 
