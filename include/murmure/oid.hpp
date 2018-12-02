@@ -43,6 +43,6 @@ private:
   Primitive* data;       //Wrapper of value
 };
 
-} /* namespace murmure */
+} // namespace murmure
 
 #endif
