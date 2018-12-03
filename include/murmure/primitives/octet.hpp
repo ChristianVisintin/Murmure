@@ -18,27 +18,22 @@
  * You should have received a copy of the GNU General Public License
 **/
 
-#ifndef LOGGER_HPP
-#define LOGGER_HPP
+#ifndef OCTET_HPP
+#define OCTET_HPP
 
-#include <string>
-#include <sstream>
-#include <vector>
+#include <murmure/primitives/primitive.hpp>
 
 namespace murmure {
-class Logger {
-public:
-  Logger(std::string logfile);
-  Logger(std::string logfile, bool stdout);
-  void setStdout(bool stdout);
-  void log(std::string component, std::string logContent);
-  void log(std::string component, std::stringstream logStream);
-  void log(std::string component, std::vector<std::string> logContent);
 
-private:
-  std::string logfile;
-  bool toStdout;
+//Template for generic primitive value
+template <typename primitiveType>
+
+class Octet : Primitive {
+
+public:
+  Octet(std::string value);
 };
+
 } // namespace murmure
 
 #endif
