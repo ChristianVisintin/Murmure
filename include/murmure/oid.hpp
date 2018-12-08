@@ -27,8 +27,6 @@
 
 namespace murmure {
 
-template <typename primitiveType>
-
 class Oid {
 
 public:
@@ -40,7 +38,7 @@ private:
   std::string name;      //optional name for OID
   AccessMode accessMode; //Access level for OID
   std::string dataType;  //Type string
-  Primitive* data;       //Wrapper of value
+  Primitive<void*>* data;       //Wrapper of value
 };
 
 } // namespace murmure
