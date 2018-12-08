@@ -36,7 +36,7 @@ public:
   bool startScheduler();
   //Scheduler setups
   bool parseScheduling(std::string filename);
-  bool parseScheduling(std::string oid, EventMode mode, std::vector<std::string> commandList, int timeout = 0);
+  bool parseScheduling(std::string oid, EventMode mode, std::vector<std::string> commandList, std::string* error, int timeout = 0);
   bool addEvent(std::string oid, EventMode mode);
   bool addEvent(std::string oid, EventMode mode, int timeout);
   bool clearEvents();
