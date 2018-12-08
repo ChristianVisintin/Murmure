@@ -26,9 +26,8 @@
 namespace murmure {
 
 //Template for generic primitive value
-template <typename primitiveType>
 
-class Integer : Primitive {
+class Integer : Primitive<int> {
 
   public:
   Integer(std::string value);

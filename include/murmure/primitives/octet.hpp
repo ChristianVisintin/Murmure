@@ -25,10 +25,7 @@
 
 namespace murmure {
 
-//Template for generic primitive value
-template <typename primitiveType>
-
-class Octet : Primitive {
+class Octet : Primitive<uint8_t*> {
 
 public:
   Octet(std::string value);

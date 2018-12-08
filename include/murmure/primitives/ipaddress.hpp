@@ -26,9 +26,8 @@
 namespace murmure {
 
 //Template for generic primitive value
-template <typename primitiveType>
 
-class IPAddress : Primitive {
+class IPAddress : Primitive<std::string> {
 
 public:
   IPAddress(std::string value);

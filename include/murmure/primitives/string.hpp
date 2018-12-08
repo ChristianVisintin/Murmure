@@ -25,10 +25,7 @@
 
 namespace murmure {
 
-//Template for generic primitive value
-template <typename primitiveType>
-
-class String : Primitive {
+class String : Primitive<std::string> {
 
 public:
   String(std::string value);

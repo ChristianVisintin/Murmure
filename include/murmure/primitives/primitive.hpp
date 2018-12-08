@@ -49,7 +49,7 @@ public:
   virtual std::string getPrintableValue() = 0;
 
 protected:
-  virtual primitiveType value;
+  primitiveType value;
 };
 } // namespace murmure
 
