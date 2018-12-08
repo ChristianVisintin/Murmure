@@ -25,8 +25,6 @@
 
 namespace murmure {
 
-template <typename primitiveType>
-
 class Mibparser {
 
 public:

@@ -26,8 +26,6 @@
 
 namespace murmure {
 
-template <typename primitiveType>
-
 class Mibtable {
 
 public:

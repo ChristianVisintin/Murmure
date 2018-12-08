@@ -27,8 +27,6 @@
 
 namespace murmure {
 
-template <typename primitiveType>
-
 class Scheduler {
 public:
   Scheduler();
