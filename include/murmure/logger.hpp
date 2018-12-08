@@ -25,8 +25,8 @@
 
 namespace logger {
 
-extern std::string logfile;
-extern bool stdout;
+extern std::string logfile = nullptr;
+extern bool stdout = true;
 void log(std::string component, std::string logContent);
 
 } // namespace logger
