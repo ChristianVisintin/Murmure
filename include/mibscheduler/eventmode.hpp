@@ -23,9 +23,10 @@
 
 namespace murmure {
 enum class EventMode {
-  GET,
-  SET,
-  AUTO
+  GET,    // 'G'
+  SET,    // 'S'
+  AUTO,   // 'A'
+  STARTUP // 'R'
 };
 } /* namespace murmure */
 
