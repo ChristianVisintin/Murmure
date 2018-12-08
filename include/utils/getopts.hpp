@@ -35,6 +35,7 @@ enum class Command {
   GET_NEXT,
   PARSE_MIB,
   SCHEDULE,
+  DUMP_SCHEDULE,
   HELP
 };
 
