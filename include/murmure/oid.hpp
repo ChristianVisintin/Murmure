@@ -32,6 +32,13 @@ class Oid {
 public:
   Oid(std::string oid, std::string type, int access, std::string name = nullptr);
   ~Oid();
+  std::string getOid();
+  std::string getType();
+  std::string getPrimtiveType();
+  std::string getName();
+  std::string getPrintableValue();
+  AccessMode getAccessMode();
+  bool setValue(std::string printableValue);
 
 private:
   std::string oid;       //OID which identifies this instance

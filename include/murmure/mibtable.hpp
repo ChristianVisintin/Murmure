@@ -34,6 +34,7 @@ public:
   bool loadMibTable();
   void sortMibTable();
   Oid* getOid(std::string oid);
+  std::string getNextOid(std::string oid);
 
 private:
   std::vector<Oid*> oids;
