@@ -94,6 +94,8 @@ bool getOpts(options* optStruct, int argc, char* argv[], std::string* error) {
       optStruct->args.reserve(1);
       optStruct->args.push_back(std::string(argv[2]));
     }
+  } else if (arg == "--reset") {
+    optStruct->command = Command::RESET;
   } else if (arg == "-h" or arg == "--help") {
     optStruct->command = Command::HELP;
   } else {

@@ -36,6 +36,7 @@ enum class Command {
   PARSE_MIB,
   SCHEDULE,
   DUMP_SCHEDULE,
+  RESET,
   HELP
 };
 
