@@ -21,24 +21,19 @@
 #ifndef LOGGER_HPP
 #define LOGGER_HPP
 
-#include <string>
 #include <sstream>
+#include <string>
 #include <vector>
 
-namespace murmure {
-class Logger {
-public:
-  Logger(std::string logfile);
-  Logger(std::string logfile, bool stdout);
-  void setStdout(bool stdout);
-  void log(std::string component, std::string logContent);
-  void log(std::string component, std::stringstream logStream);
-  void log(std::string component, std::vector<std::string> logContent);
+namespace logger {
 
-private:
-  std::string logfile;
-  bool toStdout;
-};
-} // namespace murmure
+extern std::string logfile;
+extern bool stdout;
+void log(std::string component, std::string logContent);
+void log(std::string component, std::stringstream logStream);
+void log(std::string component, std::vector<std::string> logContent);
+void setStdout(bool mode);
+
+} // namespace logger
 
 #endif
