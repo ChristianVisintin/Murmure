@@ -32,7 +32,6 @@ extern bool stdout;
 void log(std::string component, std::string logContent);
 void log(std::string component, std::stringstream logStream);
 void log(std::string component, std::vector<std::string> logContent);
-void setStdout(bool mode);
 
 } // namespace logger
 
