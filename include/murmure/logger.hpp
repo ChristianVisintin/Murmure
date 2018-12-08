@@ -21,17 +21,13 @@
 #ifndef LOGGER_HPP
 #define LOGGER_HPP
 
-#include <sstream>
 #include <string>
-#include <vector>
 
 namespace logger {
 
 extern std::string logfile;
 extern bool stdout;
 void log(std::string component, std::string logContent);
-void log(std::string component, std::stringstream logStream);
-void log(std::string component, std::vector<std::string> logContent);
 
 } // namespace logger
 
