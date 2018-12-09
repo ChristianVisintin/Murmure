@@ -37,7 +37,8 @@ Usage:\n\
 #include <iostream>
 #include <sstream>
 
-#include <murmure/logger.hpp>
+#include <utils/getopts.hpp>
+#include <utils/logger.hpp>
 #include <murmure/mibtable.hpp>
 
 #include <mibparser/mibparser.hpp>
@@ -49,8 +50,6 @@ Usage:\n\
 #endif
 
 #define COMPONENT "Main"
-
-#include <utils/getopts.hpp>
 
 using namespace murmure;
 
