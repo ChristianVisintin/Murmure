@@ -68,7 +68,7 @@ inline void snmp_get(Mibtable* mibtab, Scheduler* mibScheduler, std::string requ
   if (reqOid == nullptr) {
     std::stringstream ss;
     ss << "OID " << requestedOid << " does not exist";
-    logger::log(COMPONENT, ss.str());
+    logger::log(COMPONENT, LOG_WARN, ss.str());
     //Output no-such-name
     std::cout << "no-such-name" << std::endl;
     return;
@@ -78,7 +78,7 @@ inline void snmp_get(Mibtable* mibtab, Scheduler* mibScheduler, std::string requ
   if (reqOid->getAccessMode() == AccessMode::NOT_ACCESSIBLE) {
     std::stringstream ss;
     ss << "OID " << requestedOid << " is NOT-ACCESSIBLE";
-    logger::log(COMPONENT, ss.str());
+    logger::log(COMPONENT, LOG_WARN, ss.str());
     //Output no-access
     std::cout << "no-access" << std::endl;
     return;
@@ -130,7 +130,7 @@ inline void snmp_set(Mibtable* mibtab, Scheduler* mibScheduler, std::string requ
     //TODO: check if table element OID...
     std::stringstream ss;
     ss << "OID " << requestedOid << " does not exist";
-    logger::log(COMPONENT, ss.str());
+    logger::log(COMPONENT, LOG_WARN, ss.str());
     //Output no-such-name
     std::cout << "no-such-name" << std::endl;
     return;
@@ -140,7 +140,7 @@ inline void snmp_set(Mibtable* mibtab, Scheduler* mibScheduler, std::string requ
   if (reqOid->getAccessMode() != AccessMode::READWRITE) {
     std::stringstream ss;
     ss << "OID " << requestedOid << " is not READWRITE";
-    logger::log(COMPONENT, ss.str());
+    logger::log(COMPONENT, LOG_WARN, ss.str());
     //Output read-only
     std::cout << "read-only" << std::endl;
     return;
@@ -150,8 +150,8 @@ inline void snmp_set(Mibtable* mibtab, Scheduler* mibScheduler, std::string requ
   std::string expectedType = reqOid->getPrimtiveType();
   if (expectedType != datatype) {
     std::stringstream ss;
-    ss << "Wront type for OID " << requestedOid << "; expected " << expectedType << " got " << datatype;
-    logger::log(COMPONENT, ss.str());
+    ss << "Wrong type for OID " << requestedOid << "; expected " << expectedType << " got " << datatype;
+    logger::log(COMPONENT, LOG_WARN, ss.str());
     //Output read-only
     std::cout << "wrong-type" << std::endl;
     return;
@@ -161,7 +161,7 @@ inline void snmp_set(Mibtable* mibtab, Scheduler* mibScheduler, std::string requ
   if (!reqOid->setValue(value)) {
     std::stringstream ss;
     ss << "Unable to set value for OID " << requestedOid;
-    logger::log(COMPONENT, ss.str());
+    logger::log(COMPONENT, LOG_ERROR, ss.str());
     //Output read-only
     std::cout << "commit-failed" << std::endl;
     return;
@@ -217,7 +217,7 @@ int main(int argc, char* argv[]) {
     Mibtable* mibtab = new Mibtable();
     //Load mibtable
     if (!mibtab->loadMibTable()) {
-      logger::log(COMPONENT, "MIB table loading failed; execution aborted");
+      logger::log(COMPONENT, LOG_FATAL, "MIB table loading failed; execution aborted");
       delete mibtab;
       return 1;
     }
@@ -225,12 +225,12 @@ int main(int argc, char* argv[]) {
     Scheduler* mibScheduler = new Scheduler(mibtab);
     //Start scheduler
     if (!mibScheduler->startScheduler()) {
-      logger::log(COMPONENT, "Could not start scheduler; execution aborted");
+      logger::log(COMPONENT, LOG_FATAL, "Could not start scheduler; execution aborted");
       delete mibtab;
       delete mibScheduler;
       return 2;
     }
-    logger::log(COMPONENT, "Murmure daemon started");
+    logger::log(COMPONENT, LOG_INFO, "Murmure daemon started");
     std::string command;
     //Daemon terminates when command == ""
     while (true) {
@@ -246,12 +246,12 @@ int main(int argc, char* argv[]) {
         //Read from stdout requested OID
         std::string requestedOid;
         std::getline(std::cin, requestedOid);
-        logger::log(COMPONENT, "Received GET for OID " + requestedOid);
+        logger::log(COMPONENT, LOG_INFO, "Received GET for OID " + requestedOid);
         snmp_get(mibtab, mibScheduler, requestedOid);
       } else if (command == "getnext") {
         std::string requestedOid;
         std::getline(std::cin, requestedOid);
-        logger::log(COMPONENT, "Received GETNEXT for OID " + requestedOid);
+        logger::log(COMPONENT, LOG_INFO, "Received GETNEXT for OID " + requestedOid);
         snmp_getnext(mibtab, mibScheduler, requestedOid);
       } else if (command == "set") {
         //Two lines; first is OID, second is: 'datatype' 'value'
@@ -263,7 +263,7 @@ int main(int argc, char* argv[]) {
         //Split params into two tokens
         size_t sepPos = setParams.find(' ');
         if (sepPos == std::string::npos) {
-          logger::log(COMPONENT, "Invalid SET parameters");
+          logger::log(COMPONENT, LOG_ERROR, "Invalid SET parameters");
           //Wait for next command
           continue;
         }
@@ -273,19 +273,19 @@ int main(int argc, char* argv[]) {
         std::transform(datatype.begin(), datatype.end(), datatype.begin(), ::tolower);
         std::stringstream setStream;
         setStream << "Received SET for OID " << requestedOid << "; Type: " << datatype << "; Value: " << value;
-        logger::log(COMPONENT, setStream.str());
+        logger::log(COMPONENT, LOG_INFO, setStream.str());
         snmp_set(mibtab, mibScheduler, requestedOid, datatype, value);
       }
     }
     delete mibtab;       //Free mibtab
     delete mibScheduler; //Free scheduler
-    logger::log(COMPONENT, "Murmure daemon terminated");
+    logger::log(COMPONENT, LOG_INFO, "Murmure daemon terminated");
   } else if (cmdLineOpts.command == Command::GET) {
     //Instance new mibtable
     Mibtable* mibtab = new Mibtable();
     //Load mibtable
     if (!mibtab->loadMibTable()) {
-      logger::log(COMPONENT, "MIB table loading failed; execution aborted");
+      logger::log(COMPONENT, LOG_FATAL, "MIB table loading failed; execution aborted");
       delete mibtab;
       return 1;
     }
@@ -293,13 +293,13 @@ int main(int argc, char* argv[]) {
     Scheduler* mibScheduler = new Scheduler(mibtab);
     //Start scheduler
     if (!mibScheduler->startScheduler()) {
-      logger::log(COMPONENT, "Could not start scheduler; execution aborted");
+      logger::log(COMPONENT, LOG_FATAL, "Could not start scheduler; execution aborted");
       delete mibtab;
       delete mibScheduler;
       return 2;
     }
     std::string requestedOid = cmdLineOpts.args.at(0);
-    logger::log(COMPONENT, "Received GET for OID " + requestedOid);
+    logger::log(COMPONENT, LOG_INFO, "Received GET for OID " + requestedOid);
     snmp_get(mibtab, mibScheduler, requestedOid);
     delete mibtab;       //Free mibtab
     delete mibScheduler; //Free scheduler
@@ -308,7 +308,7 @@ int main(int argc, char* argv[]) {
     Mibtable* mibtab = new Mibtable();
     //Load mibtable
     if (!mibtab->loadMibTable()) {
-      logger::log(COMPONENT, "MIB table loading failed; execution aborted");
+      logger::log(COMPONENT, LOG_FATAL, "MIB table loading failed; execution aborted");
       delete mibtab;
       return 1;
     }
@@ -316,13 +316,13 @@ int main(int argc, char* argv[]) {
     Scheduler* mibScheduler = new Scheduler(mibtab);
     //Start scheduler
     if (!mibScheduler->startScheduler()) {
-      logger::log(COMPONENT, "Could not start scheduler; execution aborted");
+      logger::log(COMPONENT, LOG_FATAL, "Could not start scheduler; execution aborted");
       delete mibtab;
       delete mibScheduler;
       return 2;
     }
     std::string requestedOid = cmdLineOpts.args.at(0);
-    logger::log(COMPONENT, "Received GETNEXT for OID " + requestedOid);
+    logger::log(COMPONENT, LOG_INFO, "Received GETNEXT for OID " + requestedOid);
     snmp_getnext(mibtab, mibScheduler, requestedOid);
     delete mibtab;       //Free mibtab
     delete mibScheduler; //Free scheduler
@@ -331,7 +331,7 @@ int main(int argc, char* argv[]) {
     Mibtable* mibtab = new Mibtable();
     //Load mibtable
     if (!mibtab->loadMibTable()) {
-      logger::log(COMPONENT, "MIB table loading failed; execution aborted");
+      logger::log(COMPONENT, LOG_FATAL, "MIB table loading failed; execution aborted");
       delete mibtab;
       return 1;
     }
@@ -339,7 +339,7 @@ int main(int argc, char* argv[]) {
     Scheduler* mibScheduler = new Scheduler(mibtab);
     //Start scheduler
     if (!mibScheduler->startScheduler()) {
-      logger::log(COMPONENT, "Could not start scheduler; execution aborted");
+      logger::log(COMPONENT, LOG_INFO, "Could not start scheduler; execution aborted");
       delete mibtab;
       delete mibScheduler;
       return 2;
@@ -357,9 +357,9 @@ int main(int argc, char* argv[]) {
     std::string mibFile = cmdLineOpts.args.at(0);
     Mibparser* mibParser = new Mibparser();
     if (mibParser->parseMibFile(mibFile)) {
-      logger::log(COMPONENT, "MIB parsed successfully");
+      logger::log(COMPONENT, LOG_INFO, "MIB parsed successfully");
     } else {
-      logger::log(COMPONENT, "MIB parsing failed");
+      logger::log(COMPONENT, LOG_ERROR, "MIB parsing failed");
       exitcode = 1;
     }
     delete mibParser;
@@ -368,7 +368,7 @@ int main(int argc, char* argv[]) {
     Mibtable* mibtab = new Mibtable();
     //Load mibtable
     if (!mibtab->loadMibTable()) {
-      logger::log(COMPONENT, "MIB table loading failed; execution aborted");
+      logger::log(COMPONENT, LOG_FATAL, "MIB table loading failed; execution aborted");
       delete mibtab;
       return 1;
     }
@@ -379,9 +379,9 @@ int main(int argc, char* argv[]) {
       //Parse file
       std::string schedulingFile = cmdLineOpts.args.at(0);
       if (mibScheduler->parseScheduling(schedulingFile)) {
-        logger::log(COMPONENT, "Scheduling file parsed successfully");
+        logger::log(COMPONENT, LOG_INFO, "Scheduling file parsed successfully");
       } else {
-        logger::log(COMPONENT, "Unable to parse scheduling file");
+        logger::log(COMPONENT, LOG_ERROR, "Unable to parse scheduling file");
         exitcode = 1;
       }
     } else {
@@ -452,7 +452,7 @@ int main(int argc, char* argv[]) {
   } else if (cmdLineOpts.command == Command::RESET) {
     //TODO: implement this
   } else {
-    logger::log(COMPONENT, "Unknown command");
+    logger::log(COMPONENT, LOG_ERROR, "Unknown command");
     exitcode = 255;
   }
 
