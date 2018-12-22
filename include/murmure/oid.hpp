@@ -39,6 +39,7 @@ public:
   std::string getPrintableValue();
   AccessMode getAccessMode();
   bool setValue(std::string printableValue);
+  bool operator< (const Oid &other) const; //NOTE: for sorting
 
 private:
   std::string oid;       //OID which identifies this instance
