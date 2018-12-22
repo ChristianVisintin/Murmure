@@ -39,14 +39,15 @@ public:
   std::string getPrintableValue();
   AccessMode getAccessMode();
   bool setValue(std::string printableValue);
-  bool operator< (const Oid &other) const; //NOTE: for sorting
+  bool operator<(const Oid& other) const; //NOTE: for sorting
 
 private:
-  std::string oid;       //OID which identifies this instance
-  std::string name;      //optional name for OID
-  AccessMode accessMode; //Access level for OID
-  std::string dataType;  //Type string
-  Primitive<void*>* data;       //Wrapper of value
+  std::string oid;           //OID which identifies this instance
+  std::string name;          //optional name for OID
+  AccessMode accessMode;     //Access level for OID
+  std::string dataType;      //Type string
+  std::string primitiveType; //Primitive type string
+  Primitive<void*>* data;    //Wrapper of value
 };
 
 } // namespace murmure

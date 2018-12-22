@@ -23,10 +23,10 @@
 
 namespace murmure {
 enum class AccessMode {
-  NOT_ACCESSIBLE,
-  READONLY,
-  READCREATE,
-  READWRITE
+  NOT_ACCESSIBLE, //0
+  READONLY,       //1
+  READCREATE,     //2
+  READWRITE       //3
 };
 } /* namespace murmure */
 

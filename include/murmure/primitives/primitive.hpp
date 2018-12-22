@@ -25,7 +25,8 @@
 
 namespace murmure {
 
-//Data string definition CHECK: if correct
+//Data string definition 
+//CHECK: if correct
 #define PRIMITIVE_INTEGER "integer"
 #define PRIMITIVE_OCTET "octet"
 #define PRIMITIVE_STRING "string"
