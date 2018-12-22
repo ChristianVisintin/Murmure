@@ -23,11 +23,19 @@
 
 #include <string>
 
+#define LOG_DEBUG 5
+#define LOG_INFO 4
+#define LOG_WARN 3
+#define LOG_ERROR 2
+#define LOG_FATAL 1
+
 namespace logger {
 
 extern std::string logfile = nullptr;
 extern bool stdout = true;
-void log(std::string component, std::string logContent);
+extern int logLevel = LOG_INFO;
+
+void log(std::string component, int level, std::string logContent);
 
 } // namespace logger
 
