@@ -27,6 +27,13 @@
 
 using namespace logger;
 
+/**
+ * @function log
+ * @description write log message to file
+ * @param std::string component
+ * @param std::string logContent
+**/
+
 void log(std::string component, std::string logContent) {
 
   std::stringstream logstream;

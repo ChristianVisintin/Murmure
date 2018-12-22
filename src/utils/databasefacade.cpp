@@ -28,9 +28,10 @@ sqlite3_stmt* statement;
 bool isOpen = false; //Is database open?
 
 /**
- * Open database
+ * @function open
+ * @description Open database
  * @param std::string*: error string pointer
- * @return bool: True if open succeeded
+ * @returns bool: True if open succeeded
 **/
 
 bool open(std::string* error) {
@@ -49,9 +50,10 @@ bool open(std::string* error) {
 }
 
 /**
- * Close database
+ * @function close
+ * @description Close database
  * @param std::string*: error string pointer
- * @return bool: True if closed successfully; if database wasn't open, true will be returned anyway
+ * @returns bool: True if closed successfully; if database wasn't open, true will be returned anyway
 **/
 
 bool close(std::string* error) {
@@ -71,10 +73,11 @@ bool close(std::string* error) {
 }
 
 /**
- * Exec a change in the database (e.g. update, insert, create, delete)
+ * @function exec
+ * @description Exec a change in the database (e.g. update, insert, create, delete)
  * @param std::string query to exec
  * @param std::string*: error string pointer
- * @return bool: True if succeeded
+ * @returns bool: True if succeeded
 **/
 
 bool exec(std::string query, std::string* error) {
@@ -97,11 +100,12 @@ bool exec(std::string query, std::string* error) {
 }
 
 /**
- * Select from database
+ * @function select
+ * @description Select from database
  * @param std::string query: query to exec
  * @param std::string*: pointer to error string
  * @param std::vector<std::vector<std::string>>*: pointer vector of rows of columns (strings); nullptr is returned if failed
- * @return bool: True if select succeeded
+ * @returns bool: True if select succeeded
 **/
 
 bool select(std::vector<std::vector<std::string>>* result, std::string query, std::string* error) {

@@ -54,7 +54,8 @@ Usage:\n\
 using namespace murmure;
 
 /**
- * Issue GET request and print output
+ * @function snmp_get
+ * @description Issue GET request and print output
  * @param Mibtable*: pointer to MIB-table
  * @param Scheduler*: pointer to scheduler
  * @param std::string: requested OID to get
@@ -95,7 +96,8 @@ inline void snmp_get(Mibtable* mibtab, Scheduler* mibScheduler, std::string requ
 }
 
 /**
- * Issue GETNEXT request and print output
+ * @function snmp_getnext
+ * @description Issue GETNEXT request and print output
  * @param Mibtable*: pointer to MIB-table
  * @param Scheduler*: pointer to scheduler
  * @param std::string: requested OID to get
@@ -111,7 +113,8 @@ inline void snmp_getnext(Mibtable* mibtab, Scheduler* mibScheduler, std::string 
 }
 
 /**
- * Issue SET request and print output
+ * @function snmp_set
+ * @description Issue SET request and print output
  * @param Mibtable*: pointer to MIB-table
  * @param Scheduler*: pointer to scheduler
  * @param std::string: requested OID to get

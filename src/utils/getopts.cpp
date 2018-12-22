@@ -23,12 +23,13 @@
 using namespace murmure;
 
 /**
- * Get Murmure options
+ * @function getOpts
+ * @description Get Murmure options
  * @param options*: pointer to options structure
  * @param int: argument count
  * @param char* argv[]: arguments passed to Murmure
  * @param std::string*: error message filled if false is returned
- * @return bool: True if options parsing succeeded; false otherwise
+ * @returns bool: True if options parsing succeeded; false otherwise
 **/
 
 bool getOpts(options* optStruct, int argc, char* argv[], std::string* error) {
