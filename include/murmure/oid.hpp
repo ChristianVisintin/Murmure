@@ -30,7 +30,7 @@ namespace murmure {
 class Oid {
 
 public:
-  Oid(std::string oid, std::string type, int access, std::string name = nullptr);
+  Oid(std::string oid, std::string type, std::string value, int access, std::string name = nullptr);
   ~Oid();
   std::string getOid();
   std::string getType();

@@ -104,7 +104,7 @@ bool Mibtable::loadMibTable() {
     //Increase mibtable size
     oids.resize(++mibTableSize);
     //Instance new oid
-    Oid* thisOid = new Oid(oid, datatype, accessMode, name);
+    Oid* thisOid = new Oid(oid, datatype, value, accessMode, name);
     //Push new oid in oids vector
     oids.push_back(thisOid);
   }
