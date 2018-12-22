@@ -107,6 +107,11 @@ inline void snmp_getnext(Mibtable* mibtab, Scheduler* mibScheduler, std::string 
 
   //Get nextOid
   std::string nextOid = mibtab->getNextOid(requestedOid);
+  if (nextOid == "") {
+    //Output no-such-name
+    std::cout << "no-such-name" << std::endl;
+    return;
+  }
   //Get on next oid
   snmp_get(mibtab, mibScheduler, nextOid);
   return;
