@@ -44,6 +44,9 @@ Oid::Oid(std::string oid, std::string type, std::string value, int access, std::
   //Set OID string
   this->oid = oid;
 
+  //Init data to nullptr
+  data = nullptr;
+
   //Convert type to lower case
   std::transform(type.begin(), type.end(), type.begin(), ::tolower);
   this->dataType = type;
@@ -88,8 +91,9 @@ Oid::Oid(std::string oid, std::string type, std::string value, int access, std::
 
 Oid::~Oid() {
 
-  //Free primitive instance (data)
-  delete data;
+  if (data != nullptr) {
+    //TODO: free data casting to real primitive or module
+  }
 }
 
 /**
