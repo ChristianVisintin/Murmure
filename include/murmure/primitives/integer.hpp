@@ -27,10 +27,15 @@ namespace murmure {
 
 //Template for generic primitive value
 
-class Integer : Primitive<int> {
+template <typename primitiveType>
+
+class Integer : public Primitive<int> {
 
   public:
   Integer(std::string value);
+  bool setValue(std::string oid, std::string value);
+  primitiveType getValue();
+  std::string getPrintableValue();
 
 };
 

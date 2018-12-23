@@ -45,7 +45,7 @@ template <typename primitiveType>
 
 class Primitive {
 public:
-  virtual bool setValue(std::string value) = 0;
+  virtual bool setValue(std::string oid, std::string value) = 0;
   virtual primitiveType getValue() = 0;
   virtual std::string getPrintableValue() = 0;
 

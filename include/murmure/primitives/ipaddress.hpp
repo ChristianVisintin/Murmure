@@ -26,11 +26,15 @@
 namespace murmure {
 
 //Template for generic primitive value
+template <typename primitiveType>
 
-class IPAddress : Primitive<std::string> {
+class IPAddress : public Primitive<std::string> {
 
 public:
   IPAddress(std::string value);
+  bool setValue(std::string oid, std::string value);
+  primitiveType getValue();
+  std::string getPrintableValue();
 };
 
 } // namespace murmure

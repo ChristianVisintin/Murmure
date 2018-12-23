@@ -25,10 +25,15 @@
 
 namespace murmure {
 
-class Octet : Primitive<uint8_t*> {
+template <typename primitiveType>
+
+class Octet : public Primitive<uint8_t*> {
 
 public:
   Octet(std::string value);
+  bool setValue(std::string oid, std::string value);
+  primitiveType getValue();
+  std::string getPrintableValue();
 };
 
 } // namespace murmure
