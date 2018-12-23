@@ -35,12 +35,13 @@ class ModuleFacade {
 public:
   ModuleFacade();
   ~ModuleFacade();
-  primitiveType getPrimitive(std::string typeName, uint8_t* realValue);
+  bool findModule(std::string typeName);
+  bool setValue(std::string value);
+  primitiveType getPrimitive(uint8_t* realValue);
   uint8_t* getRealValue(std::string typeName, primitiveType primitive);
 
 private:
-  bool loadModules();
-  std::vector<Module*> modules;
+  Module* module;
 };
 } // namespace murmure
 
