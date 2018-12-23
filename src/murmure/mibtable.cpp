@@ -134,7 +134,7 @@ void Mibtable::sortMibTable() {
   6) .1.3.6.1.4.1.1994.102.3
   7) .1.3.6.1.4.1.1994.102.3.1
   */
-  std::sort(oids.begin(), oids.end());
+  std::sort(oids.begin(), oids.end(), sortByOid);
 }
 
 /**
