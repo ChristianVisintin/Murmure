@@ -27,7 +27,7 @@
 #include <vector>
 
 namespace murmure {
-class ScheduledEvent : Event {
+class ScheduledEvent : public Event {
 public:
   ScheduledEvent(std::string oid, EventMode evMode, std::vector<std::string> commandList, int timeout);
   int getTimeout();
