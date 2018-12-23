@@ -31,9 +31,15 @@ class Octet : public Primitive<uint8_t*> {
 
 public:
   Octet(std::string value);
+  ~Octet();
   bool setValue(std::string oid, std::string value);
   primitiveType getValue();
   std::string getPrintableValue();
+
+private:
+  void valueToHex(std::string ascii);
+  std::string valueToAscii();
+  size_t dataLength; //Contains data length
 };
 
 } // namespace murmure
