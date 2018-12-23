@@ -50,13 +50,13 @@ Oid::Oid(std::string oid, std::string type, std::string value, int access, std::
   this->primitiveType = type;
   //Based on type instance new Primitive type
   if (type == PRIMITIVE_INTEGER) {
-    data = new Integer(value);
+    data = new Integer<int>(value);
   } else if (type == PRIMITIVE_IPADRRESS) {
-    data = new IPAddress(value);
+    data = new IPAddress<std::string>(value);
   } else if (type == PRIMITIVE_OCTET) {
-    data = new Octet(value);
+    data = new Octet<uint8_t*>(value);
   } else if (type == PRIMITIVE_STRING) {
-    data = new String(value);
+    data = new String<std::string>(value);
   } else {
     //TODO: Query module facade
     //this->primitiveType = getPrimitiveFromModule
@@ -139,7 +139,22 @@ std::string Oid::getName() {
 **/
 
 std::string Oid::getPrintableValue() {
-  return this->data->getPrintableValue();
+  if (this->dataType == PRIMITIVE_INTEGER) {
+    Integer<int>* realData = reinterpret_cast<Integer<int>*>(this->data);
+    return realData->getPrintableValue();
+  } else if (this->dataType == PRIMITIVE_IPADRRESS) {
+    IPAddress<std::string>* realData = reinterpret_cast<IPAddress<std::string>*>(this->data);
+    return realData->getPrintableValue();
+  } else if (this->dataType == PRIMITIVE_OCTET) {
+    Octet<uint8_t*>* realData = reinterpret_cast<Octet<uint8_t*>*>(this->data);
+    return realData->getPrintableValue();
+  } else if (this->dataType == PRIMITIVE_STRING) {
+    String<std::string>* realData = reinterpret_cast<String<std::string>*>(this->data);
+    return realData->getPrintableValue();
+  } else {
+    //TODO: implement modules
+    return "";
+  }
 }
 
 /**
@@ -162,7 +177,22 @@ AccessMode Oid::getAccessMode() {
 bool Oid::setValue(std::string printableValue) {
 
   //Value set operation is managed by Primitive extended class
-  return this->data->setValue(printableValue);
+  if (this->dataType == PRIMITIVE_INTEGER) {
+    Integer<int>* realData = reinterpret_cast<Integer<int>*>(this->data);
+    return realData->setValue(this->oid, printableValue);
+  } else if (this->dataType == PRIMITIVE_IPADRRESS) {
+    IPAddress<std::string>* realData = reinterpret_cast<IPAddress<std::string>*>(this->data);
+    return realData->setValue(this->oid, printableValue);
+  } else if (this->dataType == PRIMITIVE_OCTET) {
+    Octet<uint8_t*>* realData = reinterpret_cast<Octet<uint8_t*>*>(this->data);
+    return realData->setValue(this->oid, printableValue);
+  } else if (this->dataType == PRIMITIVE_STRING) {
+    String<std::string>* realData = reinterpret_cast<String<std::string>*>(this->data);
+    return realData->setValue(this->oid, printableValue);
+  } else {
+    //TODO: implement modules
+    return false;
+  }
 }
 
 /**
@@ -176,5 +206,4 @@ bool Oid::setValue(std::string printableValue) {
 bool murmure::sortByOid(Oid* firstOid, Oid* secondOid) {
 
   return firstOid->getOid().compare(secondOid->getOid()) < 0;
-
 }

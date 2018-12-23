@@ -46,7 +46,7 @@ private:
   AccessMode accessMode;     //Access level for OID
   std::string dataType;      //Type string
   std::string primitiveType; //Primitive type string
-  Primitive<void*>* data;    //Wrapper of value
+  void* data;                //Wrapper of value (void pointer to Primitive extension class)
 };
 
 bool sortByOid(Oid* firstOid, Oid* secondOid);
