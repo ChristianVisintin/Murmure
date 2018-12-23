@@ -21,8 +21,9 @@
 #ifndef MODULE_HPP
 #define MODULE_HPP
 
-#include <cinttypes>
 #include <murmure/primitives/primitive.hpp>
+
+#include <cinttypes>
 #include <string>
 
 namespace murmure {
