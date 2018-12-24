@@ -33,6 +33,7 @@ CREATE TABLE oids (
 CREATE TABLE scheduled_events (
   event_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
   mode VARCHAR(1) NOT NULL,
+  timeout INTEGER,
   oid VARCHAR(64) NOT NULL,
   FOREIGN KEY(oid) REFERENCES oids(oid)
 );
