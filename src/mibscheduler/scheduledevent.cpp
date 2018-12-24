@@ -74,3 +74,15 @@ std::string ScheduledEvent::getOid() {
 EventMode ScheduledEvent::getMode() {
   return Event::getMode();
 }
+
+/**
+ * @function sortByTimeout
+ * @description sort scheduled events by their timeout in seconds
+ * @param ScheduledEvent* first ScheduledEvent to compare
+ * @param ScheduledEvent* second ScheduledEvent to compare
+ * @returns bool: true if this ScheduledEvent's timeout is < passed ScheduledEvent's timeout
+**/
+
+bool murmure::sortByTimeout(ScheduledEvent* firstEv, ScheduledEvent* secondEv) {
+  return firstEv->getTimeout() < secondEv->getTimeout();
+}

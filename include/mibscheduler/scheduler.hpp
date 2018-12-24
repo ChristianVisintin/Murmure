@@ -25,6 +25,8 @@
 #include <mibscheduler/scheduledevent.hpp>
 #include <murmure/mibtable.hpp>
 
+#include <thread>
+
 namespace murmure {
 
 class Scheduler {
@@ -38,15 +40,16 @@ public:
   //Scheduler setups
   bool parseScheduling(std::string filename);
   bool parseScheduling(std::string oid, EventMode mode, std::vector<std::string> commandList, std::string* error, int timeout = 0);
-  bool addEvent(std::string oid, EventMode mode);
-  bool addEvent(std::string oid, EventMode mode, int timeout);
   bool clearEvents();
 
 private:
   int runScheduler();
+  bool addEvent(std::string oid, EventMode mode, std::vector<std::string> commandList);
+  bool addEvent(std::string oid, EventMode mode, std::vector<std::string> commandList, int timeout);
   std::vector<Event*> events;
   std::vector<ScheduledEvent*> scheduledEvents;
   Mibtable* mibtable;
+  std::thread* schedulerThread;
 };
 } // namespace murmure
 

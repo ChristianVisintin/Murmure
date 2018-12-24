@@ -38,6 +38,9 @@ public:
 private:
   int timeout;
 };
+
+bool sortByTimeout(ScheduledEvent* firstEv, ScheduledEvent* secondEv);
+
 } // namespace murmure
 
 #endif
