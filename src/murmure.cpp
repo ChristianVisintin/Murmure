@@ -228,6 +228,13 @@ int main(int argc, char* argv[]) {
     }
     //Instance scheduler
     Scheduler* mibScheduler = new Scheduler(mibtab);
+    //Load scheduler events
+    if (!mibScheduler->loadEvents()) {
+      logger::log(COMPONENT, LOG_FATAL, "Could not load scheduler events; execution aborted");
+      delete mibtab;
+      delete mibScheduler;
+      return 2;
+    }
     //Start scheduler
     if (!mibScheduler->startScheduler()) {
       logger::log(COMPONENT, LOG_FATAL, "Could not start scheduler; execution aborted");
@@ -296,6 +303,13 @@ int main(int argc, char* argv[]) {
     }
     //Instance scheduler
     Scheduler* mibScheduler = new Scheduler(mibtab);
+    //Load scheduler events
+    if (!mibScheduler->loadEvents()) {
+      logger::log(COMPONENT, LOG_FATAL, "Could not load scheduler events; execution aborted");
+      delete mibtab;
+      delete mibScheduler;
+      return 2;
+    }
     //Start scheduler
     if (!mibScheduler->startScheduler()) {
       logger::log(COMPONENT, LOG_FATAL, "Could not start scheduler; execution aborted");
@@ -319,6 +333,13 @@ int main(int argc, char* argv[]) {
     }
     //Instance scheduler
     Scheduler* mibScheduler = new Scheduler(mibtab);
+    //Load scheduler events
+    if (!mibScheduler->loadEvents()) {
+      logger::log(COMPONENT, LOG_FATAL, "Could not load scheduler events; execution aborted");
+      delete mibtab;
+      delete mibScheduler;
+      return 2;
+    }
     //Start scheduler
     if (!mibScheduler->startScheduler()) {
       logger::log(COMPONENT, LOG_FATAL, "Could not start scheduler; execution aborted");
@@ -342,6 +363,13 @@ int main(int argc, char* argv[]) {
     }
     //Instance scheduler
     Scheduler* mibScheduler = new Scheduler(mibtab);
+    //Load scheduler events
+    if (!mibScheduler->loadEvents()) {
+      logger::log(COMPONENT, LOG_FATAL, "Could not load scheduler events; execution aborted");
+      delete mibtab;
+      delete mibScheduler;
+      return 2;
+    }
     //Start scheduler
     if (!mibScheduler->startScheduler()) {
       logger::log(COMPONENT, LOG_INFO, "Could not start scheduler; execution aborted");

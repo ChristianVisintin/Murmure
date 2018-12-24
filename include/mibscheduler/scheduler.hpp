@@ -32,6 +32,7 @@ public:
   Scheduler();
   Scheduler(Mibtable* mTable);
   ~Scheduler();
+  bool loadEvents();
   int fetchAndExec(std::string oid, EventMode mode);
   bool startScheduler();
   //Scheduler setups
