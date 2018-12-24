@@ -38,8 +38,8 @@ public:
   int fetchAndExec(std::string oid, EventMode mode);
   bool startScheduler();
   //Scheduler setups
-  bool parseScheduling(std::string filename);
   bool parseScheduling(std::string oid, EventMode mode, std::vector<std::string> commandList, std::string* error, int timeout = 0);
+  bool parseScheduling(std::string filename);
   bool clearEvents();
 
 private:
