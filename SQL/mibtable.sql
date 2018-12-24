@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
 **/
 
--- Murmure MIB table Versione 0.1
+-- Murmure MIB table Version 1.0
 -- Database for storing MIB's OID and scheduled events
 -- Written and designed by Christian Visintin
 
