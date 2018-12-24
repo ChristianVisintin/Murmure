@@ -39,13 +39,13 @@ public:
   bool startScheduler();
   //Scheduler setups
   bool parseScheduling(std::string oid, EventMode mode, std::vector<std::string> commandList, std::string* error, int timeout = 0);
-  bool parseScheduling(std::string filename);
+  bool parseScheduling(std::string filename, std::string* error);
   bool clearEvents();
+  bool dumpScheduling(std::string dumpFile = "");
 
 private:
   int runScheduler();
-  bool addEvent(std::string oid, EventMode mode, std::vector<std::string> commandList);
-  bool addEvent(std::string oid, EventMode mode, std::vector<std::string> commandList, int timeout);
+  bool addEvent(std::string oid, EventMode mode, std::vector<std::string> commandList, int timeout = 0);
   std::vector<Event*> events;
   std::vector<ScheduledEvent*> scheduledEvents;
   Mibtable* mibtable;

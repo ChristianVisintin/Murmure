@@ -30,6 +30,7 @@ Usage:\n\
 \t-M --parse-mib <MIBfile>\t\tParse and configure Murmure for selected MIB\n\
 \t-S --schedule [schedule file]\t\tConfigure Murmure schedulation. If schedule file is specified, configuration will be taken from it, otherwise will be configured using command line\n\
 \t--dump-scheduling [outfile]\t\tDump scheduling; if file is specified will be dumped to the specified file, otherwise will be dumped on stdout\n\
+\t--reset\t\tReset entire mib and event tables\n\
 \t-h --help\t\tShow this page\n\
 "
 
@@ -411,10 +412,11 @@ int main(int argc, char* argv[]) {
     if (cmdLineOpts.args.size() == 1) {
       //Parse file
       std::string schedulingFile = cmdLineOpts.args.at(0);
-      if (mibScheduler->parseScheduling(schedulingFile)) {
+      std::string errorString;
+      if (mibScheduler->parseScheduling(schedulingFile, &errorString)) {
         logger::log(COMPONENT, LOG_INFO, "Scheduling file parsed successfully");
       } else {
-        logger::log(COMPONENT, LOG_ERROR, "Unable to parse scheduling file");
+        logger::log(COMPONENT, LOG_ERROR, "Unable to parse scheduling file: " + errorString);
         exitcode = 1;
       }
     } else {
