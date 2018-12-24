@@ -21,12 +21,17 @@
 #ifndef EVENTMODE_HPP
 #define EVENTMODE_HPP
 
+#define EVENTMODE_GET "G"
+#define EVENTMODE_SET "S"
+#define EVENTMODE_AUTO "A"
+#define EVENTMODE_INIT "I"
+
 namespace murmure {
 enum class EventMode {
-  GET,    // 'G'
-  SET,    // 'S'
-  AUTO,   // 'A'
-  STARTUP // 'R'
+  GET,  // 'G'
+  SET,  // 'S'
+  AUTO, // 'A'
+  INIT  // 'I'
 };
 } /* namespace murmure */
 

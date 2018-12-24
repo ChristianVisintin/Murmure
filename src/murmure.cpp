@@ -407,7 +407,7 @@ int main(int argc, char* argv[]) {
           std::cout << "Scheduling saved! Bye bye!" << std::endl;
           break;
         }
-        std::cout << "Event mode [GET/SET/AUTO/STARTUP]: ";
+        std::cout << "Event mode [GET/SET/AUTO/INIT]: ";
         std::cin >> modeStr;
         if (modeStr == "QUIT") {
           std::cout << "Scheduling saved! Bye bye!" << std::endl;
@@ -421,8 +421,8 @@ int main(int argc, char* argv[]) {
           //@! Ask timeout for Scheduled events
           std::cout << "Set timeout for scheduled event: ";
           std::cin >> timeout;
-        } else if (modeStr == "STARTUP") {
-          mode = EventMode::STARTUP;
+        } else if (modeStr == "INIT") {
+          mode = EventMode::INIT;
         } else {
           std::cout << "Invalid Event mode" << std::endl;
           continue;
