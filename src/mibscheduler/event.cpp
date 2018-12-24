@@ -18,24 +18,39 @@
  * You should have received a copy of the GNU General Public License
 **/
 
-#ifndef SCHEDULEDEVENT_HPP
-#define SCHEDULEDEVENT_HPP
-
 #include <mibscheduler/event.hpp>
-#include <mibscheduler/eventmode.hpp>
-#include <string>
-#include <vector>
 
-namespace murmure {
-class ScheduledEvent : public Event {
-public:
-  ScheduledEvent(std::string oid, EventMode evMode, std::vector<std::string> commandList, int timeout);
-  int executeCommands();
-  int getTimeout();
+using namespace murmure;
 
-private:
-  int timeout;
-};
-} // namespace murmure
+/**
+ * @function Event
+ * @description Event class constructor
+ * @param std::string oid associated to event
+ * @param EventMode event mode associated
+ * @param std::vector<std::string> command commandList
+**/
 
-#endif
+Event::Event(std::string oid, EventMode evMode, std::vector<std::string> commandList) {
+
+  this->oid = oid;
+  this->mode = evMode;
+  this->commandList = commandList;
+}
+
+/**
+ * @function executeCommands
+ * @description execute commands associated to this event
+ * @returns int: amount of executed commands
+**/
+
+int Event::executeCommands() {
+
+  int commandAmount = 0;
+
+  for (auto command : commandList) {
+    system(command.c_str());
+    commandAmount++;
+  }
+
+  return commandAmount;
+}
