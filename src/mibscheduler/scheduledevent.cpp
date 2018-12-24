@@ -54,3 +54,23 @@ int ScheduledEvent::executeCommands() {
 int ScheduledEvent::getTimeout() {
   return this->timeout;
 }
+
+/**
+ * @function getOid
+ * @description get oid private attribute
+ * @returns std::string
+**/
+
+std::string ScheduledEvent::getOid() {
+  return Event::getOid();
+}
+
+/**
+ * @function getMode
+ * @description get eventmode private attribute
+ * @returns EventMode
+**/
+
+EventMode ScheduledEvent::getMode() {
+  return Event::getMode();
+}

@@ -30,6 +30,8 @@ class Event {
 public:
   Event(std::string oid, EventMode evMode, std::vector<std::string> commandList);
   int executeCommands();
+  std::string getOid();
+  EventMode getMode();
 
 protected:
   std::string oid;

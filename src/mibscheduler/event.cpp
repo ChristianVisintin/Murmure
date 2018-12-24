@@ -54,3 +54,23 @@ int Event::executeCommands() {
 
   return commandAmount;
 }
+
+/**
+ * @function getOid
+ * @description get oid private attribute
+ * @returns std::string
+**/
+
+std::string Event::getOid() {
+  return this->oid;
+}
+
+/**
+ * @function getMode
+ * @description get eventmode private attribute
+ * @returns EventMode
+**/
+
+EventMode Event::getMode() {
+  return this->mode;
+}

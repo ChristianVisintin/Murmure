@@ -31,6 +31,8 @@ class ScheduledEvent : public Event {
 public:
   ScheduledEvent(std::string oid, EventMode evMode, std::vector<std::string> commandList, int timeout);
   int executeCommands();
+  std::string getOid();
+  EventMode getMode();
   int getTimeout();
 
 private:
