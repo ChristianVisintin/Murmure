@@ -32,6 +32,7 @@ public:
   int executeCommands();
   std::string getOid();
   EventMode getMode();
+  std::string getModeName();
 
 protected:
   std::string oid;

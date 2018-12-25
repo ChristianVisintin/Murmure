@@ -74,3 +74,24 @@ std::string Event::getOid() {
 EventMode Event::getMode() {
   return this->mode;
 }
+
+/**
+ * @function getModeName
+ * @description returns mode string name
+ * @returns std::string
+**/
+
+std::string Event::getModeName() {
+
+  if (mode == EventMode::AUTO) {
+    return EVENTMODE_AUTO;
+  } else if (mode == EventMode::GET) {
+    return EVENTMODE_GET;
+  } else if (mode == EventMode::INIT) {
+    return EVENTMODE_INIT;
+  } else if (mode == EventMode::SET) {
+    return EVENTMODE_SET;
+  } else {
+    return "?";
+  }
+}

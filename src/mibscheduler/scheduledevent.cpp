@@ -76,6 +76,16 @@ EventMode ScheduledEvent::getMode() {
 }
 
 /**
+ * @function getModeName
+ * @description returns mode string name
+ * @returns std::string
+**/
+
+std::string ScheduledEvent::getModeName() {
+  return Event::getModeName();
+}
+
+/**
  * @function sortByTimeout
  * @description sort scheduled events by their timeout in seconds
  * @param ScheduledEvent* first ScheduledEvent to compare

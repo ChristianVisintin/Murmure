@@ -33,6 +33,7 @@ public:
   int executeCommands();
   std::string getOid();
   EventMode getMode();
+  std::string getModeName();
   int getTimeout();
 
 private:
