@@ -38,9 +38,9 @@ Usage:\n\
 #include <iostream>
 #include <sstream>
 
+#include <murmure/mibtable.hpp>
 #include <utils/getopts.hpp>
 #include <utils/logger.hpp>
-#include <murmure/mibtable.hpp>
 
 #include <mibparser/mibparser.hpp>
 #include <mibscheduler/scheduler.hpp>
@@ -483,9 +483,44 @@ int main(int argc, char* argv[]) {
     delete mibtab;
     delete mibScheduler;
   } else if (cmdLineOpts.command == Command::DUMP_SCHEDULE) {
-    //TODO: implement this
+    std::string dumpFile = "";
+    //Check if dump file has been provided
+    if (cmdLineOpts.args.size() > 0) {
+      //Parse file
+      dumpFile = cmdLineOpts.args.at(0);
+    }
+    //Instance mibtable
+    Mibtable* mibtab = new Mibtable();
+    //Load mibtable
+    if (!mibtab->loadMibTable()) {
+      logger::log(COMPONENT, LOG_FATAL, "MIB table loading failed; execution aborted");
+      delete mibtab;
+      return 1;
+    }
+    //Instance new scheduler
+    Scheduler* mibScheduler = new Scheduler(mibtab);
+
+    //Dump scheduling
+    if (!mibScheduler->dumpScheduling(dumpFile)) {
+      logger::log(COMPONENT, LOG_FATAL, "Scheduling dump failed");
+      exitcode = 1;
+    }
+
+    exitcode = 0;
+    delete mibtab;
+    delete mibScheduler;
+
   } else if (cmdLineOpts.command == Command::RESET) {
-    //TODO: implement this
+    //Instance new scheduler, no mib table needed
+    Scheduler* mibScheduler = new Scheduler();
+    //Clear all events
+    if (!mibScheduler->clearEvents()) {
+      logger::log(COMPONENT, LOG_FATAL, "Scheduling reset failed");
+      exitcode = 1;
+    }
+    exitcode = 0;
+    delete mibScheduler;
+    
   } else {
     logger::log(COMPONENT, LOG_ERROR, "Unknown command");
     exitcode = 255;
