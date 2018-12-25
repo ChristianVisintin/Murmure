@@ -18,24 +18,41 @@
  * You should have received a copy of the GNU General Public License
 **/
 
-#ifndef MIBPARSER_HPP
-#define MIBPARSER_HPP
+#include <mibparser/mibparser.hpp>
+#include <utils/databasefacade.hpp>
+#include <utils/logger.hpp>
+#include <utils/strutils.hpp>
 
-#include <murmure/mibtable.hpp>
+using namespace murmure;
 
-namespace murmure {
+/**
+ * @function Mibparser
+ * @description Mibparser class constructor
+**/
 
-class Mibparser {
+Mibparser::Mibparser() {
+  mibtable = nullptr;
+}
 
-public:
-  Mibparser();
-  ~Mibparser();
-  bool parseMibFile(std::string mibfile);
+/**
+ * @function ~Mibparser
+ * @description Mibparser class destructor
+**/
 
-private:
-  Mibtable* mibtable;
+Mibparser::~Mibparser() {
+  if (mibtable != nullptr) {
+    delete mibtable;
+  }
+  mibtable = nullptr;
+}
 
-};
-} // namespace murmure
+/**
+ * @function parseMibFile
+ * @description parse mib file and save OID nodes into database
+ * @param std::string mibfile
+ * @returns bool: true if parsing/database storage operations succeeded
+**/
 
-#endif
+bool Mibparser::parseMibFile(std::string mibfile) {
+  //TODO: implement this
+}
