@@ -33,6 +33,7 @@ public:
   std::string getOid();
   EventMode getMode();
   std::string getModeName();
+  std::vector<std::string> getCommandList();
 
 protected:
   std::string oid;

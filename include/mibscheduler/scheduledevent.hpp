@@ -34,6 +34,7 @@ public:
   std::string getOid();
   EventMode getMode();
   std::string getModeName();
+  std::vector<std::string> getCommandList();
   int getTimeout();
 
 private:

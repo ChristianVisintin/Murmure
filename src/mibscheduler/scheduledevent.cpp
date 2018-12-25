@@ -86,6 +86,16 @@ std::string ScheduledEvent::getModeName() {
 }
 
 /**
+ * @function getCommandList
+ * @description get command list vector
+ * @returns std::vector<std::string>
+**/
+
+std::vector<std::string> ScheduledEvent::getCommandList() {
+  return Event::getCommandList();
+}
+
+/**
  * @function sortByTimeout
  * @description sort scheduled events by their timeout in seconds
  * @param ScheduledEvent* first ScheduledEvent to compare

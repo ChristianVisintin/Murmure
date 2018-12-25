@@ -95,3 +95,13 @@ std::string Event::getModeName() {
     return "?";
   }
 }
+
+/**
+ * @function getCommandList
+ * @description get command list vector
+ * @returns std::vector<std::string>
+**/
+
+std::vector<std::string> Event::getCommandList() {
+  return this->commandList;
+}
