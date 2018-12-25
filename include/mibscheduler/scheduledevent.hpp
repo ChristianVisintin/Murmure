@@ -31,17 +31,21 @@ class ScheduledEvent : public Event {
 public:
   ScheduledEvent(std::string oid, EventMode evMode, std::vector<std::string> commandList, int timeout);
   int executeCommands();
+  int calcRelativeTimeout(time_t elapsedTime);
   std::string getOid();
   EventMode getMode();
   std::string getModeName();
   std::vector<std::string> getCommandList();
   int getTimeout();
+  int getRelativeTimeout();
 
 private:
   int timeout;
+  int relativeTimeout;
 };
 
 bool sortByTimeout(ScheduledEvent* firstEv, ScheduledEvent* secondEv);
+bool sortByRelativeTimeout(ScheduledEvent* firstEv, ScheduledEvent* secondEv);
 
 } // namespace murmure
 

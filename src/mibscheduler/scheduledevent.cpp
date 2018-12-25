@@ -46,6 +46,20 @@ int ScheduledEvent::executeCommands() {
 }
 
 /**
+ * @function calcRelativeTimeout
+ * @description calc relative timeout based on elapsed time and timeout
+ * @param time_t elapsedTime
+ * @returns int calculated relative timeout
+**/
+
+int ScheduledEvent::calcRelativeTimeout(time_t elapsedTime) {
+
+  this->relativeTimeout = this->timeout - (elapsedTime % this->timeout);
+  return this->relativeTimeout;
+
+}
+
+/**
  * @function getTimeout
  * @description returns timeout class attribute
  * @returns int
@@ -53,6 +67,16 @@ int ScheduledEvent::executeCommands() {
 
 int ScheduledEvent::getTimeout() {
   return this->timeout;
+}
+
+/**
+ * @function getRelativeTimeout
+ * @description returns relative timeout class attribute
+ * @returns int
+**/
+
+int ScheduledEvent::getRelativeTimeout() {
+  return this->relativeTimeout;
 }
 
 /**
@@ -105,4 +129,16 @@ std::vector<std::string> ScheduledEvent::getCommandList() {
 
 bool murmure::sortByTimeout(ScheduledEvent* firstEv, ScheduledEvent* secondEv) {
   return firstEv->getTimeout() < secondEv->getTimeout();
+}
+
+/**
+ * @function sortByRelativeTimeout
+ * @description sort scheduled events by their relative timeout in seconds
+ * @param ScheduledEvent* first ScheduledEvent to compare
+ * @param ScheduledEvent* second ScheduledEvent to compare
+ * @returns bool: true if this ScheduledEvent's relative timeout is < passed ScheduledEvent's timeout
+**/
+
+bool murmure::sortByRelativeTimeout(ScheduledEvent* firstEv, ScheduledEvent* secondEv) {
+  return firstEv->getRelativeTimeout() < secondEv->getRelativeTimeout();
 }

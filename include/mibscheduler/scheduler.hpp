@@ -50,6 +50,7 @@ private:
   std::vector<ScheduledEvent*> scheduledEvents;
   Mibtable* mibtable;
   std::thread* schedulerThread;
+  bool stopCalled;
 };
 } // namespace murmure
 
