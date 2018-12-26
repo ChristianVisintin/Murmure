@@ -25,12 +25,16 @@
 
 namespace murmure {
 
-//Data string definition 
-//CHECK: if correct
-#define PRIMITIVE_INTEGER "integer"
-#define PRIMITIVE_OCTET "octet"
-#define PRIMITIVE_STRING "string"
-#define PRIMITIVE_IPADRRESS "ipaddress"
+//Data string definition
+#define PRIMITIVE_COUNTER "COUNTER"
+#define PRIMITIVE_GAUGE "GAUGE"
+#define PRIMITIVE_INTEGER "INTEGER"
+#define PRIMITIVE_IPADRRESS "IPADDRESS"
+#define PRIMITIVE_OBJECTID "OBJECTID"
+#define PRIMITIVE_OCTET "OCTET"
+#define PRIMITIVE_SEQUENCE "SEQUENCE"
+#define PRIMITIVE_STRING "STRING"
+#define PRIMITIVE_TIMETICKS "TIMETICKS"
 
 //Template for generic primitive value
 template <typename primitiveType>
