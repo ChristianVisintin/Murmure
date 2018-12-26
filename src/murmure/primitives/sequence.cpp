@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
 **/
 
-#include <murmure/primitives/string.hpp>
+#include <murmure/primitives/sequence.hpp>
 #include <utils/databasefacade.hpp>
 #include <utils/logger.hpp>
 
@@ -29,13 +29,12 @@
 using namespace murmure;
 
 /**
- * @function String
- * @description String class constructor
+ * @function Sequence
+ * @description Sequence class constructor
  * @param std::string value to convert to primitive
 **/
 
-String<std::string>::String(std::string value) {
-  this->value = value;
+Sequence<std::string>::Sequence(std::string value) : Objectid(value) {
 }
 
 /**
@@ -45,46 +44,18 @@ String<std::string>::String(std::string value) {
  * @returns bool: true if set database operation succeeded
 **/
 
-bool String<std::string>::setValue(std::string oid, std::string value) {
-  std::string errorString;
-
-  //Open database
-  if (!database::open(&errorString)) {
-    //Database open failed
-    logger::log(COMPONENT, LOG_ERROR, errorString);
-    return false;
-  }
-
-  //Build query string sstream
-  std::stringstream queryStream;
-  queryStream << "UPDATE oids SET value = \"" << value << "\" WHERE oid = \"" << oid << "\";";
-  std::string query = queryStream.str();
-
-  if (!database::exec(query, &errorString)) {
-    //Database query failed
-    logger::log(COMPONENT, LOG_ERROR, errorString);
-    return false;
-  }
-
-  //Query succeeded, update oid value
-  this->value = value;
-
-  //try to close database
-  if (!database::close(&errorString)) {
-    logger::log(COMPONENT, LOG_ERROR, errorString);
-    return false;
-  }
-
+bool Sequence<std::string>::setValue(std::string oid, std::string value) {
+  //Has no value, just return
   return true;
 }
 
 /**
  * @function getValue
- * @returns std::string: real primitive value
+ * @returns std::string: object id has no value
 **/
 
-std::string String<std::string>::getValue() {
-  return this->value;
+std::string Sequence<std::string>::getValue() {
+  return "";
 }
 
 /**
@@ -93,7 +64,7 @@ std::string String<std::string>::getValue() {
  * @returns std::string
 **/
 
-std::string String<std::string>::getPrintableValue() {
+std::string Sequence<std::string>::getPrintableValue() {
 
-  return this->value;
+  return "";
 }

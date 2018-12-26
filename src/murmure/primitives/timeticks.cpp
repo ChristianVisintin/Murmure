@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
 **/
 
-#include <murmure/primitives/string.hpp>
+#include <murmure/primitives/timeticks.hpp>
 #include <utils/databasefacade.hpp>
 #include <utils/logger.hpp>
 
@@ -29,13 +29,13 @@
 using namespace murmure;
 
 /**
- * @function String
- * @description String class constructor
+ * @function Timeticks
+ * @description Timeticks class constructor
  * @param std::string value to convert to primitive
 **/
 
-String<std::string>::String(std::string value) {
-  this->value = value;
+Timeticks<unsigned int>::Timeticks(std::string value) {
+  this->value = std::stoi(value);
 }
 
 /**
@@ -45,7 +45,7 @@ String<std::string>::String(std::string value) {
  * @returns bool: true if set database operation succeeded
 **/
 
-bool String<std::string>::setValue(std::string oid, std::string value) {
+bool Timeticks<unsigned int>::setValue(std::string oid, std::string value) {
   std::string errorString;
 
   //Open database
@@ -55,10 +55,13 @@ bool String<std::string>::setValue(std::string oid, std::string value) {
     return false;
   }
 
+  //Get value to set
+  unsigned int newValue = std::stoi(value);
   //Build query string sstream
   std::stringstream queryStream;
-  queryStream << "UPDATE oids SET value = \"" << value << "\" WHERE oid = \"" << oid << "\";";
+  queryStream << "UPDATE oids SET value = \"" << newValue << "\" WHERE oid = \"" << oid << "\";";
   std::string query = queryStream.str();
+
 
   if (!database::exec(query, &errorString)) {
     //Database query failed
@@ -67,7 +70,7 @@ bool String<std::string>::setValue(std::string oid, std::string value) {
   }
 
   //Query succeeded, update oid value
-  this->value = value;
+  this->value = newValue;
 
   //try to close database
   if (!database::close(&errorString)) {
@@ -76,14 +79,15 @@ bool String<std::string>::setValue(std::string oid, std::string value) {
   }
 
   return true;
+
 }
 
 /**
  * @function getValue
- * @returns std::string: real primitive value
+ * @returns unsigned int: real primitive value
 **/
 
-std::string String<std::string>::getValue() {
+unsigned int Timeticks<unsigned int>::getValue() {
   return this->value;
 }
 
@@ -93,7 +97,7 @@ std::string String<std::string>::getValue() {
  * @returns std::string
 **/
 
-std::string String<std::string>::getPrintableValue() {
+std::string Timeticks<unsigned int>::getPrintableValue() {
 
-  return this->value;
+  return std::to_string(this->value);
 }

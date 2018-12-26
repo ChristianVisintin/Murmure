@@ -21,7 +21,7 @@
 #ifndef SEQUENCE_HPP
 #define SEQUENCE_HPP
 
-#include <murmure/primitives/primitive.hpp>
+#include <murmure/primitives/objectid.hpp>
 
 namespace murmure {
 
@@ -29,7 +29,7 @@ namespace murmure {
 
 template <typename primitiveType>
 
-class Sequence : public Primitive<std::string> {
+class Sequence : public Objectid<std::string> {
 
   public:
   Sequence(std::string value);

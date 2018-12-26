@@ -80,7 +80,7 @@ bool IPAddress<std::string>::setValue(std::string oid, std::string value) {
 
 /**
  * @function getValue
- * @returns int: real primitive value
+ * @returns std::string: real primitive value
 **/
 
 std::string IPAddress<std::string>::getValue() {
