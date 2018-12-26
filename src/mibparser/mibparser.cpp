@@ -23,6 +23,26 @@
 #include <utils/logger.hpp>
 #include <utils/strutils.hpp>
 
+#define MIB_ROOT ".1.3.6.1"
+//Directory node
+#define MIB_DIRECTORY ".1"
+//Mibv2 sub-node
+#define MIB_MIB2 ".1"
+#define MIB_MIB2_SYSTEM ".1"
+#define MIB_MIB2_INTERFACES ".2"
+#define MIB_MIB2_IP ".4"
+
+//Management node
+#define MIB_MGMT ".2"
+
+//Experimental node
+#define MIB_EXPERIMENTAL ".3"
+
+//Private node
+#define MIB_PRIVATE ".4"
+#define MIB_ENTERPRISE ".1"
+
+
 using namespace murmure;
 
 /**
