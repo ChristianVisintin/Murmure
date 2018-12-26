@@ -20,10 +20,15 @@
 
 #include <murmure/modulefacade.hpp>
 #include <murmure/oid.hpp>
+#include <murmure/primitives/counter.hpp>
+#include <murmure/primitives/gauge.hpp>
 #include <murmure/primitives/integer.hpp>
 #include <murmure/primitives/ipaddress.hpp>
+#include <murmure/primitives/objectid.hpp>
 #include <murmure/primitives/octet.hpp>
+#include <murmure/primitives/sequence.hpp>
 #include <murmure/primitives/string.hpp>
+#include <murmure/primitives/timeticks.hpp>
 
 #include <algorithm>
 #include <vector>
@@ -47,19 +52,29 @@ Oid::Oid(std::string oid, std::string type, std::string value, int access, std::
   //Init data to nullptr
   data = nullptr;
 
-  //Convert type to lower case
-  std::transform(type.begin(), type.end(), type.begin(), ::tolower);
+  //Convert type to upper case
+  std::transform(type.begin(), type.end(), type.begin(), ::toupper);
   this->dataType = type;
   this->primitiveType = type;
   //Based on type instance new Primitive type
-  if (type == PRIMITIVE_INTEGER) {
+  if (type == PRIMITIVE_COUNTER) {
+    data = new Counter<unsigned int>(value);
+  } else if (type == PRIMITIVE_GAUGE) {
+    data = new Gauge<unsigned int>(value);
+  } else if (type == PRIMITIVE_INTEGER) {
     data = new Integer<int>(value);
   } else if (type == PRIMITIVE_IPADRRESS) {
     data = new IPAddress<std::string>(value);
+  } else if (type == PRIMITIVE_OBJECTID) {
+    data = new Objectid<std::string>(value);
   } else if (type == PRIMITIVE_OCTET) {
     data = new Octet<uint8_t*>(value);
+  } else if (type == PRIMITIVE_SEQUENCE) {
+    data = new Sequence<std::string>(value);
   } else if (type == PRIMITIVE_STRING) {
     data = new String<std::string>(value);
+  } else if (type == PRIMITIVE_TIMETICKS) {
+    data = new Timeticks<unsigned int>(value);
   } else {
     //TODO: Query module facade
     //this->primitiveType = getPrimitiveFromModule
@@ -143,17 +158,32 @@ std::string Oid::getName() {
 **/
 
 std::string Oid::getPrintableValue() {
-  if (this->dataType == PRIMITIVE_INTEGER) {
+  if (this->dataType == PRIMITIVE_COUNTER) {
+    Counter<unsigned int>* realData = reinterpret_cast<Counter<unsigned int>*>(this->data);
+    return realData->getPrintableValue();
+  } else if (this->dataType == PRIMITIVE_GAUGE) {
+    Gauge<unsigned int>* realData = reinterpret_cast<Gauge<unsigned int>*>(this->data);
+    return realData->getPrintableValue();
+  } else if (this->dataType == PRIMITIVE_INTEGER) {
     Integer<int>* realData = reinterpret_cast<Integer<int>*>(this->data);
     return realData->getPrintableValue();
   } else if (this->dataType == PRIMITIVE_IPADRRESS) {
     IPAddress<std::string>* realData = reinterpret_cast<IPAddress<std::string>*>(this->data);
     return realData->getPrintableValue();
+  } else if (this->dataType == PRIMITIVE_OBJECTID) {
+    Objectid<std::string>* realData = reinterpret_cast<Objectid<std::string>*>(this->data);
+    return realData->getPrintableValue();
   } else if (this->dataType == PRIMITIVE_OCTET) {
     Octet<uint8_t*>* realData = reinterpret_cast<Octet<uint8_t*>*>(this->data);
     return realData->getPrintableValue();
+  } else if (this->dataType == PRIMITIVE_SEQUENCE) {
+    Sequence<std::string>* realData = reinterpret_cast<Sequence<std::string>*>(this->data);
+    return realData->getPrintableValue();
   } else if (this->dataType == PRIMITIVE_STRING) {
     String<std::string>* realData = reinterpret_cast<String<std::string>*>(this->data);
+    return realData->getPrintableValue();
+  } else if (this->dataType == PRIMITIVE_TIMETICKS) {
+    Timeticks<unsigned int>* realData = reinterpret_cast<Timeticks<unsigned int>*>(this->data);
     return realData->getPrintableValue();
   } else {
     //TODO: implement modules
@@ -179,19 +209,34 @@ AccessMode Oid::getAccessMode() {
 **/
 
 bool Oid::setValue(std::string printableValue) {
-
+  
   //Value set operation is managed by Primitive extended class
-  if (this->dataType == PRIMITIVE_INTEGER) {
+  if (this->dataType == PRIMITIVE_COUNTER) {
+    Counter<unsigned int>* realData = reinterpret_cast<Counter<unsigned int>*>(this->data);
+    return realData->setValue(this->oid, printableValue);
+  } else if (this->dataType == PRIMITIVE_GAUGE) {
+    Gauge<unsigned int>* realData = reinterpret_cast<Gauge<unsigned int>*>(this->data);
+    return realData->setValue(this->oid, printableValue);
+  } else if (this->dataType == PRIMITIVE_INTEGER) {
     Integer<int>* realData = reinterpret_cast<Integer<int>*>(this->data);
     return realData->setValue(this->oid, printableValue);
   } else if (this->dataType == PRIMITIVE_IPADRRESS) {
     IPAddress<std::string>* realData = reinterpret_cast<IPAddress<std::string>*>(this->data);
     return realData->setValue(this->oid, printableValue);
+  } else if (this->dataType == PRIMITIVE_OBJECTID) {
+    Objectid<std::string>* realData = reinterpret_cast<Objectid<std::string>*>(this->data);
+    return realData->setValue(this->oid, printableValue);
   } else if (this->dataType == PRIMITIVE_OCTET) {
     Octet<uint8_t*>* realData = reinterpret_cast<Octet<uint8_t*>*>(this->data);
     return realData->setValue(this->oid, printableValue);
+  } else if (this->dataType == PRIMITIVE_SEQUENCE) {
+    Sequence<std::string>* realData = reinterpret_cast<Sequence<std::string>*>(this->data);
+    return realData->setValue(this->oid, printableValue);
   } else if (this->dataType == PRIMITIVE_STRING) {
     String<std::string>* realData = reinterpret_cast<String<std::string>*>(this->data);
+    return realData->setValue(this->oid, printableValue);
+  } else if (this->dataType == PRIMITIVE_TIMETICKS) {
+    Timeticks<unsigned int>* realData = reinterpret_cast<Timeticks<unsigned int>*>(this->data);
     return realData->setValue(this->oid, printableValue);
   } else {
     //TODO: implement modules
