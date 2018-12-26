@@ -218,11 +218,18 @@ int Scheduler::fetchAndExec(std::string oid, EventMode mode) {
 
 /**
  * @function startScheduler
- * @description start new scheduler thread
+ * @description start new scheduler thread and execute all INIT events
  * @returns bool: true if thread started
 **/
 
 bool Scheduler::startScheduler() {
+
+  //Execute all INIT commands
+  for (auto event : this->events) {
+    if (event->getMode() == EventMode::INIT) {
+      event->executeCommands();
+    }
+  }
 
   //Start scheduler thread
   if (this->schedulerThread != nullptr) {
