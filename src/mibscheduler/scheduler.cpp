@@ -533,18 +533,22 @@ int Scheduler::runScheduler() {
   //Stop called is set at scheduler destructor
   while (!stopCalled) {
     //If elapsed time % nextEventTime == 0, exec command's id
-    if (elapsedTime % nextEventTime == 0) {
+    if (elapsedTime != 0 && elapsedTime % nextEventTime == 0) {
       //Execute commands for all events which satisfy previous condition
       //That because there could be more than one event with same relative timeout
       for (auto event : scheduledEvents) {
         //Check condition
         if (elapsedTime % event->getTimeout()) {
+          time_t tNow = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
           //If true execute event's commands
           event->executeCommands();
+          //Get elapsed time between before and after execution
+          time_t evElapsedTime = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count() - tNow;
+          //Add to elapsed time event execution elapsed time
+          elapsedTime += evElapsedTime;
         }
         //Then calculate event relative timeout
         event->calcRelativeTimeout(elapsedTime);
-        //TODO: calc elapsed time betwen before execution and after execution
       }
       std::sort(scheduledEvents.begin(), scheduledEvents.end(), sortByRelativeTimeout);
       //Reset nextEventTime
