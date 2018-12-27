@@ -73,14 +73,15 @@ bool getOpts(options* optStruct, int argc, char* argv[], std::string* error) {
     optStruct->args.reserve(1);
     optStruct->args.push_back(std::string(argv[2]));
   } else if (arg == "-M" or arg == "--parse-mib") {
-    //Mib parsing has 1 arg => mib file
-    if (argc < 3) {
-      *error = "Missing MIB file";
+    //Mib parsing has 2 arg => [rootOid, mib file]
+    if (argc < 4) {
+      *error = "Missing RootOID/MIB file";
       return false;
     }
     optStruct->command = Command::PARSE_MIB;
-    optStruct->args.reserve(1);
+    optStruct->args.reserve(2);
     optStruct->args.push_back(std::string(argv[2]));
+    optStruct->args.push_back(std::string(argv[3]));
   } else if (arg == "-S" or arg == "--schedule") {
     //Can have file as argument
     optStruct->command = Command::SCHEDULE;

@@ -30,7 +30,7 @@ class Mibparser {
 public:
   Mibparser();
   ~Mibparser();
-  bool parseMibFile(std::string mibfile);
+  bool parseMibFile(std::string rootOid, std::string mibfile);
 
 private:
   Mibtable* mibtable;

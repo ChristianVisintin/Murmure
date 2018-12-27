@@ -449,7 +449,8 @@ int main(int argc, char* argv[]) {
     delete mibtab;       //Free mibtab
     delete mibScheduler; //Free scheduler
   } else if (cmdLineOpts.command == Command::PARSE_MIB) {
-    std::string mibFile = cmdLineOpts.args.at(0);
+    std::string rootOid = cmdLineOpts.args.at(0);
+    std::string mibFile = cmdLineOpts.args.at(1);
     Mibparser* mibParser = new Mibparser();
     if (mibParser->parseMibFile(mibFile)) {
       logger::log(COMPONENT, LOG_INFO, "MIB parsed successfully");
