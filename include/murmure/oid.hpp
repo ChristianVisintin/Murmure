@@ -38,6 +38,7 @@ public:
   std::string getName();
   std::string getPrintableValue();
   AccessMode getAccessMode();
+  int getAccessModeInteger();
   bool setValue(std::string printableValue);
 
 private:

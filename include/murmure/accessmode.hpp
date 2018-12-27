@@ -21,6 +21,11 @@
 #ifndef ACCESSMODE_HPP
 #define ACCESSMODE_HPP
 
+#define ACCESSMODE_NOTACCESSIBLE 0
+#define ACCESSMODE_READONLY 1
+#define ACCESSMODE_READCREATE 2
+#define ACCESSMODE_READWRITE 3
+
 namespace murmure {
 enum class AccessMode {
   NOT_ACCESSIBLE, //0

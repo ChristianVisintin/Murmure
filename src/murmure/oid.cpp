@@ -82,16 +82,16 @@ Oid::Oid(std::string oid, std::string type, std::string value, int access, std::
 
   //Set access mode
   switch (access) {
-  case 0:
+  case ACCESSMODE_NOTACCESSIBLE:
     this->accessMode = AccessMode::NOT_ACCESSIBLE;
     break;
-  case 1:
+  case ACCESSMODE_READONLY:
     this->accessMode = AccessMode::READONLY;
     break;
-  case 2:
+  case ACCESSMODE_READCREATE:
     this->accessMode = AccessMode::READCREATE;
     break;
-  case 3:
+  case ACCESSMODE_READWRITE:
     this->accessMode = AccessMode::READWRITE;
     break;
   }
@@ -199,6 +199,26 @@ std::string Oid::getPrintableValue() {
 
 AccessMode Oid::getAccessMode() {
   return this->accessMode;
+}
+
+/**
+ * @function getAccessModeInteger
+ * @description returns the integer associated to access mode (as to be stored in the database)
+ * @returns int
+**/
+
+int Oid::getAccessModeInteger() {
+  if (this->accessMode == AccessMode::NOT_ACCESSIBLE) {
+    return ACCESSMODE_NOTACCESSIBLE;
+  } else if (this->accessMode == AccessMode::READONLY) {
+    return ACCESSMODE_READONLY;
+  } else if (this->accessMode == AccessMode::READCREATE) {
+    return ACCESSMODE_READCREATE;
+  } else if (this->accessMode == AccessMode:: READWRITE) {
+    return ACCESSMODE_READWRITE;
+  } else {
+    return ACCESSMODE_NOTACCESSIBLE;
+  }
 }
 
 /**
