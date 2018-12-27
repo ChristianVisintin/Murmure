@@ -34,7 +34,7 @@ public:
   ~Oid();
   std::string getOid();
   std::string getType();
-  std::string getPrimtiveType();
+  std::string getPrimitiveType();
   std::string getName();
   std::string getPrintableValue();
   AccessMode getAccessMode();

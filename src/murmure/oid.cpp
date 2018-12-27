@@ -137,7 +137,7 @@ std::string Oid::getType() {
  * @returns std::string
 **/
 
-std::string Oid::getPrimtiveType() {
+std::string Oid::getPrimitiveType() {
   return this->primitiveType;
 }
 
