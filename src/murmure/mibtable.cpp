@@ -181,3 +181,23 @@ std::string Mibtable::getNextOid(std::string oidString) {
   //Otherwise return ""
   return "";
 }
+
+/**
+ * @function getPreviousOid
+ * @description given an oid, find the immediate previous oid
+ * @param std::string oid string 
+ * @returns std::string previous oid string
+**/
+
+std::string Mibtable::getPreviousOid(std::string oidString) {
+
+  Oid* previousOid = nullptr;
+  for (auto oid : oids) {
+    //Check if previousOid is not nullptr and current oid is equal to provided one
+    if (oid->getOid() == oidString && previousOid != nullptr) {
+      return previousOid->getOid();
+    }
+    previousOid = oid;
+  }
+  return "";
+}
