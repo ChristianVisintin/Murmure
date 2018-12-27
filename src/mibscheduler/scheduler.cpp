@@ -534,12 +534,17 @@ int Scheduler::runScheduler() {
   while (!stopCalled) {
     //If elapsed time % nextEventTime == 0, exec command's id
     if (elapsedTime % nextEventTime == 0) {
-      //Execute commands for next event
-      ScheduledEvent* nextEvent = scheduledEvents.at(0);
-      nextEvent->executeCommands();
-      //After executing event's commands, calc relative timeouts and sort them
+      //Execute commands for all events which satisfy previous condition
+      //That because there could be more than one event with same relative timeout
       for (auto event : scheduledEvents) {
+        //Check condition
+        if (elapsedTime % event->getTimeout()) {
+          //If true execute event's commands
+          event->executeCommands();
+        }
+        //Then calculate event relative timeout
         event->calcRelativeTimeout(elapsedTime);
+        //TODO: calc elapsed time betwen before execution and after execution
       }
       std::sort(scheduledEvents.begin(), scheduledEvents.end(), sortByRelativeTimeout);
       //Reset nextEventTime
