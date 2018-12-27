@@ -117,6 +117,19 @@ bool Mibtable::loadMibTable() {
 }
 
 /**
+ * @function addOid
+ * @ðescription add new OID object to mib table
+ * @param Oid* pointer to new OID object
+**/
+
+void Mibtable::addOid(Oid* newOid) {
+  //Add new OID object to mibtable
+  oids.push_back(newOid);
+  //Sort mib table
+  this->sortMibTable();
+}
+
+/**
  * @function sortMibTable
  * @description sort mib table oids from 
 **/
