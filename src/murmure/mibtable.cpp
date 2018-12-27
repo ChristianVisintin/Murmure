@@ -23,6 +23,7 @@
 #include <utils/logger.hpp>
 
 #include <algorithm>
+#include <sstream>
 
 #define COMPONENT "MibTable"
 
@@ -120,13 +121,46 @@ bool Mibtable::loadMibTable() {
  * @function addOid
  * @ðescription add new OID object to mib table
  * @param Oid* pointer to new OID object
+ * @returns bool: true if added successfully
 **/
 
-void Mibtable::addOid(Oid* newOid) {
-  //Add new OID object to mibtable
+bool Mibtable::addOid(Oid* newOid) {
+  std::string errorString;
+  //Open database
+  if (!database::open(&errorString)) {
+    //Database open failed
+    logger::log(COMPONENT, LOG_ERROR, errorString);
+    return false;
+  }
+
+  //Add new OID to database
+  std::stringstream queryStream;
+  queryStream << "INSERT INTO oids(oid, name, datatype, value, accessmode) VALUES (";
+  queryStream << "\"" << newOid->getOid() << "\"";
+  queryStream << ", \"" << newOid->getName() << "\"";
+  queryStream << ", \"" << newOid->getType() << "\"";
+  queryStream << ", \"" << newOid->getPrintableValue() << "\"";
+  queryStream << ", " << newOid->getAccessModeInteger() << ");";
+  std::string query = queryStream.str();
+
+  if (!database::exec(query, &errorString)) {
+    //Database commit failed
+    logger::log(COMPONENT, LOG_ERROR, errorString);
+    return false;
+  }
+
+  //Close database
+  if (!database::close(&errorString)) {
+    logger::log(COMPONENT, LOG_ERROR, errorString);
+    return false;
+  }
+
+  //Finally add new OID object to mibtable vector
   oids.push_back(newOid);
+
   //Sort mib table
   this->sortMibTable();
+  return true;
 }
 
 /**
