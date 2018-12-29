@@ -34,10 +34,21 @@ public:
 
 private:
   bool parseLine(std::string line);
+  bool commitPreviousOid();
+  //Parsing methods
+  bool handleModuleIdentity(std::string line);
+  bool handleInlineObject(std::string line);
+  bool handleObjectDeclaration(std::string line);
+  //Mibparser attributes
   Mibtable* mibtable;
   std::string rootOidStr;
   Oid* rootOid;
-
+  //"Current" oid attributes
+  std::string currentOid;
+  std::string currentType;
+  int currentAccessMode;
+  std::string currentName;
+  bool oidSaved; //Has current OID already been saved to mibtable
 
 };
 } // namespace murmure
