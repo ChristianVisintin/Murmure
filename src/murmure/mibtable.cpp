@@ -241,6 +241,25 @@ Oid* Mibtable::getOidByOid(std::string oidString) {
 }
 
 /**
+ * @function getOidByName
+ * @description Given a OID name, this function returns the OID object associated
+ * @param std::string oid name
+ * @returns Oid* pointer to OID object associated to provided OID name;
+ * NOTE: nullptr is returned if not found
+**/
+
+Oid* Mibtable::getOidByName(std::string oidName) {
+  for (auto oid : oids) {
+    //Check if the oid is the same
+    if (oid->getName() == oidName) {
+      return oid;
+    }
+  }
+
+  return nullptr;
+}
+
+/**
  * @function getNextOid
  * @description given an oid, find the immediate next oid
  * @param std::string oid string 
