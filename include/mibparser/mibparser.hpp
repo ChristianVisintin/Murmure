@@ -33,7 +33,9 @@ public:
   bool parseMibFile(std::string rootOid, std::string mibfile);
 
 private:
+  bool parseLine(std::string line);
   Mibtable* mibtable;
+  std::string rootOid;
 
 };
 } // namespace murmure
