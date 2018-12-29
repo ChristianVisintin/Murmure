@@ -29,6 +29,7 @@ namespace strutils {
 std::vector<std::string> split(const std::string& s, char delimiter);
 bool startsWith(const std::string& haystack, std::string needle);
 bool endsWith(const std::string& haystack, std::string needle);
+std::string itrim(const std::string& haystack);
 std::string ltrim(const std::string& haystack);
 std::string rtrim(const std::string& haystack);
 std::string trim(const std::string& haystack);

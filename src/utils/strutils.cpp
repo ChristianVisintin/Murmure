@@ -71,6 +71,27 @@ bool endsWith(const std::string& haystack, std::string needle) {
 }
 
 /**
+ * @function itrim
+ * @description trim multiple spaces (more than one) inside a string
+ * @param std::string
+ * @returns std::string trimmed string
+**/
+
+std::string itrim(const std::string& haystack) {
+
+  std::string trimmed = haystack;
+
+  size_t multiBlankPos = haystack.find("  "); //Two spaces
+  if (multiBlankPos == std::string::npos) {
+    return trimmed;
+  } else {
+    //Create string without a space
+    return strutils::itrim(trimmed.erase(multiBlankPos, 1));
+  }
+
+}
+
+/**
  * @function ltrim
  * @description trim left side of provided string
  * @param std::string
