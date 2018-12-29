@@ -160,6 +160,11 @@ bool Mibparser::parseLine(std::string line) {
     return handleObjectAccess(line);
   }
 
+  //Object-Type group and ID
+  if (strutils::startsWith(line, "::=")) {
+    return handleObjectGroup(line);
+  }
+
   //Unhandled lines are ignored
   return true;
 }
@@ -412,6 +417,51 @@ bool Mibparser::handleObjectAccess(std::string line) {
   }
 
   logger::log(COMPONENT, LOG_INFO, "Set AccessMode to " + currentAccessMode);
+  return true;
+
+}
+
+/**
+ * @function handleObjectGroup
+ * @description get object id from its group
+ * @param std::string line
+ * @returns bool: true if parsing was successful
+**/
+
+bool Mibparser::handleObjectGroup(std::string line) {
+
+  //Remove multiple whitespaces
+  line = strutils::itrim(line);
+
+  //Find parent and OID
+  size_t oidInfoDiv = line.find("::= {") + 5;
+  size_t oidInfoEndDiv = line.find("}");
+  if (oidInfoDiv > oidInfoEndDiv) {
+    logger::log(COMPONENT, LOG_ERROR, "Syntax error: Missing '}' in object identifier");
+    return false;
+  }
+  //Do not check, we already know that this string exists in line
+  std::string oidInfoStr = strutils::substring(line, oidInfoDiv, oidInfoEndDiv);
+  //Trim object info string
+  oidInfoStr = strutils::trim(oidInfoStr);
+  //Tokenize info
+  std::vector<std::string> oidInfo = strutils::split(oidInfoStr, ' ');
+  //Check if there are two tokens
+  if (oidInfo.size() != 2) {
+    std::stringstream logStream;
+    logStream << "Syntax error: OID INFO has size " << std::to_string(oidInfo.size()) << " instead of 2";
+    logger::log(COMPONENT, LOG_ERROR, logStream.str());
+    return false;
+  }
+  Oid* parentOid = mibtable->getOidByName(oidInfo.at(0));
+  //Check if parentOID exists
+  if (parentOid == nullptr) {
+    logger::log(COMPONENT, LOG_ERROR, "Could not find any OID with name " + oidInfo.at(0));
+    return false;
+  }
+  //Get OID string
+  currentOid = parentOid->getOid() + "." + oidInfo.at(1);
+
   return true;
 
 }
