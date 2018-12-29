@@ -24,6 +24,14 @@
 
 using namespace strutils;
 
+/**
+ * @function split
+ * @description split std::string into vector of string dividing each token using delimiter
+ * @param std::string string to split
+ * @param char delimiter
+ * @returns std::vector<std::string>
+**/
+
 std::vector<std::string> split(const std::string& s, char delimiter) {
   std::vector<std::string> tokens;
   std::string token;
@@ -32,4 +40,79 @@ std::vector<std::string> split(const std::string& s, char delimiter) {
     tokens.push_back(token);
   }
   return tokens;
+}
+
+/**
+ * @function startsWith
+ * @description check if a string starts with a certain string
+ * @param std::string haystack
+ * @param std::string needle
+ * @returns bool: true if haystack starts with needle
+**/
+
+bool startsWith(const std::string& haystack, std::string needle) {
+
+  std::string startString = haystack.substr(0, needle.length());
+  return startString == needle;
+}
+
+/**
+ * @function endsWith
+ * @description check if a string ends with a certain string
+ * @param std::string haystack
+ * @param std::string needle
+ * @returns bool: true if haystack ends with needle
+**/
+
+bool endsWith(const std::string& haystack, std::string needle) {
+
+  std::string endString = haystack.substr(haystack.length() - needle.length(), needle.length());
+  return endString == needle;
+}
+
+/**
+ * @function ltrim
+ * @description trim left side of provided string
+ * @param std::string
+ * @returns std::string trimmed string
+**/
+
+std::string ltrim(const std::string& haystack) {
+  std::string trimmed = haystack;
+  //Recursive call for ltrim
+  if (trimmed.at(0) == 0x20) {
+    return strutils::ltrim(trimmed.substr(1));
+  }
+  return trimmed;
+}
+
+/**
+ * @function rtrim
+ * @description trim right side of provided string
+ * @param std::string
+ * @returns std::string trimmed string
+**/
+
+std::string rtrim(const std::string& haystack) {
+  std::string trimmed = haystack;
+  //Recursive call for ltrim
+  size_t lastPos = trimmed.length() - 1;
+  if (trimmed.at(lastPos) == 0x20) {
+    return strutils::rtrim(trimmed.substr(0, lastPos));
+  }
+  return trimmed;
+}
+
+/**
+ * @function ltrim
+ * @description trim both sides of provided string
+ * @param std::string
+ * @returns std::string trimmed string
+**/
+
+std::string trim(const std::string& haystack) {
+  std::string trimmed = haystack;
+  trimmed = strutils::ltrim(trimmed);
+  trimmed = strutils::rtrim(trimmed);
+  return trimmed;
 }
