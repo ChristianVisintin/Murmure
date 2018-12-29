@@ -35,7 +35,9 @@ public:
 private:
   bool parseLine(std::string line);
   Mibtable* mibtable;
-  std::string rootOid;
+  std::string rootOidStr;
+  Oid* rootOid;
+
 
 };
 } // namespace murmure
