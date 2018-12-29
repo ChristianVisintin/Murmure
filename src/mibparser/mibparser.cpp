@@ -150,6 +150,11 @@ bool Mibparser::parseLine(std::string line) {
     return handleObjectDeclaration(line);
   }
 
+  //Object-Type data type syntax
+  if (strutils::startsWith(line, "SYNTAX")) {
+    return handleObjectSyntax(line);
+  }
+
   //Unhandled lines are ignored
   return true;
 }
@@ -332,4 +337,29 @@ bool Mibparser::handleObjectDeclaration(std::string line) {
   //Set oidSaved to 'false'
   oidSaved = false;
   return true;
+}
+
+/**
+ * @function handleObjectSyntax
+ * @description get object datatype from syntax declaration
+ * @param std::string line
+ * @returns bool: true if parsing was successful
+**/
+
+bool Mibparser::handleObjectSyntax(std::string line) {
+
+  //Get name
+  std::vector<std::string> lineTokens = strutils::split(line, ' ');
+  if (lineTokens.size() < 2) {
+    std::stringstream logStream;
+    logStream << "Syntax error: OID SYNTAX has size " << std::to_string(lineTokens.size()) << " but must be at least 2";
+    logger::log(COMPONENT, LOG_ERROR, logStream.str());
+    return false;
+  }
+
+  //Set current data type
+  currentType = lineTokens.at(1);
+
+  return true;
+
 }
