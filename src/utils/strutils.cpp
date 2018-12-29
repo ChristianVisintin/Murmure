@@ -116,3 +116,16 @@ std::string trim(const std::string& haystack) {
   trimmed = strutils::rtrim(trimmed);
   return trimmed;
 }
+
+/**
+ * @function substring
+ * @description Returns a new string that is a substring of str. The new string is made up of the character of str between beginIndex and endIndex
+ * @param std::string str
+ * @param size_t startIndex
+ * @param size_t endIndex
+ * @returns strd::string substring
+**/
+
+std::string substring(std::string str, size_t startIndex, size_t endIndex /* = -1 */) {
+  return str.substr(startIndex, endIndex - startIndex);
+}
