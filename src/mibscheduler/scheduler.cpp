@@ -260,7 +260,7 @@ bool Scheduler::startScheduler() {
 bool Scheduler::parseScheduling(std::string oid, EventMode mode, std::vector<std::string> commandList, std::string* error, int timeout /*= 0*/) {
 
   //Try to get oid
-  if (this->mibtable->getOid(oid) == nullptr) {
+  if (this->mibtable->getOidByOid(oid) == nullptr) {
     *error = "Could not find OID " + oid;
     return false;
   }

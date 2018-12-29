@@ -221,14 +221,14 @@ void Mibtable::sortMibTable() {
 }
 
 /**
- * @function getOid
+ * @function getOidByOid
  * @description Given a OID string, this function returns the OID object associated
  * @param std::string: OID string to find
  * @returns: Oid*: pointer to Oid object associated to provided OID; 
  * NOTE: nullptr is returned if not found
 **/
 
-Oid* Mibtable::getOid(std::string oidString) {
+Oid* Mibtable::getOidByOid(std::string oidString) {
 
   for (auto oid : oids) {
     //Check if the oid is the same

@@ -65,7 +65,7 @@ using namespace murmure;
 inline void snmp_get(Mibtable* mibtab, Scheduler* mibScheduler, std::string requestedOid) {
 
   //Try to get OID from mibtable
-  Oid* reqOid = mibtab->getOid(requestedOid);
+  Oid* reqOid = mibtab->getOidByOid(requestedOid);
   if (reqOid == nullptr) {
     std::stringstream ss;
     ss << "OID " << requestedOid << " does not exist";
@@ -131,7 +131,7 @@ inline void snmp_getnext(Mibtable* mibtab, Scheduler* mibScheduler, std::string 
 inline void snmp_set(Mibtable* mibtab, Scheduler* mibScheduler, std::string requestedOid, std::string datatype, std::string value) {
 
   //Try to get OID from mibtable
-  Oid* reqOid = mibtab->getOid(requestedOid);
+  Oid* reqOid = mibtab->getOidByOid(requestedOid);
   if (reqOid == nullptr) {
     //Get parent Oid
     std::string parentOidStr;
@@ -148,13 +148,13 @@ inline void snmp_set(Mibtable* mibtab, Scheduler* mibScheduler, std::string requ
       return;
     }
     //Get grandParent OID
-    Oid* grandParentOid = mibtab->getOid(mibtab->getPreviousOid(parentOidStr));
+    Oid* grandParentOid = mibtab->getOidByOid(mibtab->getPreviousOid(parentOidStr));
     if (grandParentOid != nullptr) {
       //Check if it is table
       if (grandParentOid->getPrimitiveType() == PRIMITIVE_SEQUENCE) {
         //@! It is table, check if READ-CREATE
         //Get parentOid object
-        Oid* parentOid = mibtab->getOid(parentOidStr);
+        Oid* parentOid = mibtab->getOidByOid(parentOidStr);
         //Check access mode
         if (parentOid->getAccessMode() != AccessMode::READCREATE && parentOid->getAccessMode() != AccessMode::READWRITE) {
           std::stringstream ss;
@@ -452,7 +452,7 @@ int main(int argc, char* argv[]) {
     std::string rootOid = cmdLineOpts.args.at(0);
     std::string mibFile = cmdLineOpts.args.at(1);
     Mibparser* mibParser = new Mibparser();
-    if (mibParser->parseMibFile(mibFile)) {
+    if (mibParser->parseMibFile(rootOid, mibFile)) {
       logger::log(COMPONENT, LOG_INFO, "MIB parsed successfully");
     } else {
       logger::log(COMPONENT, LOG_ERROR, "MIB parsing failed");
