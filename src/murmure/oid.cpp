@@ -105,7 +105,6 @@ Oid::Oid(std::string oid, std::string type, std::string value, int access, std::
 **/
 
 Oid::~Oid() {
-
   if (data != nullptr) {
     //TODO: free data casting to real primitive or module
   }
@@ -273,6 +272,5 @@ bool Oid::setValue(std::string printableValue) {
 **/
 
 bool murmure::sortByOid(Oid* firstOid, Oid* secondOid) {
-
   return firstOid->getOid().compare(secondOid->getOid()) < 0;
 }

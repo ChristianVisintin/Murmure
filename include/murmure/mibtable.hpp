@@ -33,6 +33,7 @@ public:
   ~Mibtable();
   bool loadMibTable();
   bool addOid(Oid* newOid);
+  bool clearMibtable();
   void sortMibTable();
   Oid* getOid(std::string oid);
   std::string getNextOid(std::string oid);

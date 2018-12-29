@@ -164,6 +164,42 @@ bool Mibtable::addOid(Oid* newOid) {
 }
 
 /**
+ * @function clearMibtable
+ * @description clear all mib table entries from database and vector
+ * @returns bool: true if operation has been completed successfully
+**/
+
+bool Mibtable::clearMibtable() {
+  std::string errorString;
+  //Open database
+  if (!database::open(&errorString)) {
+    //Database open failed
+    logger::log(COMPONENT, LOG_ERROR, errorString);
+    return false;
+  }
+
+  //Add new OID to database
+  std::string query = "DELETE FROM oids;";
+
+  if (!database::exec(query, &errorString)) {
+    //Database commit failed
+    logger::log(COMPONENT, LOG_ERROR, errorString);
+    return false;
+  }
+
+  //Close database
+  if (!database::close(&errorString)) {
+    logger::log(COMPONENT, LOG_ERROR, errorString);
+    return false;
+  }
+
+  //Finally clear OIDs vector
+  oids.clear();
+
+  return true;
+}
+
+/**
  * @function sortMibTable
  * @description sort mib table oids from 
 **/
