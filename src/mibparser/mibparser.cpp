@@ -165,6 +165,11 @@ bool Mibparser::parseLine(std::string line) {
     return handleObjectGroup(line);
   }
 
+  //Handle SEQUENCE
+  if (line.find("::= SEQUENCE") != std::string::npos) {
+    return handleSequence(line);
+  }
+
   //Unhandled lines are ignored
   return true;
 }
@@ -463,5 +468,50 @@ bool Mibparser::handleObjectGroup(std::string line) {
   currentOid = parentOid->getOid() + "." + oidInfo.at(1);
 
   return true;
+
+}
+
+/**
+ * @function handleSequence
+ * @description set currentType to SEQUENCE if object associated is the same
+ * @param std::string line
+ * @returns bool if parsing was successful
+ * NOTE: type has not to be set to OID class instance, since OID is not instanced until a new
+ * OBJECT declaration begins. That's why currentName must be the same of the SEQUENCE 
+ * associated name if SEQUENCE declaration does not come immediately after 
+ * an object declaration it will be considered a syntax error.
+ * @example: controllerStateEntry OBJECT-TYPE
+ * ...
+ * ControllerStateEntry ::= SEQUENCE {
+ * NOTE: consider that a SEQUENCE can also be declared as
+ * "SYNTAX SEQUENCE OF {object-name}"
+**/ 
+
+bool Mibparser::handleSequence(std::string line) {
+
+  //iTrim line
+  line = strutils::itrim(line);
+  //Get line tokens
+  std::vector<std::string> lineTokens = strutils::split(line, ' ');
+  if (lineTokens.size() < 1) {
+    std::stringstream logStream;
+    logStream << "Syntax error: SEQUENCE declarations has size " << std::to_string(lineTokens.size()) << " but must be at least 1";
+    logger::log(COMPONENT, LOG_ERROR, logStream.str());
+    return false;
+  }
+
+  //Names must match
+  if (lineTokens.at(0) == currentName) {
+    std::stringstream logStream;
+    logStream << "Type for " << currentName << " changed to SEQUENCE";
+    logger::log(COMPONENT, LOG_INFO, logStream.str());
+    currentType = PRIMITIVE_SEQUENCE;
+    return true;
+  } else {
+    std::stringstream logStream;
+    logStream << "Syntax error: SEQUENCE declarations has name " << lineTokens.at(0) << " but " << currentName << " was expected";
+    logger::log(COMPONENT, LOG_ERROR, logStream.str());
+    return false;
+  }
 
 }

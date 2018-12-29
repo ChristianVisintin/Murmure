@@ -42,6 +42,7 @@ private:
   bool handleObjectSyntax(std::string line);
   bool handleObjectAccess(std::string line);
   bool handleObjectGroup(std::string line);
+  bool handleSequence(std::string line);
   //Mibparser attributes
   Mibtable* mibtable;
   std::string rootOidStr;
