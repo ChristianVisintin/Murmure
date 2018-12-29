@@ -155,6 +155,11 @@ bool Mibparser::parseLine(std::string line) {
     return handleObjectSyntax(line);
   }
 
+  //Object-Type max access
+  if (strutils::startsWith(line, "MAX-ACCESS")) {
+    return handleObjectAccess(line);
+  }
+
   //Unhandled lines are ignored
   return true;
 }
@@ -317,6 +322,8 @@ bool Mibparser::handleObjectDeclaration(std::string line) {
     return false;
   }
 
+  //Remove multiple whitespaces
+  line = strutils::itrim(line);
   //Get name
   std::vector<std::string> lineTokens = strutils::split(line, ' ');
   if (lineTokens.size() != 2) {
@@ -334,6 +341,8 @@ bool Mibparser::handleObjectDeclaration(std::string line) {
   currentType = "";
   currentAccessMode = -1;
 
+  logger::log(COMPONENT, LOG_INFO, "Set name to " + currentName);
+
   //Set oidSaved to 'false'
   oidSaved = false;
   return true;
@@ -348,7 +357,9 @@ bool Mibparser::handleObjectDeclaration(std::string line) {
 
 bool Mibparser::handleObjectSyntax(std::string line) {
 
-  //Get name
+  //Remove multiple whitespaces
+  line = strutils::itrim(line);
+  //Get syntax
   std::vector<std::string> lineTokens = strutils::split(line, ' ');
   if (lineTokens.size() < 2) {
     std::stringstream logStream;
@@ -359,7 +370,48 @@ bool Mibparser::handleObjectSyntax(std::string line) {
 
   //Set current data type
   currentType = lineTokens.at(1);
+  logger::log(COMPONENT, LOG_INFO, "Set type to " + currentType);
 
+  return true;
+
+}
+
+/**
+ * @function handleObjectAccess
+ * @description get object access mode from max-access declaration
+ * @param std::string line
+ * @returns bool: true if parsing was successful
+**/
+
+bool Mibparser::handleObjectAccess(std::string line) {
+
+  //Remove multiple whitespaces
+  line = strutils::itrim(line);
+  //Get max access
+  std::vector<std::string> lineTokens = strutils::split(line, ' ');
+  if (lineTokens.size() < 2) {
+    std::stringstream logStream;
+    logStream << "Syntax error: OID MAX-ACCESS has size " << std::to_string(lineTokens.size()) << " but must be at least 2";
+    logger::log(COMPONENT, LOG_ERROR, logStream.str());
+    return false;
+  }
+
+  //Set current max-access
+  std::string access = lineTokens.at(1);
+  if (access == "not-accessible") {
+    currentAccessMode = ACCESSMODE_NOTACCESSIBLE;
+  } else if (access == "read-only") {
+    currentAccessMode = ACCESSMODE_READONLY;
+  } else if (access == "read-create") {
+    currentAccessMode = ACCESSMODE_READCREATE;
+  } else if (access == "read-write") {
+    currentAccessMode = ACCESSMODE_READWRITE;
+  } else {
+    logger::log(COMPONENT, LOG_ERROR, "Unknown max access " + access);
+    return false;
+  }
+
+  logger::log(COMPONENT, LOG_INFO, "Set AccessMode to " + currentAccessMode);
   return true;
 
 }

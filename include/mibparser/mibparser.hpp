@@ -40,6 +40,7 @@ private:
   bool handleInlineObject(std::string line);
   bool handleObjectDeclaration(std::string line);
   bool handleObjectSyntax(std::string line);
+  bool handleObjectAccess(std::string line);
   //Mibparser attributes
   Mibtable* mibtable;
   std::string rootOidStr;
