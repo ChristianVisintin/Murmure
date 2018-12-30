@@ -83,7 +83,7 @@ Oid::Oid(std::string oid, std::string type, std::string value, int access, std::
     if (module->findModule(this->dataType)) {
       //Module has been found!
       //Get primitive type from module
-      this->getPrimitiveType = module->getPrimitiveType();
+      this->primitiveType = module->getPrimitiveType();
       //Set value
       module->setValue(value);
     } else {
