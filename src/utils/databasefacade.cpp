@@ -42,6 +42,7 @@ bool open(std::string* error) {
       return true;
     } else {
       *error = std::string(sqlite3_errmsg(db));
+      return false;
     }
   } else {
     *error = "Database already open";

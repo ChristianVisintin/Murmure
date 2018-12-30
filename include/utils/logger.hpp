@@ -31,9 +31,9 @@
 
 namespace logger {
 
-extern std::string logfile = nullptr;
-extern bool stdout = true;
-extern int logLevel = LOG_INFO;
+extern std::string logfile;
+extern bool stdout;
+extern int logLevel;
 
 void log(std::string component, int level, std::string logContent);
 

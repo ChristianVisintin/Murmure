@@ -248,6 +248,11 @@ int main(int argc, char* argv[]) {
   //Exitcode declaration
   int exitcode = 0;
 
+  //Initialize logger variables
+  logger::logfile = "";
+  logger::logLevel = LOG_INFO;
+  logger::stdout = true;
+
   //Getopts
   /**
    * Command line options

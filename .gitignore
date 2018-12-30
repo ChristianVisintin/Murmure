@@ -31,7 +31,9 @@
 *.out
 *.app
 
+#Workdirs
 scripts/
+out/
 
 #ide
 .vscode/
