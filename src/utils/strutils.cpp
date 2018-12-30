@@ -52,6 +52,10 @@ std::vector<std::string> strutils::split(const std::string& s, char delimiter) {
 
 bool strutils::startsWith(const std::string& haystack, std::string needle) {
 
+  if (needle.length() > haystack.length()) {
+      return false;
+  }
+
   std::string startString = haystack.substr(0, needle.length());
   return startString == needle;
 }
@@ -65,6 +69,10 @@ bool strutils::startsWith(const std::string& haystack, std::string needle) {
 **/
 
 bool strutils::endsWith(const std::string& haystack, std::string needle) {
+
+  if (needle.length() > haystack.length()) {
+      return false;
+  }
 
   std::string endString = haystack.substr(haystack.length() - needle.length(), needle.length());
   return endString == needle;
@@ -101,7 +109,7 @@ std::string strutils::itrim(const std::string& haystack) {
 std::string strutils::ltrim(const std::string& haystack) {
   std::string trimmed = haystack;
   //Recursive call for ltrim
-  if (trimmed.at(0) == 0x20) {
+  if (trimmed.length() > 0 and (trimmed.at(0) == 0x20 or trimmed.at(0) == 0x09)) {
     return strutils::ltrim(trimmed.substr(1));
   }
   return trimmed;
@@ -117,8 +125,8 @@ std::string strutils::ltrim(const std::string& haystack) {
 std::string strutils::rtrim(const std::string& haystack) {
   std::string trimmed = haystack;
   //Recursive call for ltrim
-  size_t lastPos = trimmed.length() - 1;
-  if (trimmed.at(lastPos) == 0x20) {
+  size_t lastPos = trimmed.length() > 0 ? trimmed.length() - 1 : 0;
+  if (trimmed.length() > 0 and (trimmed.at(lastPos) == 0x20 or trimmed.at(lastPos) == 0x09)) {
     return strutils::rtrim(trimmed.substr(0, lastPos));
   }
   return trimmed;
