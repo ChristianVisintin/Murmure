@@ -366,6 +366,8 @@ int main(int argc, char* argv[]) {
     delete mibScheduler; //Free scheduler
     logger::log(COMPONENT, LOG_INFO, "Murmure daemon terminated");
   } else if (cmdLineOpts.command == Command::GET) {
+    //Set silent mode
+    logger::stdout = false;
     //Instance new mibtable
     Mibtable* mibtab = new Mibtable();
     //Load mibtable
@@ -398,6 +400,8 @@ int main(int argc, char* argv[]) {
     delete mibtab;       //Free mibtab
     delete mibScheduler; //Free scheduler
   } else if (cmdLineOpts.command == Command::GET_NEXT) {
+    //Set silent mode
+    logger::stdout = false;
     //Instance new mibtable
     Mibtable* mibtab = new Mibtable();
     //Load mibtable
@@ -430,6 +434,8 @@ int main(int argc, char* argv[]) {
     delete mibtab;       //Free mibtab
     delete mibScheduler; //Free scheduler
   } else if (cmdLineOpts.command == Command::SET) {
+    //Set silent mode
+    logger::stdout = false;
     //Instance new mibtable
     Mibtable* mibtab = new Mibtable();
     //Load mibtable
