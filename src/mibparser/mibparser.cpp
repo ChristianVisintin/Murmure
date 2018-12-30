@@ -123,10 +123,6 @@ bool Mibparser::parseLine(std::string line) {
   if (strutils::startsWith(line, "--")) {
     return true;
   }
-  //Ignore description strings
-  if (strutils::startsWith(line, "\"")) {
-    return true;
-  }
 
   //Module-identity check (identifies MIB root OID)
   if (strutils::endsWith(line, "MODULE-IDENTITY")) {
