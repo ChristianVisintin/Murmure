@@ -33,6 +33,7 @@ class Module {
 public:
   virtual bool setValue(std::string oid, std::string value) = 0;
   virtual std::string getPrintableValue() = 0;
+  virtual std::string getPrimitiveType() = 0;
 
 protected:
   void* primitive; //Void ptr to primitive instance

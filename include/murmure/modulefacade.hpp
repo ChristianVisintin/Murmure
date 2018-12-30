@@ -36,9 +36,13 @@ public:
   bool findModule(std::string typeName);
   bool setValue(std::string oid, std::string value);
   std::string getPrintableValue();
+  std::string getPrimitiveType();
 
 private:
-  Module* module;
+  static void loadModules();
+  Module* module;                          //Module instance
+  static std::vector<std::string> modules; //Module list
+  static bool modulesLoaded;
 };
 } // namespace murmure
 
