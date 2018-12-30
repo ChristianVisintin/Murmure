@@ -526,7 +526,6 @@ int Scheduler::runScheduler() {
   }
 
   time_t elapsedTime = 0; //Stores elapsed seconds since thread started
-  using namespace std::chrono_literals;
   //Sort events by their 'absolute' timeout
   std::sort(scheduledEvents.begin(), scheduledEvents.end(), sortByTimeout);
   time_t nextEventTime = scheduledEvents.at(0)->getTimeout();
@@ -555,7 +554,7 @@ int Scheduler::runScheduler() {
       nextEventTime = scheduledEvents.at(0)->getTimeout();
     }
     //Sleep for one second
-    std::this_thread::sleep_for(1s);
+    std::this_thread::sleep_for(std::chrono::seconds(1));
     elapsedTime++;
   }
 
