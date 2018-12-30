@@ -32,7 +32,7 @@ using namespace strutils;
  * @returns std::vector<std::string>
 **/
 
-std::vector<std::string> split(const std::string& s, char delimiter) {
+std::vector<std::string> strutils::split(const std::string& s, char delimiter) {
   std::vector<std::string> tokens;
   std::string token;
   std::istringstream tokenStream(s);
@@ -50,7 +50,7 @@ std::vector<std::string> split(const std::string& s, char delimiter) {
  * @returns bool: true if haystack starts with needle
 **/
 
-bool startsWith(const std::string& haystack, std::string needle) {
+bool strutils::startsWith(const std::string& haystack, std::string needle) {
 
   std::string startString = haystack.substr(0, needle.length());
   return startString == needle;
@@ -64,7 +64,7 @@ bool startsWith(const std::string& haystack, std::string needle) {
  * @returns bool: true if haystack ends with needle
 **/
 
-bool endsWith(const std::string& haystack, std::string needle) {
+bool strutils::endsWith(const std::string& haystack, std::string needle) {
 
   std::string endString = haystack.substr(haystack.length() - needle.length(), needle.length());
   return endString == needle;
@@ -77,7 +77,7 @@ bool endsWith(const std::string& haystack, std::string needle) {
  * @returns std::string trimmed string
 **/
 
-std::string itrim(const std::string& haystack) {
+std::string strutils::itrim(const std::string& haystack) {
 
   std::string trimmed = haystack;
 
@@ -98,7 +98,7 @@ std::string itrim(const std::string& haystack) {
  * @returns std::string trimmed string
 **/
 
-std::string ltrim(const std::string& haystack) {
+std::string strutils::ltrim(const std::string& haystack) {
   std::string trimmed = haystack;
   //Recursive call for ltrim
   if (trimmed.at(0) == 0x20) {
@@ -114,7 +114,7 @@ std::string ltrim(const std::string& haystack) {
  * @returns std::string trimmed string
 **/
 
-std::string rtrim(const std::string& haystack) {
+std::string strutils::rtrim(const std::string& haystack) {
   std::string trimmed = haystack;
   //Recursive call for ltrim
   size_t lastPos = trimmed.length() - 1;
@@ -131,7 +131,7 @@ std::string rtrim(const std::string& haystack) {
  * @returns std::string trimmed string
 **/
 
-std::string trim(const std::string& haystack) {
+std::string strutils::trim(const std::string& haystack) {
   std::string trimmed = haystack;
   trimmed = strutils::ltrim(trimmed);
   trimmed = strutils::rtrim(trimmed);
@@ -147,6 +147,6 @@ std::string trim(const std::string& haystack) {
  * @returns strd::string substring
 **/
 
-std::string substring(std::string str, size_t startIndex, size_t endIndex /* = -1 */) {
+std::string strutils::substring(std::string str, size_t startIndex, size_t endIndex /* = -1 */) {
   return str.substr(startIndex, endIndex - startIndex);
 }

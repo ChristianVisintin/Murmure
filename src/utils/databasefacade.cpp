@@ -34,7 +34,7 @@ bool isOpen = false; //Is database open?
  * @returns bool: True if open succeeded
 **/
 
-bool open(std::string* error) {
+bool database::open(std::string* error) {
 
   if (!isOpen) {
     if (sqlite3_open(DATABASEPATH, &db) == SQLITE_OK) {
@@ -57,7 +57,7 @@ bool open(std::string* error) {
  * @returns bool: True if closed successfully; if database wasn't open, true will be returned anyway
 **/
 
-bool close(std::string* error) {
+bool database::close(std::string* error) {
 
   //If database is open, try to close it
   if (isOpen) {
@@ -81,7 +81,7 @@ bool close(std::string* error) {
  * @returns bool: True if succeeded
 **/
 
-bool exec(std::string query, std::string* error) {
+bool database::exec(std::string query, std::string* error) {
 
   if (!isOpen) {
     *error = "Database is not open";
@@ -109,7 +109,7 @@ bool exec(std::string query, std::string* error) {
  * @returns bool: True if select succeeded
 **/
 
-bool select(std::vector<std::vector<std::string>>* result, std::string query, std::string* error) {
+bool database::select(std::vector<std::vector<std::string>>* result, std::string query, std::string* error) {
 
   if (!isOpen) {
     *error = "Database is not open";

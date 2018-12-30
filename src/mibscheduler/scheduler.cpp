@@ -33,6 +33,11 @@
 
 using namespace murmure;
 
+std::vector<Event*> murmure::Scheduler::events;
+std::vector<ScheduledEvent*> murmure::Scheduler::scheduledEvents;
+std::thread* murmure::Scheduler::schedulerThread;
+bool murmure::Scheduler::stopCalled;
+
 /**
  * @function Scheduler
  * @description base Scheduler class constructor

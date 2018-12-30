@@ -24,6 +24,9 @@
 
 using namespace murmure;
 
+std::map<std::string, Module* (*)()> murmure::ModuleFacade::modules;
+bool murmure::ModuleFacade::modulesLoaded;
+
 /**
  * @function ModuleFacade
  * @description ModuleFacade class constructor

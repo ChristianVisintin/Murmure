@@ -32,7 +32,7 @@ using namespace murmure;
  * @returns bool: True if options parsing succeeded; false otherwise
 **/
 
-bool getOpts(options* optStruct, int argc, char* argv[], std::string* error) {
+bool murmure::getOpts(options* optStruct, int argc, char* argv[], std::string* error) {
 
   if (argc < 2) {
     *error = "Missing argument";

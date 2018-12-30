@@ -33,7 +33,7 @@ std::string itrim(const std::string& haystack);
 std::string ltrim(const std::string& haystack);
 std::string rtrim(const std::string& haystack);
 std::string trim(const std::string& haystack);
-std::string substring(std::string str, ssize_t startIndex, size_t endIndex = -1);
+std::string substring(std::string str, size_t startIndex, size_t endIndex = -1);
 
 } //namespace strutils
 

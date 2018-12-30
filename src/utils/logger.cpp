@@ -18,14 +18,19 @@
  * You should have received a copy of the GNU General Public License
 **/
 
+#include <utils/logger.hpp>
+
 #include <chrono>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
-#include <utils/logger.hpp>
 #include <sstream>
 
 using namespace logger;
+
+int logger::logLevel;
+std::string logger::logfile;
+bool logger::stdout;
 
 /**
  * @function getLevelName
@@ -37,20 +42,19 @@ using namespace logger;
 std::string getLevelName(int level) {
 
   switch (level) {
-    case LOG_DEBUG:
-      return "DEBUG";
-    case LOG_INFO:
-      return "INFO";
-    case LOG_FATAL:
-      return "FATAL";
-    case LOG_WARN:
-      return "WARN";
-    case LOG_ERROR:
-      return "ERROR";
-    default:
-      return "UNKNOWN";
+  case LOG_DEBUG:
+    return "DEBUG";
+  case LOG_INFO:
+    return "INFO";
+  case LOG_FATAL:
+    return "FATAL";
+  case LOG_WARN:
+    return "WARN";
+  case LOG_ERROR:
+    return "ERROR";
+  default:
+    return "UNKNOWN";
   }
-
 }
 
 /**
@@ -61,7 +65,7 @@ std::string getLevelName(int level) {
  * @param std::string logContent
 **/
 
-void log(std::string component, int level, std::string logContent) {
+void logger::log(std::string component, int level, std::string logContent) {
 
   //Check if this message has to be logged
   if (level > logLevel) {
@@ -83,7 +87,7 @@ void log(std::string component, int level, std::string logContent) {
     logFileStream << logStr;
     logFileStream.close();
   }
-  if (logger::stdout) {
+  if (stdout) {
     std::cout << logStr;
   }
   return;
