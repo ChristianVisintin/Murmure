@@ -18,20 +18,20 @@
  * You should have received a copy of the GNU General Public License
 **/
 
-#define MURMURE_VERSION "0.1"
+#define MURMURE_VERSION "1.0-rc"
 
 #define USAGE \
   "\
 Usage:\n\
-\t-D\t\tStart Murmure as daemon (use for NET-SNMP pass_persist)\n\
-\t-g <OID>\t\tissue 'get' on specified OID\n\
-\t-n <OID>\t\tissue 'get next' on specified OID\n\
-\t-s <OID> <type> <value>\t\tissue 'set' on specified OID\n\
-\t-M --parse-mib <MIBfile>\t\tParse and configure Murmure for selected MIB\n\
-\t-S --schedule [schedule file]\t\tConfigure Murmure schedulation. If schedule file is specified, configuration will be taken from it, otherwise will be configured using command line\n\
-\t--dump-scheduling [outfile]\t\tDump scheduling; if file is specified will be dumped to the specified file, otherwise will be dumped on stdout\n\
-\t--reset\t\tReset entire mib and event tables\n\
-\t-h --help\t\tShow this page\n\
+\t-D\t\t\t\t\tStart Murmure as daemon (use for NET-SNMP pass_persist)\n\
+\t-g <OID>\t\t\t\tissue 'get' on specified OID\n\
+\t-n <OID>\t\t\t\tissue 'get next' on specified OID\n\
+\t-s <OID> <type> <value>\t\t\tissue 'set' on specified OID\n\
+\t-M --parse-mib <rootOID> <MIBfile>\tParse and configure Murmure for selected MIB\n\
+\t-S --schedule [schedule file]\t\tConfigure Murmure schedulation.\n\
+\t--dump-scheduling [outfile]\t\tDump scheduling.\n\
+\t--reset\t\t\t\t\tReset entire mib and event tables\n\
+\t-h --help\t\t\t\tShow this page\n\
 "
 
 //TODO: command to change values manually
@@ -266,9 +266,11 @@ int main(int argc, char* argv[]) {
    **/
 
   options cmdLineOpts;
-  std::string optError = nullptr;
+  std::string optError;
   if (!getOpts(&cmdLineOpts, argc, argv, &optError)) {
     std::cout << optError << std::endl;
+    std::cout << "Murmure " << MURMURE_VERSION << " - Developed by Christian Visintin" << std::endl;
+    std::cout << "<https://github.com/ChristianVisintin/Murmure> (C) 2018-2019" << std::endl;
     std::cout << USAGE << std::endl;
     return 255;
   }
@@ -281,7 +283,7 @@ int main(int argc, char* argv[]) {
 
   if (cmdLineOpts.command == Command::HELP) {
     std::cout << "Murmure " << MURMURE_VERSION << " - Developed by Christian Visintin" << std::endl;
-    std::cout << "<https://github.com/ChristianVisintin/Murmure> © 2018" << std::endl;
+    std::cout << "<https://github.com/ChristianVisintin/Murmure> (C) 2018-2019" << std::endl;
     std::cout << USAGE << std::endl;
   } else if (cmdLineOpts.command == Command::DAEMON) {
     //Daemon Mode
@@ -540,7 +542,7 @@ int main(int argc, char* argv[]) {
         }
 
         //Commit changes
-        std::string errorString = nullptr;
+        std::string errorString;
         if (mibScheduler->parseScheduling(oid, mode, commandList, &errorString, timeout)) {
           std::cout << "Scheduling entry saved successfully" << std::endl;
         } else {
