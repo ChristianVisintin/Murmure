@@ -297,6 +297,7 @@ int main(int argc, char* argv[]) {
       delete mibtab;
       return 1;
     }
+    logger::log(COMPONENT, LOG_INFO, "MIB table loaded successfully");
     //Instance scheduler
     Scheduler* mibScheduler = new Scheduler(mibtab);
     //Load scheduler events
@@ -306,6 +307,7 @@ int main(int argc, char* argv[]) {
       delete mibScheduler;
       return 2;
     }
+    logger::log(COMPONENT, LOG_INFO, "Scheduler loaded successfully");
     //Start scheduler
     if (!mibScheduler->startScheduler()) {
       logger::log(COMPONENT, LOG_FATAL, "Could not start scheduler; execution aborted");
@@ -372,6 +374,7 @@ int main(int argc, char* argv[]) {
       delete mibtab;
       return 1;
     }
+    logger::log(COMPONENT, LOG_INFO, "MIB table loaded successfully");
     //Instance scheduler
     Scheduler* mibScheduler = new Scheduler(mibtab);
     //Load scheduler events
@@ -381,6 +384,7 @@ int main(int argc, char* argv[]) {
       delete mibScheduler;
       return 2;
     }
+    logger::log(COMPONENT, LOG_INFO, "Scheduler loaded successfully");
     //Start scheduler
     if (!mibScheduler->startScheduler()) {
       logger::log(COMPONENT, LOG_FATAL, "Could not start scheduler; execution aborted");
@@ -402,6 +406,7 @@ int main(int argc, char* argv[]) {
       delete mibtab;
       return 1;
     }
+    logger::log(COMPONENT, LOG_INFO, "MIB table loaded successfully");
     //Instance scheduler
     Scheduler* mibScheduler = new Scheduler(mibtab);
     //Load scheduler events
@@ -411,6 +416,7 @@ int main(int argc, char* argv[]) {
       delete mibScheduler;
       return 2;
     }
+    logger::log(COMPONENT, LOG_INFO, "Scheduler loaded successfully");
     //Start scheduler
     if (!mibScheduler->startScheduler()) {
       logger::log(COMPONENT, LOG_FATAL, "Could not start scheduler; execution aborted");
@@ -432,6 +438,7 @@ int main(int argc, char* argv[]) {
       delete mibtab;
       return 1;
     }
+    logger::log(COMPONENT, LOG_INFO, "MIB table loaded successfully");
     //Instance scheduler
     Scheduler* mibScheduler = new Scheduler(mibtab);
     //Load scheduler events
@@ -441,6 +448,7 @@ int main(int argc, char* argv[]) {
       delete mibScheduler;
       return 2;
     }
+    logger::log(COMPONENT, LOG_INFO, "Scheduler loaded successfully");
     //Start scheduler
     if (!mibScheduler->startScheduler()) {
       logger::log(COMPONENT, LOG_INFO, "Could not start scheduler; execution aborted");

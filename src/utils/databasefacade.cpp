@@ -70,6 +70,10 @@ bool database::close(std::string* error) {
     *error = "Database is already closed";
   }
 
+  isOpen = false;
+  db = NULL;
+  statement = NULL;
+
   return true;
 }
 
@@ -120,13 +124,13 @@ bool database::select(std::vector<std::vector<std::string>>* result, std::string
   result->clear();
 
   size_t vectorSize = 0;
-  sqlite3_prepare(db, query.c_str(), -1, &statement, NULL);
-  if (sqlite3_step(statement) != SQLITE_DONE) {
+  if (sqlite3_prepare_v2(db, query.c_str(), query.size(), &statement, NULL) != SQLITE_OK) {
     *error = std::string(sqlite3_errmsg(db));
     sqlite3_finalize(statement);
     return false;
   }
-  while (sqlite3_column_text(statement, 0)) {
+  //Iterate over rows
+  while (sqlite3_step(statement) == SQLITE_ROW) {
     const int columnCount = sqlite3_column_count(statement);
     std::vector<std::string> row;
     for (int i = 0; i < columnCount; i++) {
@@ -137,10 +141,15 @@ bool database::select(std::vector<std::vector<std::string>>* result, std::string
     //Push row to result vector
     result->resize(++vectorSize);
     result->push_back(row);
-    //Step forward
-    sqlite3_step(statement);
   }
 
+  bool res = true;
+  if (sqlite3_step(statement) != SQLITE_DONE) {
+    *error = std::string(sqlite3_errmsg(db));
+    res = false;
+  }
+
+  sqlite3_reset(statement);
   sqlite3_finalize(statement);
-  return true;
+  return res;
 }
