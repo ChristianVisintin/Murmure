@@ -23,8 +23,8 @@
 
 #include <murmure/modules/module.hpp>
 
+#include <map>
 #include <string>
-#include <vector>
 
 namespace murmure {
 
@@ -40,8 +40,10 @@ public:
 
 private:
   static void loadModules();
-  Module* module;                          //Module instance
-  static std::vector<std::string> modules; //Module list
+  template <typename M>
+  Module* getModuleInstance() { return new M; };
+  Module* module;                                      //Module instance
+  static std::map<std::string, Module* (*)()> modules; //Module list
   static bool modulesLoaded;
 };
 } // namespace murmure
