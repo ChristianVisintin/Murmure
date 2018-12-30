@@ -34,6 +34,7 @@ using namespace murmure;
  * @param std::string value to convert to primitive
 **/
 
+template <>
 Counter<unsigned int>::Counter(std::string value) {
   this->value = std::stoi(value);
 }
@@ -45,6 +46,7 @@ Counter<unsigned int>::Counter(std::string value) {
  * @returns bool: true if set database operation succeeded
 **/
 
+template <>
 bool Counter<unsigned int>::setValue(std::string oid, std::string value) {
   std::string errorString;
 
@@ -87,6 +89,7 @@ bool Counter<unsigned int>::setValue(std::string oid, std::string value) {
  * @returns unsigned int: real primitive value
 **/
 
+template <>
 unsigned int Counter<unsigned int>::getValue() {
   return this->value;
 }
@@ -97,6 +100,7 @@ unsigned int Counter<unsigned int>::getValue() {
  * @returns std::string
 **/
 
+template <>
 std::string Counter<unsigned int>::getPrintableValue() {
 
   return std::to_string(this->value);

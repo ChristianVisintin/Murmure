@@ -34,6 +34,7 @@ using namespace murmure;
  * @param std::string value to convert to primitive
 **/
 
+template <>
 Integer<int>::Integer(std::string value) {
   this->value = std::stoi(value);
 }
@@ -45,6 +46,7 @@ Integer<int>::Integer(std::string value) {
  * @returns bool: true if set database operation succeeded
 **/
 
+template <>
 bool Integer<int>::setValue(std::string oid, std::string value) {
   std::string errorString;
 
@@ -87,6 +89,7 @@ bool Integer<int>::setValue(std::string oid, std::string value) {
  * @returns int: real primitive value
 **/
 
+template <>
 int Integer<int>::getValue() {
   return this->value;
 }
@@ -97,6 +100,7 @@ int Integer<int>::getValue() {
  * @returns std::string
 **/
 
+template <>
 std::string Integer<int>::getPrintableValue() {
 
   return std::to_string(this->value);

@@ -34,6 +34,7 @@ using namespace murmure;
  * @param std::string value to convert to primitive
 **/
 
+template <>
 Objectid<std::string>::Objectid(std::string value) {
   this->value = value;
 }
@@ -45,6 +46,7 @@ Objectid<std::string>::Objectid(std::string value) {
  * @returns bool: true if set database operation succeeded
 **/
 
+template <>
 bool Objectid<std::string>::setValue(std::string oid, std::string value) {
   //Has no value, just return
   return true;
@@ -55,6 +57,7 @@ bool Objectid<std::string>::setValue(std::string oid, std::string value) {
  * @returns std::string: object id has no value
 **/
 
+template <>
 std::string Objectid<std::string>::getValue() {
   return "";
 }
@@ -65,6 +68,7 @@ std::string Objectid<std::string>::getValue() {
  * @returns std::string
 **/
 
+template <>
 std::string Objectid<std::string>::getPrintableValue() {
 
   return "";

@@ -34,6 +34,7 @@ using namespace murmure;
  * @param std::string value to convert to primitive
 **/
 
+template <>
 Gauge<unsigned int>::Gauge(std::string value) {
   this->value = std::stoi(value);
 }
@@ -45,6 +46,7 @@ Gauge<unsigned int>::Gauge(std::string value) {
  * @returns bool: true if set database operation succeeded
 **/
 
+template <>
 bool Gauge<unsigned int>::setValue(std::string oid, std::string value) {
   std::string errorString;
 
@@ -87,6 +89,7 @@ bool Gauge<unsigned int>::setValue(std::string oid, std::string value) {
  * @returns unsigned int: real primitive value
 **/
 
+template <>
 unsigned int Gauge<unsigned int>::getValue() {
   return this->value;
 }
@@ -97,6 +100,7 @@ unsigned int Gauge<unsigned int>::getValue() {
  * @returns std::string
 **/
 
+template <>
 std::string Gauge<unsigned int>::getPrintableValue() {
 
   return std::to_string(this->value);

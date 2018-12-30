@@ -34,6 +34,7 @@ using namespace murmure;
  * @param std::string value to convert to primitive
 **/
 
+template <>
 IPAddress<std::string>::IPAddress(std::string value) {
   this->value = value;
 }
@@ -45,6 +46,7 @@ IPAddress<std::string>::IPAddress(std::string value) {
  * @returns bool: true if set database operation succeeded
 **/
 
+template <>
 bool IPAddress<std::string>::setValue(std::string oid, std::string value) {
   std::string errorString;
 
@@ -83,6 +85,7 @@ bool IPAddress<std::string>::setValue(std::string oid, std::string value) {
  * @returns std::string: real primitive value
 **/
 
+template <>
 std::string IPAddress<std::string>::getValue() {
   return this->value;
 }
@@ -93,6 +96,7 @@ std::string IPAddress<std::string>::getValue() {
  * @returns std::string
 **/
 
+template <>
 std::string IPAddress<std::string>::getPrintableValue() {
 
   return this->value;

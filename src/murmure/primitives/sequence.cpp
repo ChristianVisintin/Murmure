@@ -34,6 +34,7 @@ using namespace murmure;
  * @param std::string value to convert to primitive
 **/
 
+template <>
 Sequence<std::string>::Sequence(std::string value) : Objectid(value) {
 }
 
@@ -44,6 +45,7 @@ Sequence<std::string>::Sequence(std::string value) : Objectid(value) {
  * @returns bool: true if set database operation succeeded
 **/
 
+template <>
 bool Sequence<std::string>::setValue(std::string oid, std::string value) {
   //Has no value, just return
   return true;
@@ -54,6 +56,7 @@ bool Sequence<std::string>::setValue(std::string oid, std::string value) {
  * @returns std::string: object id has no value
 **/
 
+template <>
 std::string Sequence<std::string>::getValue() {
   return "";
 }
@@ -64,6 +67,7 @@ std::string Sequence<std::string>::getValue() {
  * @returns std::string
 **/
 
+template <>
 std::string Sequence<std::string>::getPrintableValue() {
 
   return "";

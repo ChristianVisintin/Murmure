@@ -34,6 +34,7 @@ using namespace murmure;
  * @param std::string value to convert to primitive
 **/
 
+template <>
 String<std::string>::String(std::string value) {
   this->value = value;
 }
@@ -45,6 +46,7 @@ String<std::string>::String(std::string value) {
  * @returns bool: true if set database operation succeeded
 **/
 
+template <>
 bool String<std::string>::setValue(std::string oid, std::string value) {
   std::string errorString;
 
@@ -83,6 +85,7 @@ bool String<std::string>::setValue(std::string oid, std::string value) {
  * @returns std::string: real primitive value
 **/
 
+template <>
 std::string String<std::string>::getValue() {
   return this->value;
 }
@@ -93,6 +96,7 @@ std::string String<std::string>::getValue() {
  * @returns std::string
 **/
 
+template <>
 std::string String<std::string>::getPrintableValue() {
 
   return this->value;
