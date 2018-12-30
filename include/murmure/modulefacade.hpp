@@ -21,7 +21,7 @@
 #ifndef MODULEFACADE_HPP
 #define MODULEFACADE_HPP
 
-#include <modules/module.hpp>
+#include <murmure/modules/module.hpp>
 
 #include <string>
 #include <vector>
