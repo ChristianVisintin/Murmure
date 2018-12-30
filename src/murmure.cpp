@@ -34,6 +34,8 @@ Usage:\n\
 \t-h --help\t\tShow this page\n\
 "
 
+//TODO: command to change values manually
+
 #include <algorithm>
 #include <iostream>
 #include <sstream>
@@ -344,7 +346,7 @@ int main(int argc, char* argv[]) {
         std::string datatype = setParams.substr(0, sepPos);
         std::string value = setParams.substr(sepPos + 1);
         //Convert datatype to lower case - just to be sure
-        std::transform(datatype.begin(), datatype.end(), datatype.begin(), ::tolower);
+        std::transform(datatype.begin(), datatype.end(), datatype.begin(), ::toupper);
         std::stringstream setStream;
         setStream << "Received SET for OID " << requestedOid << "; Type: " << datatype << "; Value: " << value;
         logger::log(COMPONENT, LOG_INFO, setStream.str());
@@ -442,7 +444,7 @@ int main(int argc, char* argv[]) {
     std::string requestedOid = cmdLineOpts.args.at(0);
     std::string datatype = cmdLineOpts.args.at(1);
     std::string value = cmdLineOpts.args.at(2);
-    std::transform(datatype.begin(), datatype.end(), datatype.begin(), ::tolower);
+    std::transform(datatype.begin(), datatype.end(), datatype.begin(), ::toupper);
     std::stringstream setStream;
     setStream << "Received SET for OID " << requestedOid << "; Type: " << datatype << "; Value: " << value;
     snmp_set(mibtab, mibScheduler, requestedOid, datatype, value);
@@ -455,7 +457,7 @@ int main(int argc, char* argv[]) {
     if (mibParser->parseMibFile(rootOid, mibFile)) {
       logger::log(COMPONENT, LOG_INFO, "MIB parsed successfully");
     } else {
-      logger::log(COMPONENT, LOG_ERROR, "MIB parsing failed");
+      logger::log(COMPONENT, LOG_FATAL, "MIB parsing failed");
       exitcode = 1;
     }
     delete mibParser;
@@ -575,13 +577,27 @@ int main(int argc, char* argv[]) {
   } else if (cmdLineOpts.command == Command::RESET) {
     //Instance new scheduler, no mib table needed
     Scheduler* mibScheduler = new Scheduler();
+    //Instance new mibtable
+    Mibtable* mibtab = new Mibtable();
+    //Load mibtable
+    if (!mibtab->loadMibTable()) {
+      logger::log(COMPONENT, LOG_FATAL, "MIB table loading failed; execution aborted");
+      delete mibtab;
+      return 1;
+    }
     //Clear all events
     if (!mibScheduler->clearEvents()) {
       logger::log(COMPONENT, LOG_FATAL, "Scheduling reset failed");
-      exitcode = 1;
+      return 1;
     }
-    exitcode = 0;
+    //Clear mibtable
+    if (!mibtab->clearMibtable()) {
+      logger::log(COMPONENT, LOG_FATAL, "Mibtable reset failed");
+      return 1;
+    }
     delete mibScheduler;
+    delete mibtab;
+    exitcode = 0;
 
   } else {
     logger::log(COMPONENT, LOG_ERROR, "Unknown command");
