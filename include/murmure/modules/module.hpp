@@ -31,6 +31,7 @@ namespace murmure {
 class Module {
 
 public:
+  virtual bool setValue(std::string value) = 0;
   virtual bool setValue(std::string oid, std::string value) = 0;
   virtual std::string getPrintableValue() = 0;
   virtual std::string getPrimitiveType() = 0;

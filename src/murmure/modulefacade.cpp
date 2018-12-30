@@ -74,6 +74,21 @@ bool ModuleFacade::findModule(std::string typeName) {
 /**
  * @function setValue
  * @description set value to module instance
+ * @param std::string value
+ * @returns bool: true if value was successfully set
+ * NOTE: used in initialization of ModuleFacade
+**/
+
+bool ModuleFacade::setValue(std::string value) {
+  if (module == nullptr) {
+    return false;
+  }
+  return module->setValue(value);
+}
+
+/**
+ * @function setValue
+ * @description set value to module instance and save it into database
  * @param std::string oid
  * @param std::string value
  * @returns bool: true if value was successfully set
