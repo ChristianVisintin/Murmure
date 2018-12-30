@@ -44,13 +44,13 @@ public:
   bool dumpScheduling(std::string dumpFile = "");
 
 private:
-  int runScheduler();
+  static int runScheduler();
   bool addEvent(std::string oid, EventMode mode, std::vector<std::string> commandList, int timeout = 0);
-  std::vector<Event*> events;
-  std::vector<ScheduledEvent*> scheduledEvents;
+  static std::vector<Event*> events;
+  static std::vector<ScheduledEvent*> scheduledEvents;
   Mibtable* mibtable;
-  std::thread* schedulerThread;
-  bool stopCalled;
+  static std::thread* schedulerThread;
+  static bool stopCalled;
 };
 } // namespace murmure
 

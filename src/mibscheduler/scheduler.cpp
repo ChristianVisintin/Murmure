@@ -39,8 +39,8 @@ using namespace murmure;
 **/
 
 Scheduler::Scheduler() {
-  this->schedulerThread = nullptr;
-  this->stopCalled = false;
+  schedulerThread = nullptr;
+  stopCalled = false;
 }
 
 /**
@@ -50,9 +50,9 @@ Scheduler::Scheduler() {
 **/
 
 Scheduler::Scheduler(Mibtable* mTable) {
-  this->mibtable = mTable;
-  this->schedulerThread = nullptr;
-  this->stopCalled = false;
+  mibtable = mTable;
+  schedulerThread = nullptr;
+  stopCalled = false;
 }
 
 /**
@@ -62,14 +62,14 @@ Scheduler::Scheduler(Mibtable* mTable) {
 
 Scheduler::~Scheduler() {
 
-  this->stopCalled = true;
+  stopCalled = true;
 
-  if (this->schedulerThread != nullptr) {
+  if (schedulerThread != nullptr) {
     //Join thread before deleting it
-    this->schedulerThread->join();
+    schedulerThread->join();
     //Delete thread
-    delete this->schedulerThread;
-    this->schedulerThread = nullptr;
+    delete schedulerThread;
+    schedulerThread = nullptr;
   }
 
   //Free event objects
@@ -159,8 +159,8 @@ bool Scheduler::loadEvents() {
       //Instance new scheduledEvent
       ScheduledEvent* newEv = new ScheduledEvent(oid, EventMode::AUTO, commandList, timeout);
       //Push to array new scheduledEvent element
-      this->scheduledEvents.resize(++scheduledEventListSize);
-      this->scheduledEvents.push_back(newEv);
+      scheduledEvents.resize(++scheduledEventListSize);
+      scheduledEvents.push_back(newEv);
     } else {
       //Event vector
       //Get eventMode enum
@@ -180,8 +180,8 @@ bool Scheduler::loadEvents() {
       //Instance new Event
       Event* newEv = new Event(oid, evMode, commandList);
       //Push to array new event element
-      this->events.resize(++eventListSize);
-      this->events.push_back(newEv);
+      events.resize(++eventListSize);
+      events.push_back(newEv);
     }
   }
 
@@ -205,7 +205,7 @@ int Scheduler::fetchAndExec(std::string oid, EventMode mode) {
 
   //NOTE: Mode cannot be auto! Automatic event (scheduled events) can only be executed by the scheduler thread
 
-  for (auto event : this->events) {
+  for (auto event : events) {
     //If oid and mode mathces with event then execute associated events
     if (oid == event->getOid() && mode == event->getMode()) {
       return event->executeCommands();
@@ -225,20 +225,20 @@ int Scheduler::fetchAndExec(std::string oid, EventMode mode) {
 bool Scheduler::startScheduler() {
 
   //Execute all INIT commands
-  for (auto event : this->events) {
+  for (auto event : events) {
     if (event->getMode() == EventMode::INIT) {
       event->executeCommands();
     }
   }
 
   //Start scheduler thread
-  if (this->schedulerThread != nullptr) {
+  if (schedulerThread != nullptr) {
     //It's already running
     logger::log(COMPONENT, LOG_ERROR, "Could not start thread, Scheduler thread is already running!");
     return false;
   }
 
-  this->schedulerThread = new std::thread(runScheduler);
+  schedulerThread = new std::thread(runScheduler);
   return true;
 }
 
@@ -260,7 +260,7 @@ bool Scheduler::startScheduler() {
 bool Scheduler::parseScheduling(std::string oid, EventMode mode, std::vector<std::string> commandList, std::string* error, int timeout /*= 0*/) {
 
   //Try to get oid
-  if (this->mibtable->getOidByOid(oid) == nullptr) {
+  if (mibtable->getOidByOid(oid) == nullptr) {
     *error = "Could not find OID " + oid;
     return false;
   }
