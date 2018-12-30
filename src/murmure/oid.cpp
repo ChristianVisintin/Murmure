@@ -264,6 +264,16 @@ bool Oid::setValue(std::string printableValue) {
 }
 
 /**
+ * @function isTypeValid
+ * @description check if data is set, which means type has been correctly resolved
+ * @returns bool: true if valid
+*/
+
+bool Oid::isTypeValid() {
+  return (data != nullptr);
+}
+
+/**
  * @function sortByOid
  * @description sort oid instance by their oid (to use with sort)
  * @param Oid* first oid to compare

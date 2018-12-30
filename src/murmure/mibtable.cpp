@@ -106,6 +106,15 @@ bool Mibtable::loadMibTable() {
     oids.resize(++mibTableSize);
     //Instance new oid
     Oid* thisOid = new Oid(oid, datatype, value, accessMode, name);
+    //Check if data is nullptr
+    if (thisOid->isTypeValid()) {
+      std::stringstream logStream;
+      logStream << "Could not resolve type " << thisOid->getType();
+      logStream << " for OID " << thisOid->getOid();
+      logger::log(COMPONENT, LOG_ERROR, logStream.str());
+      delete thisOid;
+      return false;
+    }
     //Push new oid in oids vector
     oids.push_back(thisOid);
   }

@@ -40,6 +40,7 @@ public:
   AccessMode getAccessMode();
   int getAccessModeInteger();
   bool setValue(std::string printableValue);
+  bool isTypeValid();
 
 private:
   std::string oid;           //OID which identifies this instance
