@@ -76,8 +76,21 @@ Oid::Oid(std::string oid, std::string type, std::string value, int access, std::
   } else if (type == PRIMITIVE_TIMETICKS) {
     data = new Timeticks<unsigned int>(value);
   } else {
-    //TODO: Query module facade
-    //this->primitiveType = getPrimitiveFromModule
+    //Could be a module, in case instance data as moduleFacade
+    data = new ModuleFacade();
+    ModuleFacade* module = reinterpret_cast<ModuleFacade*>(this->data);
+    //Try to instance module
+    if (module->findModule(this->dataType)) {
+      //Module has been found!
+      //Get primitive type from module
+      this->getPrimitiveType = module->getPrimitiveType();
+      //Set value
+      module->setValue(value);
+    } else {
+      //Module hasn't been found, delete data and reset to nullptr
+      delete module;
+      data = nullptr;
+    }
   }
 
   //Set access mode
@@ -105,8 +118,39 @@ Oid::Oid(std::string oid, std::string type, std::string value, int access, std::
 **/
 
 Oid::~Oid() {
+  //Delete data if exists
   if (data != nullptr) {
-    //TODO: free data casting to real primitive or module
+    if (this->dataType == PRIMITIVE_COUNTER) {
+      Counter<unsigned int>* realData = reinterpret_cast<Counter<unsigned int>*>(this->data);
+      delete realData;
+    } else if (this->dataType == PRIMITIVE_GAUGE) {
+      Gauge<unsigned int>* realData = reinterpret_cast<Gauge<unsigned int>*>(this->data);
+      delete realData;
+    } else if (this->dataType == PRIMITIVE_INTEGER) {
+      Integer<int>* realData = reinterpret_cast<Integer<int>*>(this->data);
+      delete realData;
+    } else if (this->dataType == PRIMITIVE_IPADRRESS) {
+      IPAddress<std::string>* realData = reinterpret_cast<IPAddress<std::string>*>(this->data);
+      delete realData;
+    } else if (this->dataType == PRIMITIVE_OBJECTID) {
+      Objectid<std::string>* realData = reinterpret_cast<Objectid<std::string>*>(this->data);
+      delete realData;
+    } else if (this->dataType == PRIMITIVE_OCTET) {
+      Octet<uint8_t*>* realData = reinterpret_cast<Octet<uint8_t*>*>(this->data);
+      delete realData;
+    } else if (this->dataType == PRIMITIVE_SEQUENCE) {
+      Sequence<std::string>* realData = reinterpret_cast<Sequence<std::string>*>(this->data);
+      delete realData;
+    } else if (this->dataType == PRIMITIVE_STRING) {
+      String<std::string>* realData = reinterpret_cast<String<std::string>*>(this->data);
+      delete realData;
+    } else if (this->dataType == PRIMITIVE_TIMETICKS) {
+      Timeticks<unsigned int>* realData = reinterpret_cast<Timeticks<unsigned int>*>(this->data);
+      delete realData;
+    } else {
+      ModuleFacade* module = reinterpret_cast<ModuleFacade*>(this->data);
+      delete module;
+    }
   }
 }
 
@@ -185,8 +229,8 @@ std::string Oid::getPrintableValue() {
     Timeticks<unsigned int>* realData = reinterpret_cast<Timeticks<unsigned int>*>(this->data);
     return realData->getPrintableValue();
   } else {
-    //TODO: implement modules
-    return "";
+    ModuleFacade* module = reinterpret_cast<ModuleFacade*>(this->data);
+    return module->getPrintableValue();
   }
 }
 
@@ -213,7 +257,7 @@ int Oid::getAccessModeInteger() {
     return ACCESSMODE_READONLY;
   } else if (this->accessMode == AccessMode::READCREATE) {
     return ACCESSMODE_READCREATE;
-  } else if (this->accessMode == AccessMode:: READWRITE) {
+  } else if (this->accessMode == AccessMode::READWRITE) {
     return ACCESSMODE_READWRITE;
   } else {
     return ACCESSMODE_NOTACCESSIBLE;
@@ -228,7 +272,7 @@ int Oid::getAccessModeInteger() {
 **/
 
 bool Oid::setValue(std::string printableValue) {
-  
+
   //Value set operation is managed by Primitive extended class
   if (this->dataType == PRIMITIVE_COUNTER) {
     Counter<unsigned int>* realData = reinterpret_cast<Counter<unsigned int>*>(this->data);
@@ -258,8 +302,8 @@ bool Oid::setValue(std::string printableValue) {
     Timeticks<unsigned int>* realData = reinterpret_cast<Timeticks<unsigned int>*>(this->data);
     return realData->setValue(this->oid, printableValue);
   } else {
-    //TODO: implement modules
-    return false;
+    ModuleFacade* module = reinterpret_cast<ModuleFacade*>(this->data);
+    return module->setValue(this->oid, printableValue);
   }
 }
 
