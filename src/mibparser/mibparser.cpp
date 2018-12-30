@@ -42,7 +42,7 @@ Mibparser::Mibparser() {
   currentType = "";
   currentStatus = "";
   currentAccessMode = -1;
-  oidSaved = false;
+  oidSaved = true;
 }
 
 /**
@@ -90,8 +90,13 @@ bool Mibparser::parseMibFile(std::string rootOid, std::string mibfile) {
   //Iterate over lines
   std::string line;
   while (getline(mibfileStream, line)) {
-    //DEBUG line
-    logger::log(COMPONENT, LOG_DEBUG, ">> " + line);
+    //LOG line
+    std::string logLine = ">> " + std::string(line);
+    logger::log(COMPONENT, LOG_INFO, logLine);
+    //Ingore lenght 1 => 0
+    if (line.length() <= 1) {
+      continue;
+    }
     //Trim line from mib file
     std::string trimmedLine = strutils::trim(line);
     //Line parsing
@@ -204,6 +209,13 @@ bool Mibparser::commitPreviousOid() {
   }
 
   Oid* newOid = new Oid(currentOid, currentType, "0", currentAccessMode, currentName);
+  if (!newOid->isTypeValid()) {
+    std::stringstream logStream;
+    logStream << "Could not resolve type " << newOid->getType();
+    logStream << " for OID " << newOid->getOid();
+    logger::log(COMPONENT, LOG_ERROR, logStream.str());
+    return false;
+  }
   //Try to add new OID to mibtable
   if (mibtable->addOid(newOid)) {
     std::stringstream logStream;
@@ -457,7 +469,7 @@ bool Mibparser::handleObjectAccess(std::string line) {
     return false;
   }
 
-  logger::log(COMPONENT, LOG_INFO, "Set AccessMode to " + currentAccessMode);
+  logger::log(COMPONENT, LOG_INFO, "Set AccessMode to " + access);
   return true;
 
 }
@@ -470,6 +482,12 @@ bool Mibparser::handleObjectAccess(std::string line) {
 **/
 
 bool Mibparser::handleObjectGroup(std::string line) {
+
+  //If oid saved is false, it's the root OID and must be ignored
+  if (oidSaved) {
+    logger::log(COMPONENT, LOG_WARN, "Object Group is not associated to any Object; will be ignored");
+    return true;
+  }
 
   //Remove multiple whitespaces
   line = strutils::itrim(line);

@@ -107,7 +107,7 @@ bool Mibtable::loadMibTable() {
     //Instance new oid
     Oid* thisOid = new Oid(oid, datatype, value, accessMode, name);
     //Check if data is nullptr
-    if (thisOid->isTypeValid()) {
+    if (!thisOid->isTypeValid()) {
       std::stringstream logStream;
       logStream << "Could not resolve type " << thisOid->getType();
       logStream << " for OID " << thisOid->getOid();
