@@ -28,14 +28,14 @@
 
 namespace murmure {
 
-//Template for generic primitive value
-template <typename primitiveType>
-
 class Module {
 
 public:
-  virtual primitiveType getPrimitiveValue(uint8_t* value) = 0;
-  virtual uint8_t* getRealValue(primitiveType primitive) = 0;
+  virtual bool setValue(std::string oid, std::string value) = 0;
+  virtual std::string getPrintableValue() = 0;
+
+protected:
+  void* primitive; //Void ptr to primitive instance
 };
 } // namespace murmure
 

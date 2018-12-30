@@ -28,18 +28,14 @@
 
 namespace murmure {
 
-//Template for generic primitive value
-template <typename primitiveType>
-
 class ModuleFacade {
 
 public:
   ModuleFacade();
   ~ModuleFacade();
   bool findModule(std::string typeName);
-  bool setValue(std::string value);
-  primitiveType getPrimitive(uint8_t* realValue);
-  uint8_t* getRealValue(std::string typeName, primitiveType primitive);
+  bool setValue(std::string oid, std::string value);
+  std::string getPrintableValue();
 
 private:
   Module* module;
