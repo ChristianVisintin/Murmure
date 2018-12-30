@@ -39,7 +39,7 @@ CREATE TABLE scheduled_events (
 );
 
 CREATE TABLE events_commands (
-  command_id PRIMARY KEY AUTOINCREMENT NOT NULL,
+  command_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
   command VARCHAR(256) NOT NULL,
   execution_order INTEGER NOT NULL,
   event_id INTEGER NOT NULL,
