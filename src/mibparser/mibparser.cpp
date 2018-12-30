@@ -40,6 +40,7 @@ Mibparser::Mibparser() {
   currentName = "";
   currentOid = "";
   currentType = "";
+  currentStatus = "";
   currentAccessMode = -1;
   oidSaved = false;
 }
@@ -104,14 +105,6 @@ bool Mibparser::parseMibFile(std::string rootOid, std::string mibfile) {
     }
   }
 
-  //Commit any last unsaved OID
-  if (!commitPreviousOid()) {
-    logger::log(COMPONENT, LOG_ERROR, "Could not commit last OID");
-    mibtable->clearMibtable();
-    mibfileStream.close();
-    return false;
-  }
-
   //Close file
   mibfileStream.close();
 
@@ -155,6 +148,11 @@ bool Mibparser::parseLine(std::string line) {
     return handleObjectSyntax(line);
   }
 
+  //Object-Type status
+  if (strutils::startsWith(line, "STATUS")) {
+    return handleObjectStatus(line);
+  }
+
   //Object-Type max access
   if (strutils::startsWith(line, "MAX-ACCESS")) {
     return handleObjectAccess(line);
@@ -168,6 +166,12 @@ bool Mibparser::parseLine(std::string line) {
   //Handle SEQUENCE
   if (line.find("::= SEQUENCE") != std::string::npos) {
     return handleSequence(line);
+  }
+
+  //END mib
+  if (strutils::startsWith(line, "END")) {
+    //Commit any last unsaved OID
+    return commitPreviousOid();
   }
 
   //Unhandled lines are ignored
@@ -192,6 +196,15 @@ bool Mibparser::commitPreviousOid() {
   if (currentName.length() == 0 or currentOid.length() == 0 or currentAccessMode == -1 or currentType.length() == 0) {
     logger::log(COMPONENT, LOG_ERROR, "Missing Object parameter");
     return false;
+  }
+
+  //Check if status is obsolete or deprecated
+  if (currentStatus == "obsolete" or currentStatus == "deprecated") {
+    std::stringstream logStream;
+    logStream << "Object has STATUS set to " << currentStatus << " and will be ignored";
+    logger::log(COMPONENT, LOG_WARN, logStream.str());
+    oidSaved = true;
+    return true;
   }
 
   Oid* newOid = new Oid(currentOid, currentType, "0", currentAccessMode, currentName);
@@ -350,6 +363,7 @@ bool Mibparser::handleObjectDeclaration(std::string line) {
   currentOid = "";
   currentType = "";
   currentAccessMode = -1;
+  currentStatus = "";
 
   logger::log(COMPONENT, LOG_INFO, "Set name to " + currentName);
 
@@ -382,6 +396,32 @@ bool Mibparser::handleObjectSyntax(std::string line) {
   currentType = lineTokens.at(1);
   logger::log(COMPONENT, LOG_INFO, "Set type to " + currentType);
 
+  return true;
+
+}
+
+/**
+ * @function handleObjectStatus
+ * @description get object status from declaration
+ * @param std::string line
+ * @returns bool: true if parsing was successful
+**/
+
+bool Mibparser::handleObjectStatus(std::string line) {
+
+  //Remove multiple whitespaces
+  line = strutils::itrim(line);
+  //Get statsu
+  std::vector<std::string> lineTokens = strutils::split(line, ' ');
+  if (lineTokens.size() < 2) {
+    std::stringstream logStream;
+    logStream << "Syntax error: OID STATUS has size " << std::to_string(lineTokens.size()) << " but must be at least 2";
+    logger::log(COMPONENT, LOG_ERROR, logStream.str());
+    return false;
+  }
+
+  currentStatus = lineTokens.at(1);
+  logger::log(COMPONENT, LOG_INFO, "Set Status to " + currentStatus);
   return true;
 
 }

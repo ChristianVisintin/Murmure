@@ -40,6 +40,7 @@ private:
   bool handleInlineObject(std::string line);
   bool handleObjectDeclaration(std::string line);
   bool handleObjectSyntax(std::string line);
+  bool handleObjectStatus(std::string line);
   bool handleObjectAccess(std::string line);
   bool handleObjectGroup(std::string line);
   bool handleSequence(std::string line);
@@ -52,6 +53,7 @@ private:
   std::string currentType;
   int currentAccessMode;
   std::string currentName;
+  std::string currentStatus;
   bool oidSaved; //Has current OID already been saved to mibtable
 
 };
