@@ -574,6 +574,7 @@ int main(int argc, char* argv[]) {
           continue;
         }
 
+        std::cin.ignore();
         std::cout << "Set command list to execute; press ENTER (without typing anything else) to commit scheduling" << std::endl;
         while (1) {
           std::string command;
