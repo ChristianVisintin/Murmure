@@ -164,7 +164,7 @@ bool Scheduler::loadEvents() {
       //Instance new scheduledEvent
       ScheduledEvent* newEv = new ScheduledEvent(oid, EventMode::AUTO, commandList, timeout);
       //Push to array new scheduledEvent element
-      scheduledEvents.resize(++scheduledEventListSize);
+      scheduledEvents.resize(scheduledEventListSize++);
       scheduledEvents.push_back(newEv);
     } else {
       //Event vector
@@ -185,7 +185,7 @@ bool Scheduler::loadEvents() {
       //Instance new Event
       Event* newEv = new Event(oid, evMode, commandList);
       //Push to array new event element
-      events.resize(++eventListSize);
+      events.resize(eventListSize++);
       events.push_back(newEv);
     }
   }
