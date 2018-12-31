@@ -213,6 +213,7 @@ int Scheduler::fetchAndExec(std::string oid, EventMode mode) {
   for (auto event : events) {
     //If oid and mode mathces with event then execute associated events
     if (oid == event->getOid() && mode == event->getMode()) {
+      logger::log(COMPONENT, LOG_INFO, "Executing events for OID " + event->getOid());
       return event->executeCommands();
     }
   }
@@ -545,6 +546,7 @@ int Scheduler::runScheduler() {
         if (elapsedTime % event->getTimeout()) {
           time_t tNow = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
           //If true execute event's commands
+          logger::log(COMPONENT, LOG_INFO, "Executing scheduling events for OID " + event->getOid());
           event->executeCommands();
           //Get elapsed time between before and after execution
           time_t evElapsedTime = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count() - tNow;
@@ -557,6 +559,7 @@ int Scheduler::runScheduler() {
       std::sort(scheduledEvents.begin(), scheduledEvents.end(), sortByRelativeTimeout);
       //Reset nextEventTime
       nextEventTime = scheduledEvents.at(0)->getTimeout();
+      logger::log(COMPONENT, LOG_INFO, "Next scheduled event in " + std::to_string(nextEventTime) + " seconds");
     }
     //Sleep for one second
     std::this_thread::sleep_for(std::chrono::seconds(1));
