@@ -18,8 +18,9 @@
  * You should have received a copy of the GNU General Public License
 **/
 
-#include <sqlite3.h>
 #include <utils/databasefacade.hpp>
+
+#include <sqlite3.h>
 
 using namespace database;
 
@@ -130,24 +131,30 @@ bool database::select(std::vector<std::vector<std::string>>* result, std::string
     return false;
   }
   //Iterate over rows
-  while (sqlite3_step(statement) == SQLITE_ROW) {
-    const int columnCount = sqlite3_column_count(statement);
-    std::vector<std::string> row;
-    for (int i = 0; i < columnCount; i++) {
-      row.reserve(columnCount);
-      //Push columns to row vector
-      row.push_back(std::string(reinterpret_cast<char*>(const_cast<unsigned char*>(sqlite3_column_text(statement, i)))));
-    }
-    //Push row to result vector
-    result->resize(++vectorSize);
-    result->push_back(row);
-  }
-
+  int stepCode;
   bool res = true;
-  if (sqlite3_step(statement) != SQLITE_DONE) {
-    *error = std::string(sqlite3_errmsg(db));
-    res = false;
-  }
+  do {
+    stepCode = sqlite3_step(statement);
+    if (stepCode != SQLITE_ROW and stepCode != SQLITE_DONE) {
+      //Is error
+      *error = std::string(sqlite3_errmsg(db));
+      res = false;
+    } else if (stepCode == SQLITE_ROW) {
+      //Is SQLITE_ROW
+      const int columnCount = sqlite3_column_count(statement);
+      std::vector<std::string> row;
+      row.reserve(columnCount);
+      for (int i = 0; i < columnCount; i++) {
+        //Push columns to row vector
+        std::string column = std::string(reinterpret_cast<char*>(const_cast<unsigned char*>(sqlite3_column_text(statement, i))));
+        row.push_back(column);
+      }
+      //Push row to result vector
+      result->resize(vectorSize++);
+      result->push_back(row);
+    }
+  } while (stepCode == SQLITE_ROW);
+  //SQLITE_DONE
 
   sqlite3_reset(statement);
   sqlite3_finalize(statement);

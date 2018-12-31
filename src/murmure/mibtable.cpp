@@ -103,7 +103,7 @@ bool Mibtable::loadMibTable() {
     std::string accessModeStr = row.at(4);
     int accessMode = std::stoi(accessModeStr);
     //Increase mibtable size
-    oids.resize(++mibTableSize);
+    oids.resize(mibTableSize++);
     //Instance new oid
     Oid* thisOid = new Oid(oid, datatype, value, accessMode, name);
     //Check if data is nullptr
