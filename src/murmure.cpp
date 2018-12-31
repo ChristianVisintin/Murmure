@@ -201,10 +201,13 @@ inline void snmp_set(Mibtable* mibtab, Scheduler* mibScheduler, std::string requ
         Oid* childOid = new Oid(requestedOid, parentOid->getType(), value, 3, parentOid->getName());
         //Add new OID to mibtable
         if (mibtab->addOid(childOid)) {
+          //@! Table element added Successfully
           //if added successfully output OID, type, value
           std::cout << childOid->getOid() << std::endl;
           std::cout << childOid->getType() << std::endl;
           std::cout << childOid->getPrintableValue() << std::endl;
+          //Exec SET commands for parent OID
+          mibScheduler->fetchAndExec(parentOidStr, EventMode::SET);
           return;
         } else {
           //Commit failed
@@ -266,6 +269,9 @@ inline void snmp_set(Mibtable* mibtab, Scheduler* mibScheduler, std::string requ
     std::cout << "commit-failed" << std::endl;
     return;
   }
+
+  //Exec SET commands
+  mibScheduler->fetchAndExec(requestedOid, EventMode::SET);
 
   //Else output OID, type, value
   std::cout << reqOid->getOid() << std::endl;
