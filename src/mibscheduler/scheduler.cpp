@@ -543,7 +543,7 @@ int Scheduler::runScheduler() {
       //That because there could be more than one event with same relative timeout
       for (auto event : scheduledEvents) {
         //Check condition
-        if (elapsedTime % event->getTimeout()) {
+        if (elapsedTime % event->getTimeout() == 0) {
           time_t tNow = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
           //If true execute event's commands
           logger::log(COMPONENT, LOG_INFO, "Executing scheduling events for OID " + event->getOid());
