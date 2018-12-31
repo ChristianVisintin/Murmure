@@ -22,6 +22,7 @@
 #include <utils/logger.hpp>
 #include <utils/strutils.hpp>
 
+#include <algorithm>
 #include <fstream>
 #include <sstream>
 
@@ -89,7 +90,9 @@ bool Mibparser::parseMibFile(std::string rootOid, std::string mibfile) {
 
   //Iterate over lines
   std::string line;
+  int lineCount = 0;
   while (getline(mibfileStream, line)) {
+    lineCount++;
     //LOG line
     std::string logLine = ">> " + std::string(line);
     logger::log(COMPONENT, LOG_INFO, logLine);
@@ -102,6 +105,7 @@ bool Mibparser::parseMibFile(std::string rootOid, std::string mibfile) {
     //Line parsing
     bool parseResult = parseLine(trimmedLine);
     if (!parseResult) {
+      logger::log(COMPONENT, LOG_ERROR, "Syntax error on line " + std::to_string(lineCount));
       //Clear mib table
       mibtable->clearMibtable();
       //Close file
@@ -554,8 +558,13 @@ bool Mibparser::handleSequence(std::string line) {
     return false;
   }
 
+  //Convert to lower case
+  std::string comparedName = lineTokens.at(0);
+  std::string currentNameLower = currentName;
+  std::transform(comparedName.begin(), comparedName.end(), comparedName.begin(), ::tolower);
+  std::transform(currentNameLower.begin(), currentNameLower.end(), currentNameLower.begin(), ::tolower);
   //Names must match
-  if (lineTokens.at(0) == currentName) {
+  if (comparedName == currentNameLower) {
     std::stringstream logStream;
     logStream << "Type for " << currentName << " changed to SEQUENCE";
     logger::log(COMPONENT, LOG_INFO, logStream.str());
