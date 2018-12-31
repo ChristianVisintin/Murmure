@@ -52,6 +52,10 @@ Usage:\n\
 #define MURMURE_LOGFILE "/var/log/murmure.log"
 #endif
 
+#ifndef LOGLEVEL
+#define LOGLEVEL LOG_INFO
+#endif
+
 #define COMPONENT "Main"
 
 using namespace murmure;
@@ -250,7 +254,7 @@ int main(int argc, char* argv[]) {
 
   //Initialize logger variables
   logger::logfile = "";
-  logger::logLevel = LOG_INFO;
+  logger::logLevel = LOGLEVEL;
   logger::stdout = true;
 
   //Getopts

@@ -95,7 +95,7 @@ bool Mibparser::parseMibFile(std::string rootOid, std::string mibfile) {
     lineCount++;
     //LOG line
     std::string logLine = ">> " + std::string(line);
-    logger::log(COMPONENT, LOG_INFO, logLine);
+    logger::log(COMPONENT, LOG_DEBUG, logLine);
     //Ingore lenght 1 => 0
     if (line.length() <= 1) {
       continue;
