@@ -113,14 +113,41 @@ inline void snmp_get(Mibtable* mibtab, Scheduler* mibScheduler, std::string requ
 inline void snmp_getnext(Mibtable* mibtab, Scheduler* mibScheduler, std::string requestedOid) {
 
   //Get nextOid
-  std::string nextOid = mibtab->getNextOid(requestedOid);
-  if (nextOid == "") {
-    //Output no-such-name
-    std::cout << "no-such-name" << std::endl;
-    return;
-  }
-  //Get on next oid
-  snmp_get(mibtab, mibScheduler, nextOid);
+  std::string nextOid = requestedOid;
+  bool oidFound = false;
+  do {
+    nextOid = mibtab->getNextOid(nextOid);
+    if (nextOid == "") {
+      //Output no-such-name
+      std::cout << "no-such-name" << std::endl;
+      break;
+    }
+    Oid* assocOid = mibtab->getOidByOid(nextOid);
+    //Get on next oid
+    if (assocOid == nullptr) {
+      std::stringstream ss;
+      ss << "OID " << requestedOid << " does not exist";
+      logger::log(COMPONENT, LOG_WARN, ss.str());
+      //Output no-such-name
+      std::cout << "no-such-name" << std::endl;
+      return;
+    }
+
+    //Check access mode
+    if (assocOid->getAccessMode() == AccessMode::NOT_ACCESSIBLE) {
+      oidFound = false;
+      continue;
+    }
+
+    oidFound = true;
+    //Exec GET commands
+    mibScheduler->fetchAndExec(requestedOid, EventMode::GET);
+
+    //Else output OID, type, value
+    std::cout << assocOid->getOid() << std::endl;
+    std::cout << assocOid->getType() << std::endl;
+    std::cout << assocOid->getPrintableValue() << std::endl;
+  } while (!oidFound);
   return;
 }
 
