@@ -109,7 +109,7 @@ std::string strutils::itrim(const std::string& haystack) {
 std::string strutils::ltrim(const std::string& haystack) {
   std::string trimmed = haystack;
   //Recursive call for ltrim
-  if (trimmed.length() > 0 and (trimmed.at(0) == 0x20 or trimmed.at(0) == 0x09)) {
+  if (trimmed.length() > 0 && (trimmed.at(0) == 0x20 || trimmed.at(0) == 0x09)) {
     return strutils::ltrim(trimmed.substr(1));
   }
   return trimmed;
@@ -126,7 +126,7 @@ std::string strutils::rtrim(const std::string& haystack) {
   std::string trimmed = haystack;
   //Recursive call for ltrim
   size_t lastPos = trimmed.length() > 0 ? trimmed.length() - 1 : 0;
-  if (trimmed.length() > 0 and (trimmed.at(lastPos) == 0x20 or trimmed.at(lastPos) == 0x09)) {
+  if (trimmed.length() > 0 && (trimmed.at(lastPos) == 0x20 || trimmed.at(lastPos) == 0x09)) {
     return strutils::rtrim(trimmed.substr(0, lastPos));
   }
   return trimmed;

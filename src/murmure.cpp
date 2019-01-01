@@ -288,7 +288,7 @@ int main(int argc, char* argv[]) {
   //Initialize logger variables
   logger::logfile = "";
   logger::logLevel = LOGLEVEL;
-  logger::stdout = true;
+  logger::toStdout = true;
 
   //Getopts
   /**
@@ -316,7 +316,7 @@ int main(int argc, char* argv[]) {
 
   //Init logger
   logger::logfile = std::string(MURMURE_LOGFILE);
-  logger::stdout = true;
+  logger::toStdout = true;
 
   if (cmdLineOpts.command == Command::HELP) {
     std::cout << "Murmure " << MURMURE_VERSION << " - Developed by Christian Visintin" << std::endl;
@@ -325,7 +325,7 @@ int main(int argc, char* argv[]) {
   } else if (cmdLineOpts.command == Command::DAEMON) {
     //Daemon Mode
     //Set silent mode
-    logger::stdout = false;
+    logger::toStdout = false;
     //Instance new mibtable
     Mibtable* mibtab = new Mibtable();
     //Load mibtable
@@ -404,7 +404,7 @@ int main(int argc, char* argv[]) {
     logger::log(COMPONENT, LOG_INFO, "Murmure daemon terminated");
   } else if (cmdLineOpts.command == Command::GET) {
     //Set silent mode
-    logger::stdout = false;
+    logger::toStdout = false;
     //Instance new mibtable
     Mibtable* mibtab = new Mibtable();
     //Load mibtable
@@ -438,7 +438,7 @@ int main(int argc, char* argv[]) {
     delete mibScheduler; //Free scheduler
   } else if (cmdLineOpts.command == Command::GET_NEXT) {
     //Set silent mode
-    logger::stdout = false;
+    logger::toStdout = false;
     //Instance new mibtable
     Mibtable* mibtab = new Mibtable();
     //Load mibtable
@@ -472,7 +472,7 @@ int main(int argc, char* argv[]) {
     delete mibScheduler; //Free scheduler
   } else if (cmdLineOpts.command == Command::SET) {
     //Set silent mode
-    logger::stdout = false;
+    logger::toStdout = false;
     //Instance new mibtable
     Mibtable* mibtab = new Mibtable();
     //Load mibtable

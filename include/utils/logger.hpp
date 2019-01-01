@@ -32,7 +32,7 @@
 namespace logger {
 
 extern std::string logfile;
-extern bool stdout;
+extern bool toStdout;
 extern int logLevel;
 
 void log(std::string component, int level, std::string logContent);

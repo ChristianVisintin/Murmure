@@ -30,7 +30,7 @@ using namespace logger;
 
 int logger::logLevel;
 std::string logger::logfile;
-bool logger::stdout;
+bool logger::toStdout;
 
 /**
  * @function getLevelName
@@ -87,7 +87,7 @@ void logger::log(std::string component, int level, std::string logContent) {
     logFileStream << logStr;
     logFileStream.close();
   }
-  if (stdout) {
+  if (toStdout) {
     std::cout << logStr;
   }
   return;
