@@ -198,13 +198,13 @@ bool Mibparser::commitPreviousOid() {
   }
 
   //Check if attributes are set
-  if (currentName.length() == 0 or currentOid.length() == 0 or currentAccessMode == -1 or currentType.length() == 0) {
+  if (currentName.length() == 0 || currentOid.length() == 0 || currentAccessMode == -1 || currentType.length() == 0) {
     logger::log(COMPONENT, LOG_ERROR, "Missing Object parameter");
     return false;
   }
 
   //Check if status is obsolete or deprecated
-  if (currentStatus == "obsolete" or currentStatus == "deprecated") {
+  if (currentStatus == "obsolete" || currentStatus == "deprecated") {
     std::stringstream logStream;
     logStream << "Object has STATUS set to " << currentStatus << " and will be ignored";
     logger::log(COMPONENT, LOG_WARN, logStream.str());

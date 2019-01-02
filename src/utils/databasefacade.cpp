@@ -135,7 +135,7 @@ bool database::select(std::vector<std::vector<std::string>>* result, std::string
   bool res = true;
   do {
     stepCode = sqlite3_step(statement);
-    if (stepCode != SQLITE_ROW and stepCode != SQLITE_DONE) {
+    if (stepCode != SQLITE_ROW && stepCode != SQLITE_DONE) {
       //Is error
       *error = std::string(sqlite3_errmsg(db));
       res = false;

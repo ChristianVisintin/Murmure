@@ -72,7 +72,7 @@ bool murmure::getOpts(options* optStruct, int argc, char* argv[], std::string* e
     optStruct->command = Command::GET_NEXT;
     optStruct->args.reserve(1);
     optStruct->args.push_back(std::string(argv[2]));
-  } else if (arg == "-M" or arg == "--parse-mib") {
+  } else if (arg == "-M" || arg == "--parse-mib") {
     //Mib parsing has 2 arg => [rootOid, mib file]
     if (argc < 4) {
       *error = "Missing RootOID/MIB file";
@@ -82,7 +82,7 @@ bool murmure::getOpts(options* optStruct, int argc, char* argv[], std::string* e
     optStruct->args.reserve(2);
     optStruct->args.push_back(std::string(argv[2]));
     optStruct->args.push_back(std::string(argv[3]));
-  } else if (arg == "-S" or arg == "--schedule") {
+  } else if (arg == "-S" || arg == "--schedule") {
     //Can have file as argument
     optStruct->command = Command::SCHEDULE;
     if (argc > 2) {
@@ -98,7 +98,7 @@ bool murmure::getOpts(options* optStruct, int argc, char* argv[], std::string* e
     }
   } else if (arg == "--reset") {
     optStruct->command = Command::RESET;
-  } else if (arg == "-h" or arg == "--help") {
+  } else if (arg == "-h" || arg == "--help") {
     optStruct->command = Command::HELP;
   } else {
     *error = "Unknown option";
