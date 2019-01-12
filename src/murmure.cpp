@@ -168,26 +168,11 @@ inline void snmp_set(Mibtable* mibtab, Scheduler* mibScheduler, std::string requ
   Oid* reqOid = mibtab->getOidByOid(requestedOid);
   if (reqOid == nullptr) {
     //Get parent Oid
-    Oid* parentOid;
     std::string parentOidStr;
     size_t lastDotPos = requestedOid.find_last_of(".");
     if (lastDotPos != std::string::npos) {
       //We got table element oid now
       parentOidStr = requestedOid.substr(0, lastDotPos);
-      parentOid = mibtab->getOidByOid(parentOidStr);
-      //Do it again and we'll gain the parent of the table element
-      lastDotPos = parentOidStr.find_last_of(".");
-      if (lastDotPos != std::string::npos) {
-        parentOidStr = parentOidStr.substr(0, lastDotPos);
-      } else {
-        //@! Is not a valid OID
-        std::stringstream ss;
-        ss << "OID " << requestedOid << " does not exist";
-        logger::log(COMPONENT, LOG_WARN, ss.str());
-        //Output no-such-name
-        std::cout << "no-such-name" << std::endl;
-        return;
-      }
     } else {
       //@! Is not a valid OID
       std::stringstream ss;
@@ -197,55 +182,43 @@ inline void snmp_set(Mibtable* mibtab, Scheduler* mibScheduler, std::string requ
       std::cout << "no-such-name" << std::endl;
       return;
     }
-    //Get grandParent OID
-    Oid* grandParentOid = mibtab->getOidByOid(mibtab->getPreviousOid(parentOidStr));
-    if (grandParentOid != nullptr) {
-      //Check if it is table
-      if (grandParentOid->getPrimitiveType() == PRIMITIVE_SEQUENCE) {
-        //@! It is table, check if READ-CREATE
-        //Check access mode
-        if (parentOid->getAccessMode() != AccessMode::READCREATE && parentOid->getAccessMode() != AccessMode::READWRITE) {
-          std::stringstream ss;
-          ss << "OID " << parentOid << " is not at least READCREATE";
-          logger::log(COMPONENT, LOG_WARN, ss.str());
-          //Output read-only
-          std::cout << "read-only" << std::endl;
-          return;
-        }
-        //Access mode is OK
-        Oid* childOid = new Oid(requestedOid, parentOid->getType(), value, 3, parentOid->getName());
-        //Add new OID to mibtable
-        if (mibtab->addOid(childOid)) {
-          //@! Table element added Successfully
-          //if added successfully output OID, type, value
-          std::cout << childOid->getOid() << std::endl;
-          std::cout << childOid->getType() << std::endl;
-          std::cout << childOid->getPrintableValue() << std::endl;
-          //Export value to env
-          setenv("SNMP_VALUE", value.c_str(), 1);
-          //Exec SET commands for parent OID
-          mibScheduler->fetchAndExec(parentOidStr, EventMode::SET);
-          return;
-        } else {
-          //Commit failed
-          std::stringstream ss;
-          ss << "Unable to set value for OID " << requestedOid;
-          logger::log(COMPONENT, LOG_ERROR, ss.str());
-          //Output read-only
-          std::cout << "commit-failed" << std::endl;
-          return;
-        }
-      } else {
-        //@! OID exists but it is not table
+    if (mibtab->isTableChild(parentOidStr)) {
+      //@! It is table, check if READ-CREATE
+      Oid* parentOid = mibtab->getOidByOid(parentOidStr);
+      //Check access mode
+      if (parentOid->getAccessMode() != AccessMode::READCREATE && parentOid->getAccessMode() != AccessMode::READWRITE) {
         std::stringstream ss;
-        ss << "OID " << requestedOid << " does not exist";
+        ss << "OID " << parentOid << " is not at least READCREATE";
         logger::log(COMPONENT, LOG_WARN, ss.str());
-        //Output no-such-name
-        std::cout << "no-such-name" << std::endl;
+        //Output read-only
+        std::cout << "read-only" << std::endl;
+        return;
+      }
+      //Access mode is OK
+      Oid* childOid = new Oid(requestedOid, parentOid->getType(), value, 3, parentOid->getName());
+      //Add new OID to mibtable
+      if (mibtab->addOid(childOid)) {
+        //@! Table element added Successfully
+        //if added successfully output OID, type, value
+        std::cout << childOid->getOid() << std::endl;
+        std::cout << childOid->getType() << std::endl;
+        std::cout << childOid->getPrintableValue() << std::endl;
+        //Export value to env
+        setenv("SNMP_VALUE", value.c_str(), 1);
+        //Exec SET commands for parent OID
+        mibScheduler->fetchAndExec(parentOidStr, EventMode::SET);
+        return;
+      } else {
+        //Commit failed
+        std::stringstream ss;
+        ss << "Unable to set value for OID " << requestedOid;
+        logger::log(COMPONENT, LOG_ERROR, ss.str());
+        //Output read-only
+        std::cout << "commit-failed" << std::endl;
         return;
       }
     } else {
-      //@! Grandparent OID does not exist
+      //@! OID exists but it is not table
       std::stringstream ss;
       ss << "OID " << requestedOid << " does not exist";
       logger::log(COMPONENT, LOG_WARN, ss.str());

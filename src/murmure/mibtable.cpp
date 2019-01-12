@@ -312,3 +312,38 @@ std::string Mibtable::getPreviousOid(std::string oidString) {
   }
   return "";
 }
+
+/**
+ * @function isTableChild
+ * @description check if provided oid is child of the mib table
+ * @param std::string
+ * @returns bool
+**/
+
+bool Mibtable::isTableChild(std::string oidString) {
+
+  //Get parent Oid
+  std::string parentOidStr;
+  size_t lastDotPos = oidString.find_last_of(".");
+  if (lastDotPos != std::string::npos) {
+    parentOidStr = oidString.substr(0, lastDotPos);
+  } else {
+    //@! Is not a valid OID
+    return false;
+  }
+  //Get grandParent OID
+  Oid* grandParentOid = this->getOidByOid(this->getPreviousOid(parentOidStr));
+  if (grandParentOid != nullptr) {
+    //Check if it is table
+    if (grandParentOid->getPrimitiveType() == PRIMITIVE_SEQUENCE) {
+      //@! It is table child
+      return true;
+    } else {
+      //@! Ain't table child
+      return false;
+    }
+  } else {
+    //@! gran parent does not exist
+    return false;
+  }
+}

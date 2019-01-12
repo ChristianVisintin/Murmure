@@ -44,8 +44,6 @@ private:
   bool handleObjectAccess(std::string line);
   bool handleObjectGroup(std::string line);
   bool handleSequence(std::string line);
-  //Various methods
-  bool checkIfTableChild(std::string oid, Mibtable* mtable);
   //Mibparser attributes
   Mibtable* mibtable;
   std::string rootOidStr;

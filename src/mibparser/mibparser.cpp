@@ -212,8 +212,8 @@ bool Mibparser::commitPreviousOid() {
     return true;
   }
 
-  bool isTableChild = checkIfTableChild(currentOid, mibtable);
-
+  //Check if OID is table child
+  bool isTableChild = mibtable->isTableChild(currentOid);
   //If it is leaf and it is not child of a table, then add ".0"
   if (currentType != PRIMITIVE_OBJECTID && currentType != PRIMITIVE_SEQUENCE && !isTableChild) {
     currentOid += ".0";
@@ -576,42 +576,6 @@ bool Mibparser::handleSequence(std::string line) {
     std::stringstream logStream;
     logStream << "Syntax error: SEQUENCE declarations has name " << lineTokens.at(0) << " but " << currentName << " was expected";
     logger::log(COMPONENT, LOG_ERROR, logStream.str());
-    return false;
-  }
-}
-
-/**
- * @function checkIfTableChild
- * @description check if provided oid is child of a table
- * @param std::string
- * @param Mibtable*
- * @returns bool
-**/
-
-bool Mibparser::checkIfTableChild(std::string oid, Mibtable* mtable) {
-
-  //Get parent Oid
-  std::string parentOidStr;
-  size_t lastDotPos = oid.find_last_of(".");
-  if (lastDotPos != std::string::npos) {
-    parentOidStr = oid.substr(0, lastDotPos);
-  } else {
-    //@! Is not a valid OID
-    return false;
-  }
-  //Get grandParent OID
-  Oid* grandParentOid = mtable->getOidByOid(mtable->getPreviousOid(parentOidStr));
-  if (grandParentOid != nullptr) {
-    //Check if it is table
-    if (grandParentOid->getPrimitiveType() == PRIMITIVE_SEQUENCE) {
-      //@! It is table child
-      return true;
-    } else {
-      //@! Ain't table child
-      return false;
-    }
-  } else {
-    //@! gran parent does not exist
     return false;
   }
 }

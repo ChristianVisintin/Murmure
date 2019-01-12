@@ -39,6 +39,7 @@ public:
   Oid* getOidByName(std::string name);
   std::string getNextOid(std::string oid);
   std::string getPreviousOid(std::string oid);
+  bool isTableChild(std::string oid);
 
 private:
   std::vector<Oid*> oids;
