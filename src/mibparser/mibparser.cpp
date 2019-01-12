@@ -211,7 +211,8 @@ bool Mibparser::commitPreviousOid() {
     oidSaved = true;
     return true;
   }
-
+  //Add .0 to OID
+  currentOid += ".0";
   Oid* newOid = new Oid(currentOid, currentType, "0", currentAccessMode, currentName);
   if (!newOid->isTypeValid()) {
     std::stringstream logStream;
