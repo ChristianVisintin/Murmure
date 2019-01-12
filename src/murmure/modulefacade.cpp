@@ -20,12 +20,18 @@
 
 #include <murmure/modulefacade.hpp>
 
+/* @!::AUTO_INCLUDES::@! */
+
 #include <algorithm>
 
 using namespace murmure;
 
 std::map<std::string, Module* (*)()> murmure::ModuleFacade::modules;
 bool murmure::ModuleFacade::modulesLoaded;
+
+//Get instance of module function
+template <typename M>
+Module* getModuleInstance() { return new M; };
 
 /**
  * @function ModuleFacade
@@ -134,8 +140,8 @@ std::string ModuleFacade::getPrimitiveType() {
  * @function loadModules
  * @description load modules into 'modules' hash map
  * NOTE: this function is @!static
- * NOTE: map["ModuleClass"] = &createInstance<ModuleClass>;
- * NOTE: part of this function identified by 'AUTO' is automatically generated during compilation
+ * NOTE: modules["ModuleClass"] = &getModuleInstance<ModuleClass>;
+ * NOTE: part of this function identified by 'AUTO_MODULES' is automatically generated during compilation
 **/
 
 void ModuleFacade::loadModules() {
@@ -144,7 +150,7 @@ void ModuleFacade::loadModules() {
   modules.clear();
 
   //Load modules into hash map
-  /* @!::AUTO::@! */
+  /* @!::AUTO_MODULES::@! */
 
   //Set modules loaded to true
   modulesLoaded = true;

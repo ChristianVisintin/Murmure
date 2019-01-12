@@ -37,7 +37,8 @@ public:
   virtual std::string getPrimitiveType() = 0;
 
 protected:
-  void* primitive; //Void ptr to primitive instance
+  void* primitive;           //Void ptr to primitive instance
+  std::string primitiveType; //Primitive type string
 };
 } // namespace murmure
 

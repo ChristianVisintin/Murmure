@@ -41,8 +41,6 @@ public:
 
 private:
   static void loadModules();
-  template <typename M>
-  Module* getModuleInstance() { return new M; };
   Module* module;                                      //Module instance
   static std::map<std::string, Module* (*)()> modules; //Module list
   static bool modulesLoaded;
