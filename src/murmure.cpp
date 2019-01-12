@@ -36,7 +36,6 @@ Usage:\n\
 "
 
 //TODO: command to change values manually
-//TODO: implement set export value
 
 #include <algorithm>
 #include <iostream>
@@ -169,10 +168,26 @@ inline void snmp_set(Mibtable* mibtab, Scheduler* mibScheduler, std::string requ
   Oid* reqOid = mibtab->getOidByOid(requestedOid);
   if (reqOid == nullptr) {
     //Get parent Oid
+    Oid* parentOid;
     std::string parentOidStr;
     size_t lastDotPos = requestedOid.find_last_of(".");
     if (lastDotPos != std::string::npos) {
+      //We got table element oid now
       parentOidStr = requestedOid.substr(0, lastDotPos);
+      parentOid = mibtab->getOidByOid(parentOidStr);
+      //Do it again and we'll gain the parent of the table element
+      lastDotPos = parentOidStr.find_last_of(".");
+      if (lastDotPos != std::string::npos) {
+        parentOidStr = parentOidStr.substr(0, lastDotPos);
+      } else {
+        //@! Is not a valid OID
+        std::stringstream ss;
+        ss << "OID " << requestedOid << " does not exist";
+        logger::log(COMPONENT, LOG_WARN, ss.str());
+        //Output no-such-name
+        std::cout << "no-such-name" << std::endl;
+        return;
+      }
     } else {
       //@! Is not a valid OID
       std::stringstream ss;
@@ -188,8 +203,6 @@ inline void snmp_set(Mibtable* mibtab, Scheduler* mibScheduler, std::string requ
       //Check if it is table
       if (grandParentOid->getPrimitiveType() == PRIMITIVE_SEQUENCE) {
         //@! It is table, check if READ-CREATE
-        //Get parentOid object
-        Oid* parentOid = mibtab->getOidByOid(parentOidStr);
         //Check access mode
         if (parentOid->getAccessMode() != AccessMode::READCREATE && parentOid->getAccessMode() != AccessMode::READWRITE) {
           std::stringstream ss;
