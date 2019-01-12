@@ -1,7 +1,228 @@
 # Murmure
 
-**Net-SNMP** MIB Versatile Extender
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![HitCount](http://hits.dwyl.io/ChristianVisintin/Murmure.svg)](http://hits.dwyl.io/ChristianVisintin/Murmure) [![Stars](https://img.shields.io/github/stars/ChristianVisintin/Murmure.svg)](https://github.com/ChristianVisintin/Murmure) [![Issues](https://img.shields.io/github/issues/ChristianVisintin/Murmure.svg)](https://github.com/ChristianVisintin/Murmure)
 
-Developed by *Christian Visintin*
+**Net-SNMP** MIB Versatile Extender  
 
-Currently under development
+Developed by *Christian Visintin*  
+
+Version 1.0-rc  
+
+---
+
+## What is Murmure
+
+Murmure is a Net-SNMP MIB Versatile *(and automatic)* Extender.
+As we know, it is possible to extend Net-SNMP to handle extra MIBs, but there isn't any
+application that does this for you automatically out there.
+With Murmure it is possible to automatically extend Net-SNMP without writing a single line of code.  
+
+The only thing you need is a MIB file and Murmure will do the job for you!
+Murmure also lets you to schedule events to execute when a SET or a GET is issued on a certain OID and also to schedule temporized events for any OID you want, you just need to configure it with a configuration file.
+
+---
+
+## How does it work
+
+Murmure parses a MIB file and then builds a database with all the OIDs read. Then it can be executed as a **daemon** for *pass_persist* configuration or as oneshot executable for *pass* configuration. When it receives a request on a certain OID it will read the associated data from the database and will return or update values as requested.
+It is possible to configure scheduled events on any OID, these events will be triggered based on their type, which can be 'GET/SET/AUTO/INIT', but we'll see this in event section.
+Murmure can handle every type allowed in SNMP, but if it is not a primitive (we'll see later what a primitive is) a module to handle it is required.
+
+---
+
+## Build
+
+Automake coming soon
+
+### Requirements
+
+* C++11
+* Python3
+* libsqlite3
+* sqlite3
+* libpthread
+
+at the moment it is possible to compile with the following script (Will build Murmure in ./out/):
+
+```sh
+#!/bin/bash
+if [ -z "$CXX" ]; then
+  CXX=`which c++`
+  if [ -z "$CXX" ]; then
+    CXX=`which g++`
+    #Final check
+    if [ -z "$CXX" ]; then
+      echo "Could not find any C++ compiler; please export to CXX variable your compiler."
+      exit 1
+    fi
+  fi
+fi
+STARTDIR="`pwd`/"
+cd ..
+ROOTDIR="`pwd`/"
+#Check destdir
+if [ -z "$DESTDIR" ]; then
+  DESTDIR="$ROOTDIR/out/"
+  mkdir -p $DESTDIR
+fi
+if [ ! -e "$DESTDIR" ]; then
+  echo "Could not create $DESTDIR"
+  exit 1
+fi
+echo "Murmure will be built into $DESTDIR"
+sleep 1
+#Get cpp_files
+find src/ -iname "*.cpp" -exec echo -n "{} "> /tmp/cpp_files.txt \;
+CPP_FILES=`cat /tmp/cpp_files.txt`
+rm /tmp/cpp_files.txt
+$CXX -Wall -std=c++11 -I $ROOTDIR/include/ -o $DESTDIR/murmure $CPP_FILES -lsqlite3 -lpthread
+rm -f /tmp/mib.db
+touch /tmp/mib.db
+cat $ROOTDIR/SQL/mibtable.sql | sqlite3 /tmp/mib.db
+#Delete objects files
+find ./ -iname "*.o" -exec rm {} \;
+exit 0
+```
+
+---
+
+## Command Line Options
+
+* ```-D``` Start Murmure as daemon (use for NET-SNMP pass_persist)
+* ```-g <oid>``` issue 'get' on specified OID
+* ```-s <oid> <type> <value>``` issue 'set' on specified OID with new value
+* ```-n <oid>``` issue 'getnext' on specified OID
+* ```-M <rootOID> <mibfile>``` parse specified MIB file; MIB root OID must be specified
+* ```-S [schedule file]``` schedule Murmure for this MIB; if file is not passed command line will be used for scheduling
+* ```--dump-scheduling [outfile]``` Dump scheduling to a file if passed; if not is dumped to stdout
+* ```--reset``` Reset entire MIB and schedule tables
+* ```-C <oid> <value>``` Change manually the value associated to OID
+
+---
+
+## Configuration
+
+Once Murmure has been built, in order to configure Murmure properly these steps have to be followed:
+
+### MIB Parsing
+
+The first thing to do is parse a MIB file, which creates the mib database.
+To do it is enough to issue this command:
+
+```sh
+murmure -M <rootOid> <mibfile>
+```
+
+Remember that all commands must be executed with root permission  
+If everything worked fine this message should be displayed "MIB parsed successfully"  
+
+If not check if these requirements are satisfied:
+
+* Database file exists and can be edited by your user
+* MIB file is in UNIX text format (use dos2unix to convert from DOS text format)
+* All SYNTAX in MIB files are primitives or are supported by Murmure installed modules (check Data Types chapter)
+
+**All values parsed will be set with a default value which is "0".** you can then create your scripts which manually changes the values using **murmure --change command line option.**
+
+### Scheduling
+
+Once a MIB file has been parsed, it is possible to schedule events.
+Events are shell commands/programs which are executed in a specific order and are associated to a specific OID and to a certain trigger.  
+
+Triggers are a circumstances which activates the event, they are:
+
+* GET
+* SET
+* AUTO
+* INIT
+
+#### GET Events
+
+GET events are executed when a GET request is issued on the OID associated to the event.
+Get events are executed before the object's value is read from the database.
+
+#### SET Events
+
+SET events are executed when a SET request is issued on the OID associated to the event.
+If **$SNMP_VALUE** is present in the event's command it will be replaced by the value set to the Object.
+The set events are executed after the new value has been read to the database.
+
+#### INIT Events
+
+INIT events are executed at the start of Murmure when in Daemon mode and are executed only once.
+
+#### AUTO Events
+
+AUTO events are a special type of event, called **scheduled event**. Scheduled events have, in addition, a timeout associated and are executed when their timeout expires. When the timeout expires the timer is obviously reset.
+
+### Net-SNMP Configuration
+
+#### Daemon mode
+
+```txt
+...
+pass_persist <rootOid> /path/to/murmure/murmure -D
+...
+```
+
+#### Oneshot mode
+
+```txt
+...
+pass <rootOid> /path/to/murmure/murmure
+...
+```
+
+---
+
+## Data Types
+
+Every object has its Syntax which specifies its data type, but net-snmp does not support all of them, in specific net-snmp extension can return only a few types of data. These data types in murmure are called "primitives".  
+In specific primitive types are:
+
+* COUNTER
+* GAUGE
+* INTEGER
+* IPADDRESS
+* OBJECT
+* OCTET
+* SEQUENCE
+* STRING
+* TIMETICKS
+
+Primitives are implemented in murmure in murmure/primitives/ and all of them implements the Primitive interface.
+If we had only primitives and you tried to parse a MIB which implements other types such as DisplayString or DateAndTime an error would raise, saying that Murmure could not resolve that type.  
+How can other types (such as DisplayString or DateAndTime) be implemented?  
+Simply using Modules.
+
+### Modules
+
+TODO
+
+---
+
+## Known Issues
+
+* Command line scheduling at different time does not work properly: if you schedule using command line and later you do another scheduling without resetting the previous one, it causes id conflicts. This will be fixed in 1.0 release
+* MIB parsing fails but everything seems right: probably it's because your MIB is in dos format, please try to issue ```dos2unix``` command on your MIB file
+
+---
+
+## Contributions [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/ChristianVisintin/Murmure/issues)
+
+TODO
+
+---
+
+## Changelog
+
+### Murmure 1.0-rc (12/01/2019)
+
+* First version
+
+---
+
+## License
+
+Murmure is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. Murmure is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with Murmure.  
+If not, see <http://www.gnu.org/licenses/>.
