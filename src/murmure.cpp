@@ -35,8 +35,6 @@ Usage:\n\
 \t-h --help\t\t\t\tShow this page\n\
 "
 
-//TODO: command to change values manually
-
 #include <algorithm>
 #include <iostream>
 #include <sstream>
@@ -657,6 +655,37 @@ int main(int argc, char* argv[]) {
     delete mibtab;
     exitcode = 0;
 
+  } else if (cmdLineOpts.command == Command::CHANGE) {
+    //Instance new mibtable
+    Mibtable* mibtab = new Mibtable();
+    //Load mibtable
+    if (!mibtab->loadMibTable()) {
+      logger::log(COMPONENT, LOG_FATAL, "MIB table loading failed; execution aborted");
+      delete mibtab;
+      return 1;
+    }
+    //Look for provided oid
+    std::string oidStr = cmdLineOpts.args.at(0);
+    std::string valueStr = cmdLineOpts.args.at(1);
+    Oid* assocOid = mibtab->getOidByOid(oidStr);
+    if (assocOid == nullptr) {
+      //@! OID does not exist
+      logger::log(COMPONENT, LOG_ERROR, "Provided OID does not exist");
+      exitcode = 1;
+    } else {
+      //@! OID exists
+      if (assocOid->setValue(valueStr)) {
+        //@!OK
+        std::stringstream ss;
+        ss << "Value for OID " << oidStr << " set to " << valueStr;
+        logger::log(COMPONENT, LOG_INFO, ss.str());
+        exitcode = 0;
+      } else {
+        logger::log(COMPONENT, LOG_ERROR, "Could not set value for this OID");
+        exitcode = 1;
+      }
+    }
+    delete mibtab;
   } else {
     logger::log(COMPONENT, LOG_ERROR, "Unknown command");
     exitcode = 255;

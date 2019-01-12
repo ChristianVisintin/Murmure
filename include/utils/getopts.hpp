@@ -37,6 +37,7 @@ enum class Command {
   SCHEDULE,
   DUMP_SCHEDULE,
   RESET,
+  CHANGE,
   HELP
 };
 

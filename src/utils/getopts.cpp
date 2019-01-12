@@ -98,6 +98,15 @@ bool murmure::getOpts(options* optStruct, int argc, char* argv[], std::string* e
     }
   } else if (arg == "--reset") {
     optStruct->command = Command::RESET;
+  } else if (arg == "-C" || arg == "--change") {
+    if (argc < 4) {
+      *error = "Missing OID and value arguments";
+      return false;
+    }
+    optStruct->command = Command::CHANGE;
+    optStruct->args.reserve(2);
+    optStruct->args.push_back(std::string(argv[2]));
+    optStruct->args.push_back(std::string(argv[3]));
   } else if (arg == "-h" || arg == "--help") {
     optStruct->command = Command::HELP;
   } else {
