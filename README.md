@@ -1,6 +1,6 @@
 # Murmure
 
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![HitCount](http://hits.dwyl.io/ChristianVisintin/Murmure.svg)](http://hits.dwyl.io/ChristianVisintin/Murmure) [![Stars](https://img.shields.io/github/stars/ChristianVisintin/Murmure.svg)](https://github.com/ChristianVisintin/Murmure) [![Issues](https://img.shields.io/github/issues/ChristianVisintin/Murmure.svg)](https://github.com/ChristianVisintin/Murmure)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![HitCount](http://hits.dwyl.io/ChristianVisintin/Murmure.svg)](http://hits.dwyl.io/ChristianVisintin/Murmure) [![Stars](https://img.shields.io/github/stars/ChristianVisintin/Murmure.svg)](https://github.com/ChristianVisintin/Murmure) [![Issues](https://img.shields.io/github/issues/ChristianVisintin/Murmure.svg)](https://github.com/ChristianVisintin/Murmure) [![MemoryLeaks](https://img.shields.io/badge/Memory%20Leaks-None-brightgreen.svg)](https://img.shields.io/badge/Memory%20Leaks-None-brightgreen.svg)
 
 **Net-SNMP** MIB Versatile Extender  
 
@@ -197,7 +197,19 @@ Simply using Modules.
 
 ### Modules
 
-TODO
+Modules are the functionality which allows you to use non-primitive types with net-snmp. A module is just a data type which uses and extends a Primitive to create an interface between net-snmp and the Primitive class.
+An example to explain modules is DisplayString <https://www.ietf.org/rfc/rfc1213.txt>.
+If Murmure hadn't modules, when a MIB which uses DisplayString gets parsed, it would return an error saying DisplayString is not a known data type. However, using modules this can be achieved easily.
+DisplayString, for example, can be just imagined as a STRING Primitive, so it will instance a String primitive in it setting and getting the value communicating with the same primitive.
+Another case is DateAndTime, which is a special Octet primitive, which must have a particular syntax. So before setting the value will check that its length is 8 or 11 bytes etc.
+
+Since SNMP has many data types, during the build process it is possible to specify which modules you want into your Murmure build. If you want to contribute adding new Modules, check the contributions guide.
+
+#### Supported Modules
+
+These are the modules currently supported by Murmure
+
+* DisplayString
 
 ---
 
@@ -210,11 +222,17 @@ TODO
 
 ## Contributions [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/ChristianVisintin/Murmure/issues)
 
-TODO
+Contributions are welcomed, please follow [Murmure's contributions guide](https://github.com/ChristianVisintin/Murmure/blob/master/CONTRIBUTING.md)
 
 ---
 
 ## Changelog
+
+### Murmure 1.0 (under development)
+
+* Added modules support
+* Added DisplayString module
+* Added destructor for primitive interface
 
 ### Murmure 1.0-rc (12/01/2019)
 
