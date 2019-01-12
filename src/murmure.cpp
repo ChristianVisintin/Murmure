@@ -208,6 +208,8 @@ inline void snmp_set(Mibtable* mibtab, Scheduler* mibScheduler, std::string requ
           std::cout << childOid->getOid() << std::endl;
           std::cout << childOid->getType() << std::endl;
           std::cout << childOid->getPrintableValue() << std::endl;
+          //Export value to env
+          setenv("SNMP_VALUE", value.c_str(), 1);
           //Exec SET commands for parent OID
           mibScheduler->fetchAndExec(parentOidStr, EventMode::SET);
           return;
@@ -272,6 +274,8 @@ inline void snmp_set(Mibtable* mibtab, Scheduler* mibScheduler, std::string requ
     return;
   }
 
+  //Export value to env
+  setenv("SNMP_VALUE", value.c_str(), 1);
   //Exec SET commands
   mibScheduler->fetchAndExec(requestedOid, EventMode::SET);
 
