@@ -44,6 +44,7 @@ DisplayString::~DisplayString() {
     String<std::string>* primitivePtr = reinterpret_cast<String<std::string>*>(primitive);
     delete primitivePtr;
   }
+  primitive = nullptr;
 }
 
 /**
@@ -55,7 +56,9 @@ DisplayString::~DisplayString() {
 **/
 
 bool DisplayString::setValue(std::string value) {
-  primitive = new String<std::string>(value);
+  if (primitive == nullptr) {
+    primitive = new String<std::string>(value);
+  }
   return true;
 }
 

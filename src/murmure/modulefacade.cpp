@@ -56,6 +56,7 @@ ModuleFacade::~ModuleFacade() {
   if (module != nullptr) {
     delete module;
   }
+  module = nullptr;
 }
 
 /**
