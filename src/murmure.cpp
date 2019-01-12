@@ -31,10 +31,12 @@ Usage:\n\
 \t-S --schedule [schedule file]\t\tConfigure Murmure schedulation.\n\
 \t--dump-scheduling [outfile]\t\tDump scheduling.\n\
 \t--reset\t\t\t\t\tReset entire mib and event tables\n\
+\t-C --change <OID> <value>\t\tSet value for OID manually to value\n\
 \t-h --help\t\t\t\tShow this page\n\
 "
 
 //TODO: command to change values manually
+//TODO: implement set export value
 
 #include <algorithm>
 #include <iostream>
@@ -622,6 +624,13 @@ int main(int argc, char* argv[]) {
     }
     //Instance new scheduler
     Scheduler* mibScheduler = new Scheduler(mibtab);
+    //Load scheduler events
+    if (!mibScheduler->loadEvents()) {
+      logger::log(COMPONENT, LOG_FATAL, "Could not load scheduler events; execution aborted");
+      delete mibtab;
+      delete mibScheduler;
+      return 2;
+    }
 
     //Dump scheduling
     if (!mibScheduler->dumpScheduling(dumpFile)) {

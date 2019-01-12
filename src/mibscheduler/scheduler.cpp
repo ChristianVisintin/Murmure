@@ -470,8 +470,13 @@ bool Scheduler::dumpScheduling(std::string filename /* = "" */) {
     lineStream << event->getOid() << ";";
     lineStream << event->getModeName() << ";";
     std::vector<std::string> cmdList = event->getCommandList();
-    for (auto cmd : cmdList) {
-      lineStream << cmd << ",";
+    for (size_t commandIndex = 0; commandIndex < cmdList.size();) {
+      std::string cmd = cmdList.at(commandIndex);
+      lineStream << cmd;
+      //If it is not last command add comma
+      if (++commandIndex != cmdList.size()) {
+        lineStream << ",";
+      }
     }
     lineStream << std::endl;
     std::string line = lineStream.str();
@@ -495,8 +500,13 @@ bool Scheduler::dumpScheduling(std::string filename /* = "" */) {
     lineStream << event->getOid() << ";";
     lineStream << event->getModeName() << ";";
     std::vector<std::string> cmdList = event->getCommandList();
-    for (auto cmd : cmdList) {
-      lineStream << cmd << ",";
+    for (size_t commandIndex = 0; commandIndex < cmdList.size();) {
+      std::string cmd = cmdList.at(commandIndex);
+      lineStream << cmd;
+      //If it is not last command add comma
+      if (++commandIndex != cmdList.size()) {
+        lineStream << ",";
+      }
     }
     lineStream << ";" << event->getTimeout();
     lineStream << std::endl;
