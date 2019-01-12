@@ -211,8 +211,13 @@ bool Mibparser::commitPreviousOid() {
     oidSaved = true;
     return true;
   }
-  //Add .0 to OID
-  currentOid += ".0";
+
+  bool isTableChild = checkIfTableChild(currentOid, mibtable);
+
+  //If it is leaf and it is not child of a table, then add ".0"
+  if (currentType != PRIMITIVE_OBJECTID && currentType != PRIMITIVE_SEQUENCE && !isTableChild) {
+    currentOid += ".0";
+  }
   Oid* newOid = new Oid(currentOid, currentType, "0", currentAccessMode, currentName);
   if (!newOid->isTypeValid()) {
     std::stringstream logStream;
@@ -410,7 +415,6 @@ bool Mibparser::handleObjectSyntax(std::string line) {
   logger::log(COMPONENT, LOG_INFO, "Set type to " + currentType);
 
   return true;
-
 }
 
 /**
@@ -436,7 +440,6 @@ bool Mibparser::handleObjectStatus(std::string line) {
   currentStatus = lineTokens.at(1);
   logger::log(COMPONENT, LOG_INFO, "Set Status to " + currentStatus);
   return true;
-
 }
 
 /**
@@ -476,7 +479,6 @@ bool Mibparser::handleObjectAccess(std::string line) {
 
   logger::log(COMPONENT, LOG_INFO, "Set AccessMode to " + access);
   return true;
-
 }
 
 /**
@@ -527,7 +529,6 @@ bool Mibparser::handleObjectGroup(std::string line) {
   currentOid = parentOid->getOid() + "." + oidInfo.at(1);
 
   return true;
-
 }
 
 /**
@@ -544,7 +545,7 @@ bool Mibparser::handleObjectGroup(std::string line) {
  * ControllerStateEntry ::= SEQUENCE {
  * NOTE: consider that a SEQUENCE can also be declared as
  * "SYNTAX SEQUENCE OF {object-name}"
-**/ 
+**/
 
 bool Mibparser::handleSequence(std::string line) {
 
@@ -577,5 +578,40 @@ bool Mibparser::handleSequence(std::string line) {
     logger::log(COMPONENT, LOG_ERROR, logStream.str());
     return false;
   }
+}
 
+/**
+ * @function checkIfTableChild
+ * @description check if provided oid is child of a table
+ * @param std::string
+ * @param Mibtable*
+ * @returns bool
+**/
+
+bool Mibparser::checkIfTableChild(std::string oid, Mibtable* mtable) {
+
+  //Get parent Oid
+  std::string parentOidStr;
+  size_t lastDotPos = oid.find_last_of(".");
+  if (lastDotPos != std::string::npos) {
+    parentOidStr = oid.substr(0, lastDotPos);
+  } else {
+    //@! Is not a valid OID
+    return false;
+  }
+  //Get grandParent OID
+  Oid* grandParentOid = mtable->getOidByOid(mtable->getPreviousOid(parentOidStr));
+  if (grandParentOid != nullptr) {
+    //Check if it is table
+    if (grandParentOid->getPrimitiveType() == PRIMITIVE_SEQUENCE) {
+      //@! It is table child
+      return true;
+    } else {
+      //@! Ain't table child
+      return false;
+    }
+  } else {
+    //@! gran parent does not exist
+    return false;
+  }
 }
