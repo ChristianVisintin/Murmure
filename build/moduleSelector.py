@@ -35,6 +35,7 @@ SRC_PATH = ROOT_PATH + "/src/"
 MODULES_PATH = INCLUDE_PATH + "/murmure/modules/"
 MODULEFACADE_PATH = SRC_PATH + "/murmure/modulefacade.cpp"
 MODUELEFACADE_BAK_PATH = SRC_PATH + "/murmure/modulefacade.orig.cpp"
+MODULES_SRC_LIST = "/build/modulesSrc.list"
 
 if __name__ == "__main__":
   #List modules
@@ -119,5 +120,16 @@ if __name__ == "__main__":
     #Update file
     hnd.write(fileContent)
     hnd.close()
+  #Print sources in build
+  sourcesFiles = ""
+  for module in moduleSelectionList:
+    sourcesFiles += "murmure/mdoules" + module + ".cpp "
+  try:
+    hnd = open("%s/%s" % (ROOT_PATH, MODULES_SRC_LIST), 'w')
+    hnd.write(sourcesFiles)
+  except IOError as error:
+    print(str(error))
+    exit(1)
+  hnd.close()
   print("Modules loaded successfully")
   exit(0)
