@@ -35,16 +35,18 @@ Usage:\n\
 \t-h --help\t\t\t\tShow this page\n\
 "
 
-#include <algorithm>
-#include <iostream>
-#include <sstream>
-
 #include <murmure/mibtable.hpp>
 #include <utils/getopts.hpp>
 #include <utils/logger.hpp>
+#include <utils/databasefacade.hpp>
 
 #include <mibparser/mibparser.hpp>
 #include <mibscheduler/scheduler.hpp>
+
+#include <algorithm>
+#include <fstream>
+#include <iostream>
+#include <sstream>
 
 //Logger
 #ifndef MURMURE_LOGFILE
@@ -53,6 +55,10 @@ Usage:\n\
 
 #ifndef LOGLEVEL
 #define LOGLEVEL LOG_INFO
+#endif
+
+#ifndef SQLFILE
+#define SQLFILE "/usr/local/murmure/SQL/mibtable.sql"
 #endif
 
 #define COMPONENT "Main"
@@ -270,6 +276,36 @@ inline void snmp_set(Mibtable* mibtab, Scheduler* mibScheduler, std::string requ
   return;
 }
 
+inline bool initializeDatabase() {
+  std::string error;
+  if(!database::open(&error)) {
+    logger::log(COMPONENT, LOG_ERROR, error);
+    return false;
+  }
+  //open SQL file
+  std::ifstream sqlStream;
+  sqlStream.open(SQLFILE);
+  if (!sqlStream.is_open()) {
+    error = "Could not open file " + std::string(SQLFILE);
+    logger::log(COMPONENT, LOG_ERROR, error);
+    return false;
+  }
+
+  std::string sqlCreateStmt = std::string((std::istreambuf_iterator<char>(sqlStream)), std::istreambuf_iterator<char>());
+  sqlStream.close();
+  //Execute
+  if(!database::exec(sqlCreateStmt, &error)) {
+    logger::log(COMPONENT, LOG_ERROR, error);
+    return false;
+  }
+
+  if(!database::close(&error)) {
+    logger::log(COMPONENT, LOG_ERROR, error);
+    return false;
+  }
+  return true;
+}
+
 int main(int argc, char* argv[]) {
 
   //Exitcode declaration
@@ -307,6 +343,12 @@ int main(int argc, char* argv[]) {
   //Init logger
   logger::logfile = std::string(MURMURE_LOGFILE);
   logger::toStdout = true;
+
+  //Initialize database; create it if it doesn't exist
+  if (!initializeDatabase()) {
+    logger::log(COMPONENT, LOG_FATAL, "Could not initialize database");
+    return 1;
+  }
 
   if (cmdLineOpts.command == Command::HELP) {
     std::cout << "Murmure " << MURMURE_VERSION << " - Developed by Christian Visintin" << std::endl;

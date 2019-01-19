@@ -22,7 +22,7 @@
 -- Database for storing MIB's OID and scheduled events
 -- Written and designed by Christian Visintin
 
-CREATE TABLE oids (
+CREATE TABLE IF NOT EXISTS oids (
   oid VARCHAR(64) PRIMARY KEY NOT NULL,
   name VARCHAR(255),
   datatype VARCHAR(32) NOT NULL,
@@ -30,7 +30,7 @@ CREATE TABLE oids (
   accessmode INTEGER NOT NULL
 );
 
-CREATE TABLE scheduled_events (
+CREATE TABLE IF NOT EXISTS scheduled_events (
   event_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
   mode VARCHAR(1) NOT NULL,
   timeout INTEGER DEFAULT 0,
@@ -38,7 +38,7 @@ CREATE TABLE scheduled_events (
   FOREIGN KEY(oid) REFERENCES oids(oid)
 );
 
-CREATE TABLE events_commands (
+CREATE TABLE IF NOT EXISTS events_commands (
   command_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
   command VARCHAR(256) NOT NULL,
   execution_order INTEGER NOT NULL,
