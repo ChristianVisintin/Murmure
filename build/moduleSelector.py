@@ -20,7 +20,7 @@ You should have received a copy of the GNU General Public License
 import os
 from sys import exit
 import itertools
-from shutil import copyfile
+from shutil import copyfile, move
 
 useInquirer = True
 try:
@@ -34,11 +34,21 @@ INCLUDE_PATH = ROOT_PATH + "/include/"
 SRC_PATH = ROOT_PATH + "/src/"
 MODULES_PATH = INCLUDE_PATH + "/murmure/modules/"
 MODULEFACADE_PATH = SRC_PATH + "/murmure/modulefacade.cpp"
-MODUELEFACADE_BAK_PATH = SRC_PATH + "/murmure/modulefacade.orig.cpp"
+MODULEFACADE_BAK_PATH = SRC_PATH + "/murmure/modulefacade.orig.cpp"
 MODULES_SRC_LIST = "/build/modulesSrc.list"
+MAKEFILE_AM = SRC_PATH + "Makefile.am"
+MAKEFILE_AM_BAK = SRC_PATH + "Makefile.am.bak"
 
 if __name__ == "__main__":
   #List modules
+  #Restore modulefacade if exists
+  if os.path.isfile(MODULEFACADE_BAK_PATH):
+    move(MODULEFACADE_BAK_PATH, MODULEFACADE_PATH)
+    print("Restored %s" % MODULEFACADE_PATH)
+  #Restore makefile if exists
+  if os.path.isfile(MAKEFILE_AM_BAK):
+    move (MAKEFILE_AM_BAK, MAKEFILE_AM)
+    print("Restored %s" % MAKEFILE_AM)
   moduleListFiles = os.listdir(MODULES_PATH)
   moduleList = []
   moduleSelectionList = []
@@ -93,7 +103,7 @@ if __name__ == "__main__":
   
   #Create modulefacade.orig.cpp
   try:
-    copyfile(MODULEFACADE_PATH, MODUELEFACADE_BAK_PATH)
+    copyfile(MODULEFACADE_PATH, MODULEFACADE_BAK_PATH)
   except IOError as error:
     print(str(error))
     exit(1)
@@ -120,13 +130,15 @@ if __name__ == "__main__":
     #Update file
     hnd.write(fileContent)
     hnd.close()
-  #Print sources in build
-  sourcesFiles = ""
+  #Create backup of makefile
+  copyfile(MAKEFILE_AM, MAKEFILE_AM_BAK)
+  #Print sources in Makefile
+  sourcesFiles = "Murmure_SOURCES += "
   for module in moduleSelectionList:
-    sourcesFiles += "murmure/mdoules" + module + ".cpp "
+    sourcesFiles += "murmure/modules/" + module + ".cpp "
   try:
-    hnd = open("%s/%s" % (ROOT_PATH, MODULES_SRC_LIST), 'w')
-    hnd.write(sourcesFiles)
+    hnd = open(MAKEFILE_AM, 'a')
+    hnd.write("%s\n" % sourcesFiles)
   except IOError as error:
     print(str(error))
     exit(1)
