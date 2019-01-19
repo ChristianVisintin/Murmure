@@ -6,7 +6,7 @@
 
 Developed by *Christian Visintin*  
 
-Version 1.0-rc  
+Version 1.0.0-rc  
 
 ---
 
@@ -32,57 +32,43 @@ Murmure can handle every type allowed in SNMP, but if it is not a primitive (we'
 
 ## Build
 
-Automake coming soon
+Build is accomplished using GNU autotools.
 
 ### Requirements
 
-* C++11
+* C++11 compiler
+* GNU Autotools
 * Python3
 * libsqlite3
 * sqlite3
 * libpthread
 
-at the moment it is possible to compile with the following script (Will build Murmure in ./out/):
+#### Optional Requirements
+
+* inquirer - to facilitate module selection ```pip install inquirer```
+
+### Build Procedure
 
 ```sh
-#!/bin/bash
-if [ -z "$CXX" ]; then
-  CXX=`which c++`
-  if [ -z "$CXX" ]; then
-    CXX=`which g++`
-    #Final check
-    if [ -z "$CXX" ]; then
-      echo "Could not find any C++ compiler; please export to CXX variable your compiler."
-      exit 1
-    fi
-  fi
-fi
-STARTDIR="`pwd`/"
-cd ..
-ROOTDIR="`pwd`/"
-#Check destdir
-if [ -z "$DESTDIR" ]; then
-  DESTDIR="$ROOTDIR/out/"
-  mkdir -p $DESTDIR
-fi
-if [ ! -e "$DESTDIR" ]; then
-  echo "Could not create $DESTDIR"
-  exit 1
-fi
-echo "Murmure will be built into $DESTDIR"
-sleep 1
-#Get cpp_files
-find src/ -iname "*.cpp" -exec echo -n "{} "> /tmp/cpp_files.txt \;
-CPP_FILES=`cat /tmp/cpp_files.txt`
-rm /tmp/cpp_files.txt
-$CXX -Wall -std=c++11 -I $ROOTDIR/include/ -o $DESTDIR/murmure $CPP_FILES -lsqlite3 -lpthread
-rm -f /tmp/mib.db
-touch /tmp/mib.db
-cat $ROOTDIR/SQL/mibtable.sql | sqlite3 /tmp/mib.db
-#Delete objects files
-find ./ -iname "*.o" -exec rm {} \;
-exit 0
+set -e
+python3 build/moduleSelector.py
+./autogen.sh
+./configure
+make
+make install
 ```
+
+### Configure Options
+
+* DBPATH: Murmure database path
+* LOGFILE: Murmure logfile
+* LOGLEVEL: Log level used for logging
+  * 1: FATAL
+  * 2: ERROR
+  * 3: WARN
+  * 4: INFO
+  * 5: DEBUG
+* SQLFILE: Murmure SQL file
 
 ---
 
@@ -228,13 +214,14 @@ Contributions are welcomed, please follow [Murmure's contributions guide](https:
 
 ## Changelog
 
-### Murmure 1.0 (under development)
+### Murmure 1.0.0 (under development)
 
 * Added modules support
 * Added DisplayString module
 * Added destructor for primitive interface
+* Added autotools build
 
-### Murmure 1.0-rc (12/01/2019)
+### Murmure 1.0.0-rc (12/01/2019)
 
 * First version
 
