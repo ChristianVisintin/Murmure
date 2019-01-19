@@ -49,16 +49,21 @@ Usage:\n\
 #include <sstream>
 
 //Logger
-#ifndef MURMURE_LOGFILE
+#ifndef LOGFILE
 #define MURMURE_LOGFILE "/var/log/murmure.log"
+#else
+#define MURMURE_LOGFILE QUOTE(LOGFILE)
 #endif
 
 #ifndef LOGLEVEL
 #define LOGLEVEL LOG_INFO
 #endif
 
+//SQL file for db build
 #ifndef SQLFILE
-#define SQLFILE "/usr/local/murmure/SQL/mibtable.sql"
+#define DATABASE_SQLFILE "/usr/local/share/SQL/mibtable.sql"
+#else
+#define DATABASE_SQLFILE QUOTE(SQLFILE)
 #endif
 
 #define COMPONENT "Main"
@@ -284,9 +289,9 @@ inline bool initializeDatabase() {
   }
   //open SQL file
   std::ifstream sqlStream;
-  sqlStream.open(SQLFILE);
+  sqlStream.open(DATABASE_SQLFILE);
   if (!sqlStream.is_open()) {
-    error = "Could not open file " + std::string(SQLFILE);
+    error = "Could not open file " + std::string(DATABASE_SQLFILE);
     logger::log(COMPONENT, LOG_ERROR, error);
     return false;
   }

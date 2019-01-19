@@ -21,8 +21,13 @@
 #ifndef DATABASEFACADE_HPP
 #define DATABASEFACADE_HPP
 
-#ifndef DATABASEPATH
-#define DATABASEPATH "/usr/local/share/murmure/mib.db"
+#define Q(x) #x
+#define QUOTE(x) Q(x)
+
+#ifndef DBPATH
+#define DATABASEPATH "/usr/local/share/mib.db"
+#else
+#define DATABASEPATH QUOTE(DBPATH)
 #endif
 
 #include <vector>
