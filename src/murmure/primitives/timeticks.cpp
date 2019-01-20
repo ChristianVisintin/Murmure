@@ -50,6 +50,10 @@ template <>
 bool Timeticks<unsigned int>::setValue(std::string oid, std::string value) {
   std::string errorString;
 
+  if (std::stoi(value) > 4294967296) {
+    return false;
+  }
+
   //Open database
   if (!database::open(&errorString)) {
     //Database open failed
