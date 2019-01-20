@@ -76,7 +76,7 @@ bool Counter64::setValue(std::string oid, std::string value) {
     return false;
   }
   //Check value for Counter64
-  if (std::stoi(value) > 18446744073709551615) {
+  if (static_cast<unsigned int>(std::stoi(value)) > 18446744073709551615U) {
     return false;
   }
   Gauge<unsigned int>* primitivePtr = reinterpret_cast<Gauge<unsigned int>*>(primitive);
