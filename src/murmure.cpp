@@ -106,7 +106,7 @@ inline void snmp_get(Mibtable* mibtab, Scheduler* mibScheduler, std::string requ
 
   //Else output OID, type, value
   std::cout << reqOid->getOid() << std::endl;
-  std::cout << reqOid->getType() << std::endl;
+  std::cout << reqOid->getPrimitiveType() << std::endl;
   std::cout << reqOid->getPrintableValue() << std::endl;
 
   return;
@@ -155,7 +155,7 @@ inline void snmp_getnext(Mibtable* mibtab, Scheduler* mibScheduler, std::string 
 
     //Else output OID, type, value
     std::cout << assocOid->getOid() << std::endl;
-    std::cout << assocOid->getType() << std::endl;
+    std::cout << assocOid->getPrimitiveType() << std::endl;
     std::cout << assocOid->getPrintableValue() << std::endl;
   } while (!oidFound);
   return;
