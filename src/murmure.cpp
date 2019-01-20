@@ -210,7 +210,7 @@ inline void snmp_set(Mibtable* mibtab, Scheduler* mibScheduler, std::string requ
         //@! Table element added Successfully
         //if added successfully output OID, type, value
         std::cout << childOid->getOid() << std::endl;
-        std::cout << childOid->getType() << std::endl;
+        std::cout << childOid->getPrimitiveType() << std::endl;
         std::cout << childOid->getPrintableValue() << std::endl;
         //Export value to env
         setenv("SNMP_VALUE", value.c_str(), 1);
@@ -276,7 +276,7 @@ inline void snmp_set(Mibtable* mibtab, Scheduler* mibScheduler, std::string requ
 
   //Else output OID, type, value
   std::cout << reqOid->getOid() << std::endl;
-  std::cout << reqOid->getType() << std::endl;
+  std::cout << reqOid->getPrimitiveType() << std::endl;
   std::cout << reqOid->getPrintableValue() << std::endl;
   return;
 }
