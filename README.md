@@ -1,12 +1,12 @@
 # Murmure
 
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![HitCount](http://hits.dwyl.io/ChristianVisintin/Murmure.svg)](http://hits.dwyl.io/ChristianVisintin/Murmure) [![Stars](https://img.shields.io/github/stars/ChristianVisintin/Murmure.svg)](https://github.com/ChristianVisintin/Murmure) [![Issues](https://img.shields.io/github/issues/ChristianVisintin/Murmure.svg)](https://github.com/ChristianVisintin/Murmure) [![MemoryLeaks](https://img.shields.io/badge/Memory%20Leaks-None-brightgreen.svg)](https://img.shields.io/badge/Memory%20Leaks-None-brightgreen.svg)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![HitCount](http://hits.dwyl.io/ChristianVisintin/Murmure.svg)](http://hits.dwyl.io/ChristianVisintin/Murmure) [![Stars](https://img.shields.io/github/stars/ChristianVisintin/Murmure.svg)](https://github.com/ChristianVisintin/Murmure) [![Issues](https://img.shields.io/github/issues/ChristianVisintin/Murmure.svg)](https://github.com/ChristianVisintin/Murmure) [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/ChristianVisintin/Murmure/issues) [![MemoryLeaks](https://img.shields.io/badge/Memory%20Leaks-None-brightgreen.svg)](https://img.shields.io/badge/Memory%20Leaks-None-brightgreen.svg)
 
 **Net-SNMP** MIB Versatile Extender  
 
 Developed by *Christian Visintin*  
 
-Version 1.0.0-rc  
+Version 1.0.0
 
 ---
 
@@ -195,13 +195,21 @@ Since SNMP has many data types, during the build process it is possible to speci
 
 These are the modules currently supported by Murmure
 
+* BITS
+* Counter32
+* Counter64
+* DateAndTime
 * DisplayString
+* Gauge32
+* Integer32
+* Opaque
+* RowStatus
+* Unsigned32
 
 ---
 
 ## Known Issues
 
-* Command line scheduling at different time does not work properly: if you schedule using command line and later you do another scheduling without resetting the previous one, it causes id conflicts. This will be fixed in 1.0 release
 * MIB parsing fails but everything seems right: probably it's because your MIB is in dos format, please try to issue ```dos2unix``` command on your MIB file
 
 ---
@@ -212,14 +220,31 @@ Contributions are welcomed, please follow [Murmure's contributions guide](https:
 
 ---
 
+## Branches
+
+* **Master**: always stable
+* **Dev**: master under development
+* others: independent features under development
+
 ## Changelog
 
-### Murmure 1.0.0 (under development)
+### Murmure 1.0.0 (20/01/2019)
 
 * Added modules support
-* Added DisplayString module
+* Added the following Modules:
+  * BITS
+  * Counter32
+  * Counter64
+  * DateAndTime
+  * DisplayString
+  * Gauge32
+  * Integer32
+  * Opaque
+  * RowStatus
+  * Unsigned32
 * Added destructor for primitive interface
 * Added autotools build
+* Fixed Scheduling issue
 
 ### Murmure 1.0.0-rc (12/01/2019)
 
