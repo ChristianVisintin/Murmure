@@ -41,7 +41,7 @@ DateAndTime::DateAndTime() {
 
 DateAndTime::~DateAndTime() {
   if (primitive != nullptr) {
-    Octet<std::string>* primitivePtr = reinterpret_cast<Octet<std::string>*>(primitive);
+    Octet<uint8_t*>* primitivePtr = reinterpret_cast<Octet<uint8_t*>*>(primitive);
     delete primitivePtr;
   }
   primitive = nullptr;
