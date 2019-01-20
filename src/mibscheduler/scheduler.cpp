@@ -155,7 +155,12 @@ bool Scheduler::loadEvents() {
       continue;
     }
     //Okay, we have our command list now
-    std::vector<std::string> commandList = commandListRows.at(0);
+    std::vector<std::string> commandList;
+    for (auto row : commandListRows) {
+      if (row.size() > 0) {
+        commandList.push_back(row.at(0));
+      }
+    }
 
     //Check mode, based on it we'll insert our event in a different vector
     if (mode == EVENTMODE_AUTO) {
@@ -591,11 +596,6 @@ int Scheduler::runScheduler() {
 
 bool Scheduler::addEvent(std::string oid, EventMode mode, std::vector<std::string> commandList, int timeout /*= 0*/) {
 
-  //Event id is the ID the event will take into the database
-  //We know it because it's an auto incremented key
-  //It's the total amount of events + 1
-  int nextEventId = scheduledEvents.size() + events.size() + 1;
-
   //Try to open database
   std::string errorString;
   if (!database::open(&errorString)) {
@@ -604,52 +604,100 @@ bool Scheduler::addEvent(std::string oid, EventMode mode, std::vector<std::strin
     return false;
   }
 
-  //Instance and create new event
-  if (mode == EventMode::AUTO) {
-    ScheduledEvent* newEv = new ScheduledEvent(oid, mode, commandList, timeout);
-    std::stringstream evQueryStr;
-    evQueryStr << "INSERT INTO scheduled_events(mode, timeout, oid) VALUES (\"";
-    evQueryStr << newEv->getModeName() << "\",";
-    evQueryStr << newEv->getTimeout() << ",\"";
-    evQueryStr << newEv->getOid() << "\");";
-    std::string query = evQueryStr.str();
-    if (!database::exec(query, &errorString)) {
-      //Database query failed
-      logger::log(COMPONENT, LOG_ERROR, errorString);
-      delete newEv;
-      return false;
-    }
-    //Add event to scheduled events vector
-    scheduledEvents.push_back(newEv);
-  } else {
-    Event* newEv = new Event(oid, mode, commandList);
-    std::stringstream evQueryStr;
-    evQueryStr << "INSERT INTO scheduled_events(mode, oid) VALUES (\"";
-    evQueryStr << newEv->getModeName() << "\",\"";
-    evQueryStr << newEv->getOid() << "\");";
-    std::string query = evQueryStr.str();
-    if (!database::exec(query, &errorString)) {
-      //Database query failed
-      logger::log(COMPONENT, LOG_ERROR, errorString);
-      delete newEv;
-      return false;
-    }
-    //Add event to scheduled vector
-    events.push_back(newEv);
+  //Check if event doesn't already exist
+  std::stringstream queryStr;
+  Event* dummyEv = new Event(oid, mode, commandList);
+  queryStr << "SELECT event_id FROM scheduled_events WHERE oid = \"" << oid << "\" AND mode = \"" << dummyEv->getModeName() << "\";";
+  delete dummyEv;
+  std::vector<std::vector<std::string>> result;
+  if (!database::select(&result, queryStr.str(), &errorString)) {
+    logger::log(COMPONENT, LOG_ERROR, errorString);
+    return false;
   }
-  //Add commands to database
-  int executionOrder = 0;
-  for (auto cmd : commandList) {
-    std::stringstream cmdQueryStr;
-    cmdQueryStr << "INSERT INTO events_commands(command, execution_order, event_id) VALUES(\"";
-    cmdQueryStr << cmd << "\", ";
-    cmdQueryStr << ++executionOrder << ", ";
-    cmdQueryStr << nextEventId << ");";
-    std::string query = cmdQueryStr.str();
-    if (!database::exec(query, &errorString)) {
-      //Database query failed
+  //Get eventId if result.size > 0
+  if (result.size() > 0) {
+    //@! Event already exists
+    int eventId = std::stoi(result.at(0).at(0));
+    queryStr.str(std::string());
+    queryStr << "SELECT execution_order FROM events_commands WHERE event_id = " << eventId << " ORDER BY execution_order DESC LIMIT 1;";
+    result.clear();
+    if (!database::select(&result, queryStr.str(), &errorString)) {
       logger::log(COMPONENT, LOG_ERROR, errorString);
-      return false;
+    }
+    //Get execution order
+    int executionOrder = 0;
+    if (result.size() > 0) {
+      executionOrder = std::stoi(result.at(0).at(0));
+    }
+    //Let's find the execution order
+    for (auto cmd : commandList) {
+      std::stringstream cmdQueryStr;
+      cmdQueryStr << "INSERT INTO events_commands(command, execution_order, event_id) VALUES(\"";
+      cmdQueryStr << cmd << "\", ";
+      cmdQueryStr << ++executionOrder << ", ";
+      cmdQueryStr << eventId << ");";
+      std::string query = cmdQueryStr.str();
+      if (!database::exec(query, &errorString)) {
+        //Database query failed
+        logger::log(COMPONENT, LOG_ERROR, errorString);
+        return false;
+      }
+    }
+  } else {
+    //@!New event
+
+    //Event id is the ID the event will take into the database
+    //We know it because it's an auto incremented key
+    //It's the total amount of events + 1
+    int nextEventId = scheduledEvents.size() + events.size() + 1;
+
+    //Instance and create new event
+    if (mode == EventMode::AUTO) {
+      ScheduledEvent* newEv = new ScheduledEvent(oid, mode, commandList, timeout);
+      std::stringstream evQueryStr;
+      evQueryStr << "INSERT INTO scheduled_events(mode, timeout, oid) VALUES (\"";
+      evQueryStr << newEv->getModeName() << "\",";
+      evQueryStr << newEv->getTimeout() << ",\"";
+      evQueryStr << newEv->getOid() << "\");";
+      std::string query = evQueryStr.str();
+      if (!database::exec(query, &errorString)) {
+        //Database query failed
+        logger::log(COMPONENT, LOG_ERROR, errorString);
+        delete newEv;
+        return false;
+      }
+      //Add event to scheduled events vector
+      scheduledEvents.push_back(newEv);
+    } else {
+      Event* newEv = new Event(oid, mode, commandList);
+      std::stringstream evQueryStr;
+      evQueryStr << "INSERT INTO scheduled_events(mode, oid) VALUES (\"";
+      evQueryStr << newEv->getModeName() << "\",\"";
+      evQueryStr << newEv->getOid() << "\");";
+      std::string query = evQueryStr.str();
+      if (!database::exec(query, &errorString)) {
+        //Database query failed
+        logger::log(COMPONENT, LOG_ERROR, errorString);
+        delete newEv;
+        return false;
+      }
+      //Add event to scheduled vector
+      events.push_back(newEv);
+    }
+    //Add commands to database
+    int executionOrder = 0;
+    for (auto cmd : commandList) {
+      std::stringstream cmdQueryStr;
+      cmdQueryStr << "INSERT INTO events_commands(command, execution_order, event_id) VALUES(\"";
+      cmdQueryStr << cmd << "\", ";
+      cmdQueryStr << ++executionOrder << ", ";
+      cmdQueryStr << nextEventId << ");";
+      std::string query = cmdQueryStr.str();
+      if (!database::exec(query, &errorString)) {
+        //Database query failed
+        logger::log(COMPONENT, LOG_ERROR, errorString);
+        return false;
+      }
     }
   }
 

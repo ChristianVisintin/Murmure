@@ -567,6 +567,13 @@ int main(int argc, char* argv[]) {
     }
     //Instance new scheduler
     Scheduler* mibScheduler = new Scheduler(mibtab);
+    //Load scheduler events
+    if (!mibScheduler->loadEvents()) {
+      logger::log(COMPONENT, LOG_FATAL, "Could not load scheduler events; execution aborted");
+      delete mibtab;
+      delete mibScheduler;
+      return 2;
+    }
     //Check if a file has to be parsed or if user wants to insert scheduling manually
     if (cmdLineOpts.args.size() == 1) {
       //Parse file
