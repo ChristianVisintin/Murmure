@@ -75,6 +75,10 @@ bool DisplayString::setValue(std::string oid, std::string value) {
   if (primitive == nullptr) {
     return false;
   }
+  //Check length for displayString (max 255)
+  if (value.length() > 255) {
+    return false;
+  }
   String<std::string>* primitivePtr = reinterpret_cast<String<std::string>*>(primitive);
   return primitivePtr->setValue(oid, value);
 }
