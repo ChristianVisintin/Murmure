@@ -1,5 +1,5 @@
 AC_PREREQ([2.69])
-AC_INIT(murmure, 1.0, https://github.com/ChristianVisintin/Murmure)
+AC_INIT([murmure], [1.0.1], [https://github.com/ChristianVisintin/Murmure])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])
 AC_CONFIG_SRCDIR([include/murmure/mibtable.hpp])
 AC_LANG(C++)
@@ -88,4 +88,5 @@ elif test "${PREFIX}" != ""; then
   CPPFLAGS="${CPPFLAGS} -D SQLFILE=${PREFIX}/SQL/mibtable.sql"
 fi
 
-AC_OUTPUT(Makefile src/Makefile SQL/Makefile)
+AC_CONFIG_FILES([Makefile src/Makefile SQL/Makefile])
+AC_OUTPUT

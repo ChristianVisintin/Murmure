@@ -6,7 +6,7 @@
 
 Developed by *Christian Visintin*  
 
-Version 1.0.0
+Version 1.0.1
 
 ---
 
@@ -227,6 +227,10 @@ Contributions are welcomed, please follow [Murmure's contributions guide](https:
 * others: independent features under development
 
 ## Changelog
+
+### Murmure 1.0.1 (25/05/2019)
+
+* murmure directory renamed to core in order to allow 'murmure' executable name
 
 ### Murmure 1.0.0 (20/01/2019)
 

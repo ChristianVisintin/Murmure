@@ -18,7 +18,7 @@
  * You should have received a copy of the GNU General Public License
 **/
 
-#define MURMURE_VERSION "1.0-rc"
+#define MURMURE_VERSION "1.0.1"
 
 #define USAGE \
   "\
