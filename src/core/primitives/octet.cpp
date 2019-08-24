@@ -120,14 +120,6 @@ template <>
 bool Octet<uint8_t*>::setValue(std::string oid, std::string value) {
 
   std::string errorString;
-
-  //Open database
-  if (!database::open(&errorString)) {
-    //Database open failed
-    logger::log(COMPONENT, LOG_ERROR, errorString);
-    return false;
-  }
-
   //Build query string sstream
   std::stringstream queryStream;
   //NOTE: value is already ASCII representation
@@ -151,13 +143,6 @@ bool Octet<uint8_t*>::setValue(std::string oid, std::string value) {
   this->value = new uint8_t[dataLength];
   //Convert value to byte buffer
   valueToHex(value);
-
-  //try to close database
-  if (!database::close(&errorString)) {
-    logger::log(COMPONENT, LOG_ERROR, errorString);
-    return false;
-  }
-
   return true;
 }
 

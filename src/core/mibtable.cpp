@@ -63,13 +63,6 @@ bool Mibtable::loadMibTable() {
 
   std::string errorString;
 
-  //Open database
-  if (!database::open(&errorString)) {
-    //Database open failed
-    logger::log(COMPONENT, LOG_ERROR, errorString);
-    return false;
-  }
-
   //Select oids from database
 
   //Init vector of row; each vector identifies a row, which is a vector of strings,
@@ -77,17 +70,6 @@ bool Mibtable::loadMibTable() {
   std::vector<std::vector<std::string>> tableEntries;
   std::string query = "SELECT * FROM oids;";
   if (!database::select(&tableEntries, query, &errorString)) {
-    logger::log(COMPONENT, LOG_ERROR, errorString);
-    //try to close database
-    if (!database::close(&errorString)) {
-      logger::log(COMPONENT, LOG_ERROR, errorString);
-      return false;
-    }
-    return false;
-  }
-
-  //try to close database
-  if (!database::close(&errorString)) {
     logger::log(COMPONENT, LOG_ERROR, errorString);
     return false;
   }
@@ -138,12 +120,6 @@ bool Mibtable::loadMibTable() {
 
 bool Mibtable::addOid(Oid* newOid) {
   std::string errorString;
-  //Open database
-  if (!database::open(&errorString)) {
-    //Database open failed
-    logger::log(COMPONENT, LOG_ERROR, errorString);
-    return false;
-  }
 
   //Add new OID to database
   std::stringstream queryStream;
@@ -157,12 +133,6 @@ bool Mibtable::addOid(Oid* newOid) {
 
   if (!database::exec(query, &errorString)) {
     //Database commit failed
-    logger::log(COMPONENT, LOG_ERROR, errorString);
-    return false;
-  }
-
-  //Close database
-  if (!database::close(&errorString)) {
     logger::log(COMPONENT, LOG_ERROR, errorString);
     return false;
   }
@@ -183,31 +153,15 @@ bool Mibtable::addOid(Oid* newOid) {
 
 bool Mibtable::clearMibtable() {
   std::string errorString;
-  //Open database
-  if (!database::open(&errorString)) {
-    //Database open failed
-    logger::log(COMPONENT, LOG_ERROR, errorString);
-    return false;
-  }
-
   //Add new OID to database
   std::string query = "DELETE FROM oids;";
-
   if (!database::exec(query, &errorString)) {
     //Database commit failed
     logger::log(COMPONENT, LOG_ERROR, errorString);
     return false;
   }
-
-  //Close database
-  if (!database::close(&errorString)) {
-    logger::log(COMPONENT, LOG_ERROR, errorString);
-    return false;
-  }
-
   //Finally clear OIDs vector
   oids.clear();
-
   return true;
 }
 

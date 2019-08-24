@@ -32,8 +32,7 @@
 
 namespace database {
 
-bool open(std::string* error);
-bool close(std::string* error);
+void init(const std::string& dbPath);
 bool exec(std::string query, std::string* error);
 bool select(std::vector<std::vector<std::string>>* result, std::string query, std::string* error);
 

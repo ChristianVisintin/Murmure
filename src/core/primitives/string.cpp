@@ -52,14 +52,6 @@ String<std::string>::String(std::string value) {
 template <>
 bool String<std::string>::setValue(std::string oid, std::string value) {
   std::string errorString;
-
-  //Open database
-  if (!database::open(&errorString)) {
-    //Database open failed
-    logger::log(COMPONENT, LOG_ERROR, errorString);
-    return false;
-  }
-
   //Build query string sstream
   std::stringstream queryStream;
   queryStream << "UPDATE oids SET value = \"" << value << "\" WHERE oid = \"" << oid << "\";";
@@ -70,16 +62,8 @@ bool String<std::string>::setValue(std::string oid, std::string value) {
     logger::log(COMPONENT, LOG_ERROR, errorString);
     return false;
   }
-
   //Query succeeded, update oid value
   this->value = value;
-
-  //try to close database
-  if (!database::close(&errorString)) {
-    logger::log(COMPONENT, LOG_ERROR, errorString);
-    return false;
-  }
-
   return true;
 }
 

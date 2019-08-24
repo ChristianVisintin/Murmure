@@ -101,14 +101,6 @@ Scheduler::~Scheduler() {
 bool Scheduler::loadEvents() {
 
   std::string errorString;
-
-  //Open database
-  if (!database::open(&errorString)) {
-    //Database open failed
-    logger::log(COMPONENT, LOG_ERROR, errorString);
-    return false;
-  }
-
   //Select events from database
 
   //Init vector of row; each vector identifies a row, which is a vector of strings,
@@ -117,11 +109,6 @@ bool Scheduler::loadEvents() {
   std::string query = "SELECT event_id, oid, mode, timeout FROM scheduled_events;";
   if (!database::select(&tableEntries, query, &errorString)) {
     logger::log(COMPONENT, LOG_ERROR, errorString);
-    //try to close database
-    if (!database::close(&errorString)) {
-      logger::log(COMPONENT, LOG_ERROR, errorString);
-      return false;
-    }
     return false;
   }
 
@@ -143,11 +130,6 @@ bool Scheduler::loadEvents() {
     query = "SELECT command FROM events_commands WHERE event_id = \"" + evId + "\" ORDER BY execution_order ASC;";
     if (!database::select(&commandListRows, query, &errorString)) {
       logger::log(COMPONENT, LOG_ERROR, errorString);
-      //try to close database
-      if (!database::close(&errorString)) {
-        logger::log(COMPONENT, LOG_ERROR, errorString);
-        return false;
-      }
       return false;
     }
     //We have our commands in commandList row 0 now
@@ -197,12 +179,6 @@ bool Scheduler::loadEvents() {
       events.push_back(newEv);
     }
   }
-
-  //try to close database
-  if (!database::close(&errorString)) {
-    logger::log(COMPONENT, LOG_ERROR, errorString);
-  }
-
   return true;
 }
 
@@ -397,12 +373,6 @@ bool Scheduler::clearEvents() {
 
   //Open database
   std::string errorString;
-  if (!database::open(&errorString)) {
-    //Database open failed
-    logger::log(COMPONENT, LOG_ERROR, errorString);
-    return false;
-  }
-
   //Prepare DELETE query of scheduled_events
   std::string query = "DELETE FROM scheduled_events";
   if (!database::exec(query, &errorString)) {
@@ -432,12 +402,6 @@ bool Scheduler::clearEvents() {
     logger::log(COMPONENT, LOG_ERROR, errorString);
     return false;
   }
-
-  //try to close database
-  if (!database::close(&errorString)) {
-    logger::log(COMPONENT, LOG_ERROR, errorString);
-  }
-
   //Delete objects
   for (auto event : events) {
     delete event;
@@ -601,12 +565,6 @@ bool Scheduler::addEvent(std::string oid, EventMode mode, std::vector<std::strin
 
   //Try to open database
   std::string errorString;
-  if (!database::open(&errorString)) {
-    //Database open failed
-    logger::log(COMPONENT, LOG_ERROR, errorString);
-    return false;
-  }
-
   //Check if event doesn't already exist
   std::stringstream queryStr;
   Event* dummyEv = new Event(oid, mode, commandList);

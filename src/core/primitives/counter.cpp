@@ -52,14 +52,6 @@ Counter<unsigned int>::Counter(std::string value) {
 template <>
 bool Counter<unsigned int>::setValue(std::string oid, std::string value) {
   std::string errorString;
-
-  //Open database
-  if (!database::open(&errorString)) {
-    //Database open failed
-    logger::log(COMPONENT, LOG_ERROR, errorString);
-    return false;
-  }
-
   //Get value to set
   unsigned int newValue = std::stoi(value);
   //Build query string sstream
@@ -67,24 +59,14 @@ bool Counter<unsigned int>::setValue(std::string oid, std::string value) {
   queryStream << "UPDATE oids SET value = \"" << newValue << "\" WHERE oid = \"" << oid << "\";";
   std::string query = queryStream.str();
 
-
   if (!database::exec(query, &errorString)) {
     //Database query failed
     logger::log(COMPONENT, LOG_ERROR, errorString);
     return false;
   }
-
   //Query succeeded, update oid value
   this->value = newValue;
-
-  //try to close database
-  if (!database::close(&errorString)) {
-    logger::log(COMPONENT, LOG_ERROR, errorString);
-    return false;
-  }
-
   return true;
-
 }
 
 /**

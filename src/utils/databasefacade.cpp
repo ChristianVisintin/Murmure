@@ -27,9 +27,14 @@
 
 using namespace database;
 
+std::string databasePath;
 sqlite3* db;
 sqlite3_stmt* statement;
 bool isOpen = false; //Is database open?
+
+void database::init(const std::string& dbPath) {
+  databasePath = dbPath;
+}
 
 /**
  * @function open
@@ -38,10 +43,10 @@ bool isOpen = false; //Is database open?
  * @returns bool: True if open succeeded
 **/
 
-bool database::open(std::string* error) {
+bool open(std::string* error) {
 
   if (!isOpen) {
-    if (sqlite3_open(DATABASEPATH, &db) == SQLITE_OK) {
+    if (sqlite3_open(databasePath.c_str(), &db) == SQLITE_OK) {
       isOpen = true;
       return true;
     } else {
@@ -61,7 +66,7 @@ bool database::open(std::string* error) {
  * @returns bool: True if closed successfully; if database wasn't open, true will be returned anyway
 **/
 
-bool database::close(std::string* error) {
+bool close(std::string* error) {
 
   //If database is open, try to close it
   if (isOpen) {
@@ -91,21 +96,25 @@ bool database::close(std::string* error) {
 
 bool database::exec(std::string query, std::string* error) {
 
-  if (!isOpen) {
-    *error = "Database is not open";
+  //Open database
+  if (!open(error)) {
     return false;
   }
-
   char* errMsg = 0;
+  bool rc;
   //Exec query
   if (sqlite3_exec(db, query.c_str(), NULL, 0, &errMsg) == SQLITE_OK) {
     sqlite3_free(errMsg);
-    return true;
+    rc = true;
   } else {
     *error = std::string(errMsg);
     sqlite3_free(errMsg);
+    rc = false;
+  }
+  if (!close(error)) {
     return false;
   }
+  return rc;
 }
 
 /**
@@ -118,12 +127,10 @@ bool database::exec(std::string query, std::string* error) {
 **/
 
 bool database::select(std::vector<std::vector<std::string>>* result, std::string query, std::string* error) {
-
-  if (!isOpen) {
-    *error = "Database is not open";
+  //Open database
+  if (!open(error)) {
     return false;
   }
-
   //Empty result vector
   result->clear();
 
@@ -161,5 +168,8 @@ bool database::select(std::vector<std::vector<std::string>>* result, std::string
 
   sqlite3_reset(statement);
   sqlite3_finalize(statement);
+  if (!close(error)) {
+    return false;
+  }
   return res;
 }
