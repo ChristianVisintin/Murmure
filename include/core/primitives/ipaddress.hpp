@@ -21,26 +21,23 @@
  * SOFTWARE.
 **/
 
-#ifndef DATEANDTIME_HPP
-#define DATEANDTIME_HPP
+#ifndef IPADDRESS_HPP
+#define IPADDRESS_HPP
 
-#include <murmure/modules/module.hpp>
-
-/**
- * @name: DATEANDTIME
- * @ref: <https://tools.ietf.org/html/rfc1903>
-**/
+#include <core/primitives/primitive.hpp>
 
 namespace murmure {
 
-class DateAndTime : public Module {
+//Template for generic primitive value
+template <typename primitiveType>
+
+class IPAddress : public Primitive<std::string> {
+
 public:
-  DateAndTime();
-  ~DateAndTime();
-  bool setValue(std::string value);
+  IPAddress(std::string value);
   bool setValue(std::string oid, std::string value);
+  primitiveType getValue();
   std::string getPrintableValue();
-  std::string getPrimitiveType();
 };
 
 } // namespace murmure

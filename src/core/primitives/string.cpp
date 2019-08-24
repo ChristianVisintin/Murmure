@@ -21,7 +21,7 @@
  * SOFTWARE.
 **/
 
-#include <murmure/primitives/string.hpp>
+#include <core/primitives/string.hpp>
 #include <utils/databasefacade.hpp>
 #include <utils/logger.hpp>
 

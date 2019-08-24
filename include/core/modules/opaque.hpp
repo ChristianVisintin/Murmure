@@ -21,28 +21,26 @@
  * SOFTWARE.
 **/
 
-#ifndef OCTET_HPP
-#define OCTET_HPP
+#ifndef OPAQUE_HPP
+#define OPAQUE_HPP
 
-#include <murmure/primitives/primitive.hpp>
+#include <core/modules/module.hpp>
+
+/**
+ * @name: OPAQUE
+ * @ref: <https://tools.ietf.org/html/rfc2578#section-7.1.9>
+**/
 
 namespace murmure {
 
-template <typename primitiveType>
-
-class Octet : public Primitive<uint8_t*> {
-
+class Opaque : public Module {
 public:
-  Octet(std::string value);
-  ~Octet();
+  Opaque();
+  ~Opaque();
+  bool setValue(std::string value);
   bool setValue(std::string oid, std::string value);
-  primitiveType getValue();
   std::string getPrintableValue();
-
-private:
-  void valueToHex(std::string ascii);
-  std::string valueToAscii();
-  size_t dataLength; //Contains data length
+  std::string getPrimitiveType();
 };
 
 } // namespace murmure

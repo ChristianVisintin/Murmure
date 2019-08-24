@@ -21,7 +21,7 @@
  * SOFTWARE.
 **/
 
-#include <murmure/primitives/counter.hpp>
+#include <core/primitives/counter.hpp>
 #include <utils/databasefacade.hpp>
 #include <utils/logger.hpp>
 

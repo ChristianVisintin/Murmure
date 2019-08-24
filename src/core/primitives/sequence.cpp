@@ -21,7 +21,7 @@
  * SOFTWARE.
 **/
 
-#include <murmure/primitives/sequence.hpp>
+#include <core/primitives/sequence.hpp>
 #include <utils/databasefacade.hpp>
 #include <utils/logger.hpp>
 

@@ -21,26 +21,25 @@
  * SOFTWARE.
 **/
 
-#ifndef BITS_HPP
-#define BITS_HPP
+#ifndef OBJECTID_HPP
+#define OBJECTID_HPP
 
-#include <murmure/modules/module.hpp>
-
-/**
- * @name: BITS
- * @ref: <https://tools.ietf.org/html/draft-perkins-bits-00>
-**/
+#include <core/primitives/primitive.hpp>
 
 namespace murmure {
 
-class Bits : public Module {
-public:
-  Bits();
-  ~Bits();
-  bool setValue(std::string value);
+//Template for generic primitive value
+
+template <typename primitiveType>
+
+class Objectid : public Primitive<std::string> {
+
+  public:
+  Objectid(std::string value);
   bool setValue(std::string oid, std::string value);
+  primitiveType getValue();
   std::string getPrintableValue();
-  std::string getPrimitiveType();
+
 };
 
 } // namespace murmure

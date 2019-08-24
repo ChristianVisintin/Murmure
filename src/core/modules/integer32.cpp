@@ -21,8 +21,8 @@
  * SOFTWARE.
 **/
 
-#include <murmure/modules/integer32.hpp>
-#include <murmure/primitives/integer.hpp>
+#include <core/modules/integer32.hpp>
+#include <core/primitives/integer.hpp>
 
 using namespace murmure;
 

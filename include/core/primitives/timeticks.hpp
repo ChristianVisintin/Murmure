@@ -21,33 +21,27 @@
  * SOFTWARE.
 **/
 
-#ifndef MODULEFACADE_HPP
-#define MODULEFACADE_HPP
+#ifndef TIMETICKS_HPP
+#define TIMETICKS_HPP
 
-#include <murmure/modules/module.hpp>
-
-#include <map>
-#include <string>
+#include <core/primitives/primitive.hpp>
 
 namespace murmure {
 
-class ModuleFacade {
+//Template for generic primitive value
 
-public:
-  ModuleFacade();
-  ~ModuleFacade();
-  bool findModule(std::string typeName);
-  bool setValue(std::string value);
+template <typename primitiveType>
+
+class Timeticks : public Primitive<unsigned int> {
+
+  public:
+  Timeticks(std::string value);
   bool setValue(std::string oid, std::string value);
+  primitiveType getValue();
   std::string getPrintableValue();
-  std::string getPrimitiveType();
 
-private:
-  static void loadModules();
-  Module* module;                                      //Module instance
-  static std::map<std::string, Module* (*)()> modules; //Module list
-  static bool modulesLoaded;
 };
+
 } // namespace murmure
 
 #endif

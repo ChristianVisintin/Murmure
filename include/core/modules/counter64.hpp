@@ -24,7 +24,7 @@
 #ifndef COUNTER64_HPP
 #define COUNTER64_HPP
 
-#include <murmure/modules/module.hpp>
+#include <core/modules/module.hpp>
 
 /**
  * @name: COUNTER64

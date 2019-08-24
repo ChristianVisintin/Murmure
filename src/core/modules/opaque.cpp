@@ -21,8 +21,8 @@
  * SOFTWARE.
 **/
 
-#include <murmure/modules/opaque.hpp>
-#include <murmure/primitives/string.hpp>
+#include <core/modules/opaque.hpp>
+#include <core/primitives/string.hpp>
 
 using namespace murmure;
 

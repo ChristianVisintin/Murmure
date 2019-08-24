@@ -21,7 +21,7 @@
  * SOFTWARE.
 **/
 
-#include <murmure/mibtable.hpp>
+#include <core/mibtable.hpp>
 #include <utils/databasefacade.hpp>
 #include <utils/logger.hpp>
 

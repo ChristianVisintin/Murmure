@@ -24,7 +24,7 @@
 #ifndef MIBPARSER_HPP
 #define MIBPARSER_HPP
 
-#include <murmure/mibtable.hpp>
+#include <core/mibtable.hpp>
 
 namespace murmure {
 

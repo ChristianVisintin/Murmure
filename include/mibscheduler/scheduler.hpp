@@ -26,7 +26,7 @@
 
 #include <mibscheduler/event.hpp>
 #include <mibscheduler/scheduledevent.hpp>
-#include <murmure/mibtable.hpp>
+#include <core/mibtable.hpp>
 
 #include <thread>
 

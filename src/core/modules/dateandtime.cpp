@@ -21,8 +21,8 @@
  * SOFTWARE.
 **/
 
-#include <murmure/modules/dateandtime.hpp>
-#include <murmure/primitives/octet.hpp>
+#include <core/modules/dateandtime.hpp>
+#include <core/primitives/octet.hpp>
 
 using namespace murmure;
 

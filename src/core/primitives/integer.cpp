@@ -21,7 +21,7 @@
  * SOFTWARE.
 **/
 
-#include <murmure/primitives/integer.hpp>
+#include <core/primitives/integer.hpp>
 #include <utils/databasefacade.hpp>
 #include <utils/logger.hpp>
 

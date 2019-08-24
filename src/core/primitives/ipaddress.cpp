@@ -21,7 +21,7 @@
  * SOFTWARE.
 **/
 
-#include <murmure/primitives/ipaddress.hpp>
+#include <core/primitives/ipaddress.hpp>
 #include <utils/databasefacade.hpp>
 #include <utils/logger.hpp>
 

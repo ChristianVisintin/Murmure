@@ -21,8 +21,8 @@
  * SOFTWARE.
 **/
 
-#include <murmure/modules/bits.hpp>
-#include <murmure/primitives/string.hpp>
+#include <core/modules/bits.hpp>
+#include <core/primitives/string.hpp>
 
 using namespace murmure;
 

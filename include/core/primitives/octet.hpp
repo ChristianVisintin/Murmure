@@ -21,25 +21,28 @@
  * SOFTWARE.
 **/
 
-#ifndef SEQUENCE_HPP
-#define SEQUENCE_HPP
+#ifndef OCTET_HPP
+#define OCTET_HPP
 
-#include <murmure/primitives/objectid.hpp>
+#include <core/primitives/primitive.hpp>
 
 namespace murmure {
 
-//Template for generic primitive value
-
 template <typename primitiveType>
 
-class Sequence : public Objectid<std::string> {
+class Octet : public Primitive<uint8_t*> {
 
-  public:
-  Sequence(std::string value);
+public:
+  Octet(std::string value);
+  ~Octet();
   bool setValue(std::string oid, std::string value);
   primitiveType getValue();
   std::string getPrintableValue();
 
+private:
+  void valueToHex(std::string ascii);
+  std::string valueToAscii();
+  size_t dataLength; //Contains data length
 };
 
 } // namespace murmure

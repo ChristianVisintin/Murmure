@@ -27,12 +27,6 @@
 #define Q(x) #x
 #define QUOTE(x) Q(x)
 
-#ifndef DBPATH
-#define DATABASEPATH "/usr/local/share/mib.db"
-#else
-#define DATABASEPATH QUOTE(DBPATH)
-#endif
-
 #include <vector>
 #include <string>
 

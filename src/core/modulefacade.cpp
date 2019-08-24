@@ -21,7 +21,7 @@
  * SOFTWARE.
 **/
 
-#include <murmure/modulefacade.hpp>
+#include <core/modulefacade.hpp>
 
 /* @!::AUTO_INCLUDES::@! */
 

@@ -52,7 +52,7 @@ Each module must implement the [Module interface](https://github.com/ChristianVi
 #ifndef DUMMY_HPP
 #define DUMMY_HPP
 
-#include <murmure/modules/module.hpp>
+#include <core/modules/module.hpp>
 
 /**
  * @name: DUMMY
@@ -107,8 +107,8 @@ The module implementation will have the following structure:
  * You should have received a copy of the GNU General Public License
 **/
 
-#include <murmure/modules/dummy.hpp>
-#include <murmure/primitives/???.hpp>
+#include <core/modules/dummy.hpp>
+#include <core/primitives/???.hpp>
 
 using namespace murmure;
 

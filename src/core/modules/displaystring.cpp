@@ -21,8 +21,8 @@
  * SOFTWARE.
 **/
 
-#include <murmure/modules/displaystring.hpp>
-#include <murmure/primitives/string.hpp>
+#include <core/modules/displaystring.hpp>
+#include <core/primitives/string.hpp>
 
 using namespace murmure;
 

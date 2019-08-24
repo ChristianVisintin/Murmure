@@ -21,8 +21,8 @@
  * SOFTWARE.
 **/
 
-#include <murmure/modules/counter64.hpp>
-#include <murmure/primitives/gauge.hpp>
+#include <core/modules/counter64.hpp>
+#include <core/primitives/gauge.hpp>
 
 using namespace murmure;
 

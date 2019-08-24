@@ -21,26 +21,25 @@
  * SOFTWARE.
 **/
 
-#ifndef DISPLAYSTRING_HPP
-#define DISPLAYSTRING_HPP
+#ifndef INTEGER_HPP
+#define INTEGER_HPP
 
-#include <murmure/modules/module.hpp>
-
-/**
- * @name: DISPLAYSTRING
- * @ref: <https://www.ietf.org/rfc/rfc1213.txt>
-**/
+#include <core/primitives/primitive.hpp>
 
 namespace murmure {
 
-class DisplayString : public Module {
-public:
-  DisplayString();
-  ~DisplayString();
-  bool setValue(std::string value);
+//Template for generic primitive value
+
+template <typename primitiveType>
+
+class Integer : public Primitive<int> {
+
+  public:
+  Integer(std::string value);
   bool setValue(std::string oid, std::string value);
+  primitiveType getValue();
   std::string getPrintableValue();
-  std::string getPrimitiveType();
+
 };
 
 } // namespace murmure

@@ -21,27 +21,33 @@
  * SOFTWARE.
 **/
 
-#ifndef OBJECTID_HPP
-#define OBJECTID_HPP
+#ifndef MODULEFACADE_HPP
+#define MODULEFACADE_HPP
 
-#include <murmure/primitives/primitive.hpp>
+#include <core/modules/module.hpp>
+
+#include <map>
+#include <string>
 
 namespace murmure {
 
-//Template for generic primitive value
+class ModuleFacade {
 
-template <typename primitiveType>
-
-class Objectid : public Primitive<std::string> {
-
-  public:
-  Objectid(std::string value);
+public:
+  ModuleFacade();
+  ~ModuleFacade();
+  bool findModule(std::string typeName);
+  bool setValue(std::string value);
   bool setValue(std::string oid, std::string value);
-  primitiveType getValue();
   std::string getPrintableValue();
+  std::string getPrimitiveType();
 
+private:
+  static void loadModules();
+  Module* module;                                      //Module instance
+  static std::map<std::string, Module* (*)()> modules; //Module list
+  static bool modulesLoaded;
 };
-
 } // namespace murmure
 
 #endif

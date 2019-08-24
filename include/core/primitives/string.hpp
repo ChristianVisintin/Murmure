@@ -21,29 +21,24 @@
  * SOFTWARE.
 **/
 
-#ifndef MODULE_HPP
-#define MODULE_HPP
+#ifndef STRING_HPP
+#define STRING_HPP
 
-#include <murmure/primitives/primitive.hpp>
-
-#include <cinttypes>
-#include <string>
+#include <core/primitives/primitive.hpp>
 
 namespace murmure {
 
-class Module {
+template <typename primitiveType>
+
+class String : public Primitive<std::string> {
 
 public:
-  virtual ~Module() {};
-  virtual bool setValue(std::string value) = 0;
-  virtual bool setValue(std::string oid, std::string value) = 0;
-  virtual std::string getPrintableValue() = 0;
-  virtual std::string getPrimitiveType() = 0;
-
-protected:
-  void* primitive;           //Void ptr to primitive instance
-  std::string primitiveType; //Primitive type string
+  String(std::string value);
+  bool setValue(std::string oid, std::string value);
+  primitiveType getValue();
+  std::string getPrintableValue();
 };
+
 } // namespace murmure
 
 #endif

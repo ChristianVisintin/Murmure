@@ -24,7 +24,7 @@
 #ifndef GAUGE_HPP
 #define GAUGE_HPP
 
-#include <murmure/primitives/primitive.hpp>
+#include <core/primitives/primitive.hpp>
 
 namespace murmure {
 

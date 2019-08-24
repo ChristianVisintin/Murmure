@@ -21,25 +21,26 @@
  * SOFTWARE.
 **/
 
-#ifndef TIMETICKS_HPP
-#define TIMETICKS_HPP
+#ifndef BITS_HPP
+#define BITS_HPP
 
-#include <murmure/primitives/primitive.hpp>
+#include <core/modules/module.hpp>
+
+/**
+ * @name: BITS
+ * @ref: <https://tools.ietf.org/html/draft-perkins-bits-00>
+**/
 
 namespace murmure {
 
-//Template for generic primitive value
-
-template <typename primitiveType>
-
-class Timeticks : public Primitive<unsigned int> {
-
-  public:
-  Timeticks(std::string value);
+class Bits : public Module {
+public:
+  Bits();
+  ~Bits();
+  bool setValue(std::string value);
   bool setValue(std::string oid, std::string value);
-  primitiveType getValue();
   std::string getPrintableValue();
-
+  std::string getPrimitiveType();
 };
 
 } // namespace murmure

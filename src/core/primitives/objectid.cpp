@@ -21,7 +21,7 @@
  * SOFTWARE.
 **/
 
-#include <murmure/primitives/objectid.hpp>
+#include <core/primitives/objectid.hpp>
 #include <utils/databasefacade.hpp>
 #include <utils/logger.hpp>
 

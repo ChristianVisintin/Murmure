@@ -21,8 +21,8 @@
  * SOFTWARE.
 **/
 
-#include <murmure/modules/gauge32.hpp>
-#include <murmure/primitives/gauge.hpp>
+#include <core/modules/gauge32.hpp>
+#include <core/primitives/gauge.hpp>
 
 using namespace murmure;
 

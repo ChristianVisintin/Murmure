@@ -21,26 +21,25 @@
  * SOFTWARE.
 **/
 
-#ifndef GAUGE32_HPP
-#define GAUGE32_HPP
+#ifndef COUNTER_HPP
+#define COUNTER_HPP
 
-#include <murmure/modules/module.hpp>
-
-/**
- * @name: COUNTER32
- * @ref: <https://tools.ietf.org/html/rfc2578#section-7.1.7>
-**/
+#include <core/primitives/primitive.hpp>
 
 namespace murmure {
 
-class Gauge32 : public Module {
-public:
-  Gauge32();
-  ~Gauge32();
-  bool setValue(std::string value);
+//Template for generic primitive value
+
+template <typename primitiveType>
+
+class Counter : public Primitive<unsigned int> {
+
+  public:
+  Counter(std::string value);
   bool setValue(std::string oid, std::string value);
+  primitiveType getValue();
   std::string getPrintableValue();
-  std::string getPrimitiveType();
+
 };
 
 } // namespace murmure

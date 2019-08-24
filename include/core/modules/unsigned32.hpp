@@ -21,22 +21,22 @@
  * SOFTWARE.
 **/
 
-#ifndef ROWSTATUS_HPP
-#define ROWSTATUS_HPP
+#ifndef UNSIGNED32_HPP
+#define UNSIGNED32_HPP
 
-#include <murmure/modules/module.hpp>
+#include <core/modules/module.hpp>
 
 /**
- * @name: ROWSTATUS
- * @ref: <https://tools.ietf.org/html/rfc1903>
+ * @name: UNSIGNED32
+ * @ref: <https://tools.ietf.org/html/rfc2578#section-7.1.11>
 **/
 
 namespace murmure {
 
-class RowStatus : public Module {
+class Unsigned32 : public Module {
 public:
-  RowStatus();
-  ~RowStatus();
+  Unsigned32();
+  ~Unsigned32();
   bool setValue(std::string value);
   bool setValue(std::string oid, std::string value);
   std::string getPrintableValue();

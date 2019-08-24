@@ -21,25 +21,26 @@
  * SOFTWARE.
 **/
 
-#ifndef COUNTER_HPP
-#define COUNTER_HPP
+#ifndef ROWSTATUS_HPP
+#define ROWSTATUS_HPP
 
-#include <murmure/primitives/primitive.hpp>
+#include <core/modules/module.hpp>
+
+/**
+ * @name: ROWSTATUS
+ * @ref: <https://tools.ietf.org/html/rfc1903>
+**/
 
 namespace murmure {
 
-//Template for generic primitive value
-
-template <typename primitiveType>
-
-class Counter : public Primitive<unsigned int> {
-
-  public:
-  Counter(std::string value);
+class RowStatus : public Module {
+public:
+  RowStatus();
+  ~RowStatus();
+  bool setValue(std::string value);
   bool setValue(std::string oid, std::string value);
-  primitiveType getValue();
   std::string getPrintableValue();
-
+  std::string getPrimitiveType();
 };
 
 } // namespace murmure

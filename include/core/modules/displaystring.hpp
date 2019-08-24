@@ -21,22 +21,22 @@
  * SOFTWARE.
 **/
 
-#ifndef UNSIGNED32_HPP
-#define UNSIGNED32_HPP
+#ifndef DISPLAYSTRING_HPP
+#define DISPLAYSTRING_HPP
 
-#include <murmure/modules/module.hpp>
+#include <core/modules/module.hpp>
 
 /**
- * @name: UNSIGNED32
- * @ref: <https://tools.ietf.org/html/rfc2578#section-7.1.11>
+ * @name: DISPLAYSTRING
+ * @ref: <https://www.ietf.org/rfc/rfc1213.txt>
 **/
 
 namespace murmure {
 
-class Unsigned32 : public Module {
+class DisplayString : public Module {
 public:
-  Unsigned32();
-  ~Unsigned32();
+  DisplayString();
+  ~DisplayString();
   bool setValue(std::string value);
   bool setValue(std::string oid, std::string value);
   std::string getPrintableValue();

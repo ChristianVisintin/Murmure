@@ -21,22 +21,22 @@
  * SOFTWARE.
 **/
 
-#ifndef OPAQUE_HPP
-#define OPAQUE_HPP
+#ifndef DATEANDTIME_HPP
+#define DATEANDTIME_HPP
 
-#include <murmure/modules/module.hpp>
+#include <core/modules/module.hpp>
 
 /**
- * @name: OPAQUE
- * @ref: <https://tools.ietf.org/html/rfc2578#section-7.1.9>
+ * @name: DATEANDTIME
+ * @ref: <https://tools.ietf.org/html/rfc1903>
 **/
 
 namespace murmure {
 
-class Opaque : public Module {
+class DateAndTime : public Module {
 public:
-  Opaque();
-  ~Opaque();
+  DateAndTime();
+  ~DateAndTime();
   bool setValue(std::string value);
   bool setValue(std::string oid, std::string value);
   std::string getPrintableValue();

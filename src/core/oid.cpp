@@ -21,17 +21,17 @@
  * SOFTWARE.
 **/
 
-#include <murmure/modulefacade.hpp>
-#include <murmure/oid.hpp>
-#include <murmure/primitives/counter.hpp>
-#include <murmure/primitives/gauge.hpp>
-#include <murmure/primitives/integer.hpp>
-#include <murmure/primitives/ipaddress.hpp>
-#include <murmure/primitives/objectid.hpp>
-#include <murmure/primitives/octet.hpp>
-#include <murmure/primitives/sequence.hpp>
-#include <murmure/primitives/string.hpp>
-#include <murmure/primitives/timeticks.hpp>
+#include <core/modulefacade.hpp>
+#include <core/oid.hpp>
+#include <core/primitives/counter.hpp>
+#include <core/primitives/gauge.hpp>
+#include <core/primitives/integer.hpp>
+#include <core/primitives/ipaddress.hpp>
+#include <core/primitives/objectid.hpp>
+#include <core/primitives/octet.hpp>
+#include <core/primitives/sequence.hpp>
+#include <core/primitives/string.hpp>
+#include <core/primitives/timeticks.hpp>
 
 #include <algorithm>
 #include <vector>

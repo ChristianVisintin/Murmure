@@ -21,22 +21,31 @@
  * SOFTWARE.
 **/
 
-#ifndef STRING_HPP
-#define STRING_HPP
+#ifndef MIBTABLE_HPP
+#define MIBTABLE_HPP
 
-#include <murmure/primitives/primitive.hpp>
+#include <core/oid.hpp>
+#include <vector>
 
 namespace murmure {
 
-template <typename primitiveType>
-
-class String : public Primitive<std::string> {
+class Mibtable {
 
 public:
-  String(std::string value);
-  bool setValue(std::string oid, std::string value);
-  primitiveType getValue();
-  std::string getPrintableValue();
+  Mibtable();
+  ~Mibtable();
+  bool loadMibTable();
+  bool addOid(Oid* newOid);
+  bool clearMibtable();
+  void sortMibTable();
+  Oid* getOidByOid(std::string oid);
+  Oid* getOidByName(std::string name);
+  std::string getNextOid(std::string oid);
+  std::string getPreviousOid(std::string oid);
+  bool isTableChild(std::string oid);
+
+private:
+  std::vector<Oid*> oids;
 };
 
 } // namespace murmure

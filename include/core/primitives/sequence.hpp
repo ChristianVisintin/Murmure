@@ -21,23 +21,25 @@
  * SOFTWARE.
 **/
 
-#ifndef IPADDRESS_HPP
-#define IPADDRESS_HPP
+#ifndef SEQUENCE_HPP
+#define SEQUENCE_HPP
 
-#include <murmure/primitives/primitive.hpp>
+#include <core/primitives/objectid.hpp>
 
 namespace murmure {
 
 //Template for generic primitive value
+
 template <typename primitiveType>
 
-class IPAddress : public Primitive<std::string> {
+class Sequence : public Objectid<std::string> {
 
-public:
-  IPAddress(std::string value);
+  public:
+  Sequence(std::string value);
   bool setValue(std::string oid, std::string value);
   primitiveType getValue();
   std::string getPrintableValue();
+
 };
 
 } // namespace murmure

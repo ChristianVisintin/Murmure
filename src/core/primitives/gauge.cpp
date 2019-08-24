@@ -21,7 +21,7 @@
  * SOFTWARE.
 **/
 
-#include <murmure/primitives/gauge.hpp>
+#include <core/primitives/gauge.hpp>
 #include <utils/databasefacade.hpp>
 #include <utils/logger.hpp>
 

@@ -21,7 +21,7 @@
  * SOFTWARE.
 **/
 
-#include <murmure/primitives/octet.hpp>
+#include <core/primitives/octet.hpp>
 #include <utils/databasefacade.hpp>
 #include <utils/logger.hpp>
 

@@ -21,40 +21,27 @@
  * SOFTWARE.
 **/
 
-#ifndef OID_HPP
-#define OID_HPP
+#ifndef COUNTER32_HPP
+#define COUNTER32_HPP
 
-#include <murmure/accessmode.hpp>
-#include <murmure/primitives/primitive.hpp>
-#include <string>
+#include <core/modules/module.hpp>
+
+/**
+ * @name: COUNTER32
+ * @ref: <https://tools.ietf.org/html/rfc2578#section-7.1.6>
+**/
 
 namespace murmure {
 
-class Oid {
-
+class Counter32 : public Module {
 public:
-  Oid(std::string oid, std::string type, std::string value, int access, std::string name = nullptr);
-  ~Oid();
-  std::string getOid();
-  std::string getType();
-  std::string getPrimitiveType();
-  std::string getName();
+  Counter32();
+  ~Counter32();
+  bool setValue(std::string value);
+  bool setValue(std::string oid, std::string value);
   std::string getPrintableValue();
-  AccessMode getAccessMode();
-  int getAccessModeInteger();
-  bool setValue(std::string printableValue);
-  bool isTypeValid();
-
-private:
-  std::string oid;           //OID which identifies this instance
-  std::string name;          //optional name for OID
-  AccessMode accessMode;     //Access level for OID
-  std::string dataType;      //Type string
-  std::string primitiveType; //Primitive type string
-  void* data;                //Wrapper of value (void pointer to Primitive extension class)
+  std::string getPrimitiveType();
 };
-
-bool sortByOid(Oid* firstOid, Oid* secondOid);
 
 } // namespace murmure
 

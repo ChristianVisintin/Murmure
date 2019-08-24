@@ -21,31 +21,26 @@
  * SOFTWARE.
 **/
 
-#ifndef MIBTABLE_HPP
-#define MIBTABLE_HPP
+#ifndef GAUGE32_HPP
+#define GAUGE32_HPP
 
-#include <murmure/oid.hpp>
-#include <vector>
+#include <core/modules/module.hpp>
+
+/**
+ * @name: COUNTER32
+ * @ref: <https://tools.ietf.org/html/rfc2578#section-7.1.7>
+**/
 
 namespace murmure {
 
-class Mibtable {
-
+class Gauge32 : public Module {
 public:
-  Mibtable();
-  ~Mibtable();
-  bool loadMibTable();
-  bool addOid(Oid* newOid);
-  bool clearMibtable();
-  void sortMibTable();
-  Oid* getOidByOid(std::string oid);
-  Oid* getOidByName(std::string name);
-  std::string getNextOid(std::string oid);
-  std::string getPreviousOid(std::string oid);
-  bool isTableChild(std::string oid);
-
-private:
-  std::vector<Oid*> oids;
+  Gauge32();
+  ~Gauge32();
+  bool setValue(std::string value);
+  bool setValue(std::string oid, std::string value);
+  std::string getPrintableValue();
+  std::string getPrimitiveType();
 };
 
 } // namespace murmure

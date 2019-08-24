@@ -24,7 +24,7 @@
 #ifndef INTEGER32_HPP
 #define INTEGER32_HPP
 
-#include <murmure/modules/module.hpp>
+#include <core/modules/module.hpp>
 
 /**
  * @name: INTEGER32

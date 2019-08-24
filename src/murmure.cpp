@@ -38,7 +38,7 @@ Usage:\n\
 \t-h --help\t\t\t\tShow this page\n\
 "
 
-#include <murmure/mibtable.hpp>
+#include <core/mibtable.hpp>
 #include <utils/getopts.hpp>
 #include <utils/logger.hpp>
 #include <utils/databasefacade.hpp>
@@ -53,13 +53,13 @@ Usage:\n\
 
 //Logger
 #ifndef LOGFILE
-#define MURMURE_LOGFILE "/var/log/murmure.log"
+#define DEFAULT_MURMURE_LOGFILE "/var/log/murmure.log"
 #else
-#define MURMURE_LOGFILE QUOTE(LOGFILE)
+#define DEFAULT_MURMURE_LOGFILE QUOTE(LOGFILE)
 #endif
 
 #ifndef LOGLEVEL
-#define LOGLEVEL LOG_INFO
+#define DEFAULT_MURMURE_LOGFILE LOG_INFO
 #endif
 
 //SQL file for db build
@@ -67,6 +67,12 @@ Usage:\n\
 #define DATABASE_SQLFILE "/usr/local/share/SQL/mibtable.sql"
 #else
 #define DATABASE_SQLFILE QUOTE(SQLFILE)
+#endif
+
+#ifndef DBPATH
+#define DEFAULT_DATABASEPATH "/usr/local/share/mib.db"
+#else
+#define DEFAULT_DATABASEPATH QUOTE(DBPATH)
 #endif
 
 #define COMPONENT "Main"

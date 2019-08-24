@@ -95,7 +95,7 @@ if __name__ == "__main__":
   #Prepare include list
   moduleIncludes = ""
   for include in moduleSelectionList:
-    moduleIncludes += "#include <murmure/modules/%s.hpp>\n" % include
+    moduleIncludes += "#include <core/modules/%s.hpp>\n" % include
   #Prepare instances
   moduleInstances = ""
   for datatype, classname in itertools.product(moduleTypeList, moduleClassList):
