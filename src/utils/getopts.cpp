@@ -37,13 +37,13 @@ namespace murmure {
  * @returns bool: True if options parsing succeeded; false otherwise
 **/
 
-bool murmure::getOpts(options* optStruct, int argc, char* argv[], std::string& error) {
+bool getOpts(options* optStruct, int argc, char* argv[], std::string& error) {
 
   if (argc < 2) {
     error = "Missing argument";
     return false;
   }
-  for (size_t i = 1; i < argc; i++) {
+  for (int i = 1; i < argc; i++) {
     const std::string arg = argv[i];
     if (arg == "-D") {
       optStruct->command = Command::DAEMON;
@@ -148,7 +148,7 @@ bool murmure::getOpts(options* optStruct, int argc, char* argv[], std::string& e
       optStruct->dbPathSet = true;
       optStruct->dbPath = argv[++i];
     } else {
-      error = "Unknown option";
+      error = "Unknown option '" + arg + "'";
       return false;
     }
   }
