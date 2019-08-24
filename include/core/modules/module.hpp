@@ -35,8 +35,8 @@ class Module {
 
 public:
   virtual ~Module() {};
-  virtual bool setValue(std::string value) = 0;
-  virtual bool setValue(std::string oid, std::string value) = 0;
+  virtual bool setValue(const std::string& value) = 0;
+  virtual bool setValue(const std::string& oid, const std::string& value) = 0;
   virtual std::string getPrintableValue() = 0;
   virtual std::string getPrimitiveType() = 0;
 

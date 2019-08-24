@@ -24,7 +24,7 @@
 #include <core/modules/bits.hpp>
 #include <core/primitives/string.hpp>
 
-using namespace murmure;
+namespace murmure {
 
 /**
  * @function Bits
@@ -58,7 +58,7 @@ Bits::~Bits() {
  * NOTE: must be called in initialization only
 **/
 
-bool Bits::setValue(std::string value) {
+bool Bits::setValue(const std::string& value) {
   if (primitive == nullptr) {
     primitive = new String<std::string>(value);
   }
@@ -73,7 +73,7 @@ bool Bits::setValue(std::string value) {
  * @returns bool
 **/
 
-bool Bits::setValue(std::string oid, std::string value) {
+bool Bits::setValue(const std::string& oid, const std::string& value) {
   //Check if primitive is initialized
   if (primitive == nullptr) {
     return false;
@@ -105,4 +105,6 @@ std::string Bits::getPrintableValue() {
 
 std::string Bits::getPrimitiveType() {
   return primitiveType;
+}
+
 }

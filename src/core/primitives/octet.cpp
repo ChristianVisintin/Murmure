@@ -29,17 +29,17 @@
 
 #define COMPONENT "OID"
 
-using namespace murmure;
+namespace murmure {
 
 /**
  * @function valueToHex
  * @description convert Hex string representation into real ascii value buffer
- * @param std::string ascii: ascii representation to convert
+ * @param const std::string& ascii: ascii representation to convert
  * @returns void
 **/
 
 template <>
-void Octet<uint8_t*>::valueToHex(std::string ascii) {
+void Octet<uint8_t*>::valueToHex(const std::string& ascii) {
 
   size_t asciiLength = ascii.length();
   const char* asciiBuf = ascii.c_str();
@@ -83,7 +83,7 @@ std::string Octet<uint8_t*>::valueToAscii() {
 **/
 
 template <>
-Octet<uint8_t*>::Octet(std::string value) {
+Octet<uint8_t*>::Octet(const std::string& value) {
 
   //Init value to nullptr
   this->value = nullptr;
@@ -112,12 +112,12 @@ Octet<uint8_t*>::~Octet() {
 /**
  * @function setValue
  * @description save new value on database and set new value to object
- * @param std::string oid associated to this value
+ * @param const std::string& oid associated to this value
  * @returns bool: true if set database operation succeeded
 **/
 
 template <>
-bool Octet<uint8_t*>::setValue(std::string oid, std::string value) {
+bool Octet<uint8_t*>::setValue(const std::string& oid, const std::string& value) {
 
   std::string errorString;
   //Build query string sstream
@@ -126,7 +126,7 @@ bool Octet<uint8_t*>::setValue(std::string oid, std::string value) {
   queryStream << "UPDATE oids SET value = \"" << value << "\" WHERE oid = \"" << oid << "\";";
   std::string query = queryStream.str();
 
-  if (!database::exec(query, &errorString)) {
+  if (!database::exec(query, errorString)) {
     //Database query failed
     logger::log(COMPONENT, LOG_ERROR, errorString);
     return false;
@@ -168,3 +168,4 @@ std::string Octet<uint8_t*>::getPrintableValue() {
   return valueToAscii();
 }
 
+}

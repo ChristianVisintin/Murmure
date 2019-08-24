@@ -33,7 +33,7 @@ using namespace murmure;
  * @param std::string: requested OID to get
 **/
 
-inline void snmp_get(Mibtable* mibtab, Scheduler* mibScheduler, std::string requestedOid) {
+inline void snmp_get(Mibtable* mibtab, Scheduler* mibScheduler, const std::string& requestedOid) {
 
   //Try to get OID from mibtable
   Oid* reqOid = mibtab->getOidByOid(requestedOid);
@@ -75,7 +75,7 @@ inline void snmp_get(Mibtable* mibtab, Scheduler* mibScheduler, std::string requ
  * @param std::string: requested OID to get
 **/
 
-inline void snmp_getnext(Mibtable* mibtab, Scheduler* mibScheduler, std::string requestedOid) {
+inline void snmp_getnext(Mibtable* mibtab, Scheduler* mibScheduler, const std::string& requestedOid) {
 
   //Get nextOid
   std::string nextOid = requestedOid;
@@ -126,7 +126,7 @@ inline void snmp_getnext(Mibtable* mibtab, Scheduler* mibScheduler, std::string 
  * @param std::string: printable value to set
 **/
 
-inline void snmp_set(Mibtable* mibtab, Scheduler* mibScheduler, std::string requestedOid, std::string datatype, std::string value) {
+inline void snmp_set(Mibtable* mibtab, Scheduler* mibScheduler, const std::string requestedOid, const std::string& datatype, const std::string& value) {
 
   //Try to get OID from mibtable
   Oid* reqOid = mibtab->getOidByOid(requestedOid);
@@ -250,7 +250,7 @@ inline bool initializeDatabase() {
   std::string sqlCreateStmt = std::string((std::istreambuf_iterator<char>(sqlStream)), std::istreambuf_iterator<char>());
   sqlStream.close();
   //Execute
-  if(!database::exec(sqlCreateStmt, &error)) {
+  if(!database::exec(sqlCreateStmt, error)) {
     logger::log(COMPONENT, LOG_ERROR, error);
     return false;
   }
@@ -537,7 +537,7 @@ int main(int argc, char* argv[]) {
       //Parse file
       std::string schedulingFile = cmdLineOpts.args.at(0);
       std::string errorString;
-      if (mibScheduler->parseScheduling(schedulingFile, &errorString)) {
+      if (mibScheduler->parseScheduling(schedulingFile, errorString)) {
         logger::log(COMPONENT, LOG_INFO, "Scheduling file parsed successfully");
       } else {
         logger::log(COMPONENT, LOG_ERROR, "Unable to parse scheduling file: " + errorString);
@@ -597,7 +597,7 @@ int main(int argc, char* argv[]) {
 
         //Commit changes
         std::string errorString;
-        if (mibScheduler->parseScheduling(oid, mode, commandList, &errorString, timeout)) {
+        if (mibScheduler->parseScheduling(oid, mode, commandList, errorString, timeout)) {
           std::cout << "Scheduling entry saved successfully" << std::endl;
         } else {
           std::cout << "Scheduling entry refused: " << errorString << std::endl;

@@ -35,8 +35,8 @@ template <typename primitiveType>
 class Gauge : public Primitive<unsigned int> {
 
   public:
-  Gauge(std::string value);
-  bool setValue(std::string oid, std::string value);
+  Gauge(const std::string& value);
+  bool setValue(const std::string& oid, const std::string& value);
   primitiveType getValue();
   std::string getPrintableValue();
 

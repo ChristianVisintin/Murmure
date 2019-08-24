@@ -35,8 +35,8 @@ template <typename primitiveType>
 class Integer : public Primitive<int> {
 
   public:
-  Integer(std::string value);
-  bool setValue(std::string oid, std::string value);
+  Integer(const std::string& value);
+  bool setValue(const std::string& oid, const std::string& value);
   primitiveType getValue();
   std::string getPrintableValue();
 

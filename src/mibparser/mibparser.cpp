@@ -29,7 +29,7 @@
 #include <fstream>
 #include <sstream>
 
-using namespace murmure;
+namespace murmure {
 
 #define COMPONENT "MIBParser"
 
@@ -68,7 +68,7 @@ Mibparser::~Mibparser() {
  * @returns bool: true if parsing/database storage operations succeeded
 **/
 
-bool Mibparser::parseMibFile(std::string rootOid, std::string mibfile) {
+bool Mibparser::parseMibFile(const std::string& rootOid, const std::string& mibfile) {
   this->rootOidStr = rootOid;
   //Try to open file
   std::ifstream mibfileStream;
@@ -130,7 +130,7 @@ bool Mibparser::parseMibFile(std::string rootOid, std::string mibfile) {
  * @returns bool: false if there is a syntax error
 **/
 
-bool Mibparser::parseLine(std::string line) {
+bool Mibparser::parseLine(std::string& line) {
   //Ignore comments
   if (strutils::startsWith(line, "--")) {
     return true;
@@ -256,7 +256,7 @@ bool Mibparser::commitPreviousOid() {
  * @returns bool: true if syntax is valid
 **/
 
-bool Mibparser::handleModuleIdentity(std::string line) {
+bool Mibparser::handleModuleIdentity(std::string& line) {
   //Check if rootOID is already set
   if (rootOid != nullptr) {
     logger::log(COMPONENT, LOG_ERROR, "Syntax error: MODULE-IDENTITY has already been set");
@@ -293,7 +293,7 @@ bool Mibparser::handleModuleIdentity(std::string line) {
  * @returns bool: true if syntax is valid
 **/
 
-bool Mibparser::handleInlineObject(std::string line) {
+bool Mibparser::handleInlineObject(std::string& line) {
   //Root OID must be set
   if (rootOid == nullptr) {
     logger::log(COMPONENT, LOG_ERROR, "Syntax error: MODULE-IDENTITY is not declared");
@@ -358,7 +358,7 @@ bool Mibparser::handleInlineObject(std::string line) {
  * @returns bool: true if syntax is valid
 **/
 
-bool Mibparser::handleObjectDeclaration(std::string line) {
+bool Mibparser::handleObjectDeclaration(std::string& line) {
 
   //Check for any previous oid to commit
   if (!commitPreviousOid()) {
@@ -400,7 +400,7 @@ bool Mibparser::handleObjectDeclaration(std::string line) {
  * @returns bool: true if parsing was successful
 **/
 
-bool Mibparser::handleObjectSyntax(std::string line) {
+bool Mibparser::handleObjectSyntax(std::string& line) {
 
   //Remove multiple whitespaces
   line = strutils::itrim(line);
@@ -427,7 +427,7 @@ bool Mibparser::handleObjectSyntax(std::string line) {
  * @returns bool: true if parsing was successful
 **/
 
-bool Mibparser::handleObjectStatus(std::string line) {
+bool Mibparser::handleObjectStatus(std::string& line) {
 
   //Remove multiple whitespaces
   line = strutils::itrim(line);
@@ -452,7 +452,7 @@ bool Mibparser::handleObjectStatus(std::string line) {
  * @returns bool: true if parsing was successful
 **/
 
-bool Mibparser::handleObjectAccess(std::string line) {
+bool Mibparser::handleObjectAccess(std::string& line) {
 
   //Remove multiple whitespaces
   line = strutils::itrim(line);
@@ -491,7 +491,7 @@ bool Mibparser::handleObjectAccess(std::string line) {
  * @returns bool: true if parsing was successful
 **/
 
-bool Mibparser::handleObjectGroup(std::string line) {
+bool Mibparser::handleObjectGroup(std::string& line) {
 
   //If oid saved is false, it's the root OID and must be ignored
   if (oidSaved) {
@@ -550,7 +550,7 @@ bool Mibparser::handleObjectGroup(std::string line) {
  * "SYNTAX SEQUENCE OF {object-name}"
 **/
 
-bool Mibparser::handleSequence(std::string line) {
+bool Mibparser::handleSequence(std::string& line) {
 
   //iTrim line
   line = strutils::itrim(line);
@@ -581,4 +581,6 @@ bool Mibparser::handleSequence(std::string line) {
     logger::log(COMPONENT, LOG_ERROR, logStream.str());
     return false;
   }
+}
+
 }

@@ -30,7 +30,7 @@
 
 #define COMPONENT "MibTable"
 
-using namespace murmure;
+namespace murmure {
 
 /**
  * @function Mibtable
@@ -69,7 +69,7 @@ bool Mibtable::loadMibTable() {
   //which identify columns
   std::vector<std::vector<std::string>> tableEntries;
   std::string query = "SELECT * FROM oids;";
-  if (!database::select(&tableEntries, query, &errorString)) {
+  if (!database::select(&tableEntries, query, errorString)) {
     logger::log(COMPONENT, LOG_ERROR, errorString);
     return false;
   }
@@ -131,7 +131,7 @@ bool Mibtable::addOid(Oid* newOid) {
   queryStream << ", " << newOid->getAccessModeInteger() << ");";
   std::string query = queryStream.str();
 
-  if (!database::exec(query, &errorString)) {
+  if (!database::exec(query, errorString)) {
     //Database commit failed
     logger::log(COMPONENT, LOG_ERROR, errorString);
     return false;
@@ -155,7 +155,7 @@ bool Mibtable::clearMibtable() {
   std::string errorString;
   //Add new OID to database
   std::string query = "DELETE FROM oids;";
-  if (!database::exec(query, &errorString)) {
+  if (!database::exec(query, errorString)) {
     //Database commit failed
     logger::log(COMPONENT, LOG_ERROR, errorString);
     return false;
@@ -194,7 +194,7 @@ void Mibtable::sortMibTable() {
  * NOTE: nullptr is returned if not found
 **/
 
-Oid* Mibtable::getOidByOid(std::string oidString) {
+Oid* Mibtable::getOidByOid(const std::string& oidString) {
 
   for (auto oid : oids) {
     //Check if the oid is the same
@@ -214,7 +214,7 @@ Oid* Mibtable::getOidByOid(std::string oidString) {
  * NOTE: nullptr is returned if not found
 **/
 
-Oid* Mibtable::getOidByName(std::string oidName) {
+Oid* Mibtable::getOidByName(const std::string& oidName) {
   for (auto oid : oids) {
     //Check if the oid is the same
     if (oid->getName() == oidName) {
@@ -232,7 +232,7 @@ Oid* Mibtable::getOidByName(std::string oidName) {
  * @returns std::string next oid string
 **/
 
-std::string Mibtable::getNextOid(std::string oidString) {
+std::string Mibtable::getNextOid(const std::string& oidString) {
 
   bool oidFound = false;
   for (auto oid : oids) {
@@ -257,7 +257,7 @@ std::string Mibtable::getNextOid(std::string oidString) {
  * @returns std::string previous oid string
 **/
 
-std::string Mibtable::getPreviousOid(std::string oidString) {
+std::string Mibtable::getPreviousOid(const std::string& oidString) {
 
   Oid* previousOid = nullptr;
   for (auto oid : oids) {
@@ -277,7 +277,7 @@ std::string Mibtable::getPreviousOid(std::string oidString) {
  * @returns bool
 **/
 
-bool Mibtable::isTableChild(std::string oidString) {
+bool Mibtable::isTableChild(const std::string& oidString) {
 
   //Get parent Oid
   std::string parentOidStr;
@@ -303,4 +303,6 @@ bool Mibtable::isTableChild(std::string oidString) {
     //@! gran parent does not exist
     return false;
   }
+}
+
 }

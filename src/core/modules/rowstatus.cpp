@@ -24,7 +24,7 @@
 #include <core/modules/rowstatus.hpp>
 #include <core/primitives/string.hpp>
 
-using namespace murmure;
+namespace murmure {
 
 /**
  * @function RowStatus
@@ -53,12 +53,12 @@ RowStatus::~RowStatus() {
 /**
  * @function setValue
  * @description initialize primitive and set its value
- * @param std::string
+ * @param const std::string&
  * @returns bool
  * NOTE: must be called in initialization only
 **/
 
-bool RowStatus::setValue(std::string value) {
+bool RowStatus::setValue(const std::string& value) {
   if (primitive == nullptr) {
     primitive = new String<std::string>(value);
   }
@@ -68,12 +68,12 @@ bool RowStatus::setValue(std::string value) {
 /**
  * @function setValue
  * @description update primitive value associated to this module
- * @param std::string
- * @param std::string
+ * @param const std::string&
+ * @param const std::string&
  * @returns bool
 **/
 
-bool RowStatus::setValue(std::string oid, std::string value) {
+bool RowStatus::setValue(const std::string& oid, const std::string& value) {
   //Check if primitive is initialized
   if (primitive == nullptr) {
     return false;
@@ -109,4 +109,6 @@ std::string RowStatus::getPrintableValue() {
 
 std::string RowStatus::getPrimitiveType() {
   return primitiveType;
+}
+
 }

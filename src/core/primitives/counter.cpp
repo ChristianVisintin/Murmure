@@ -29,28 +29,28 @@
 
 #define COMPONENT "OID"
 
-using namespace murmure;
+namespace murmure {
 
 /**
  * @function Counter
  * @description Counter class constructor
- * @param std::string value to convert to primitive
+ * @param const std::string& value to convert to primitive
 **/
 
 template <>
-Counter<unsigned int>::Counter(std::string value) {
+Counter<unsigned int>::Counter(const std::string& value) {
   this->value = std::stoi(value);
 }
 
 /**
  * @function setValue
  * @description save new value on database and set new value to object
- * @param std::string oid associated to this value
+ * @param const std::string& oid associated to this value
  * @returns bool: true if set database operation succeeded
 **/
 
 template <>
-bool Counter<unsigned int>::setValue(std::string oid, std::string value) {
+bool Counter<unsigned int>::setValue(const std::string& oid, const std::string& value) {
   std::string errorString;
   //Get value to set
   unsigned int newValue = std::stoi(value);
@@ -59,7 +59,7 @@ bool Counter<unsigned int>::setValue(std::string oid, std::string value) {
   queryStream << "UPDATE oids SET value = \"" << newValue << "\" WHERE oid = \"" << oid << "\";";
   std::string query = queryStream.str();
 
-  if (!database::exec(query, &errorString)) {
+  if (!database::exec(query, errorString)) {
     //Database query failed
     logger::log(COMPONENT, LOG_ERROR, errorString);
     return false;
@@ -89,4 +89,6 @@ template <>
 std::string Counter<unsigned int>::getPrintableValue() {
 
   return std::to_string(this->value);
+}
+
 }

@@ -29,27 +29,27 @@
 
 #define COMPONENT "OID"
 
-using namespace murmure;
+namespace murmure {
 
 /**
  * @function Sequence
  * @description Sequence class constructor
- * @param std::string value to convert to primitive
+ * @param const std::string& value to convert to primitive
 **/
 
 template <>
-Sequence<std::string>::Sequence(std::string value) : Objectid(value) {
+Sequence<std::string>::Sequence(const std::string& value) : Objectid(value) {
 }
 
 /**
  * @function setValue
  * @description save new value on database and set new value to object
- * @param std::string oid associated to this value
+ * @param const std::string& oid associated to this value
  * @returns bool: true if set database operation succeeded
 **/
 
 template <>
-bool Sequence<std::string>::setValue(std::string oid, std::string value) {
+bool Sequence<std::string>::setValue(const std::string& oid, const std::string& value) {
   //Has no value, just return
   return true;
 }
@@ -74,4 +74,6 @@ template <>
 std::string Sequence<std::string>::getPrintableValue() {
 
   return "";
+}
+
 }

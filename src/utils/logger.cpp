@@ -68,7 +68,7 @@ std::string getLevelName(int level) {
  * @param std::string logContent
 **/
 
-void logger::log(std::string component, int level, std::string logContent) {
+void logger::log(const std::string& component, int level, const std::string& logContent) {
 
   //Check if this message has to be logged
   if (level > logLevel) {

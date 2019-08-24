@@ -36,7 +36,7 @@
 #include <algorithm>
 #include <vector>
 
-using namespace murmure;
+namespace murmure {
 
 /**
  * @function Oid
@@ -47,7 +47,7 @@ using namespace murmure;
  * @param std::string: optional oid name
 **/
 
-Oid::Oid(std::string oid, std::string type, std::string value, int access, std::string name /* = nullptr */) {
+Oid::Oid(const std::string& oid, const std::string& type, const std::string& value, const int access, const std::string& name /* = "" */) {
 
   //Set OID string
   this->oid = oid;
@@ -56,7 +56,8 @@ Oid::Oid(std::string oid, std::string type, std::string value, int access, std::
   data = nullptr;
 
   //Convert type to upper case
-  std::transform(type.begin(), type.end(), type.begin(), ::toupper);
+  std::string upperType = type;
+  std::transform(upperType.begin(), upperType.end(), upperType.begin(), ::toupper);
   this->dataType = type;
   this->primitiveType = type;
   //Based on type instance new Primitive type
@@ -328,6 +329,8 @@ bool Oid::isTypeValid() {
  * @returns bool: true if this oid is < passed oid
 **/
 
-bool murmure::sortByOid(Oid* firstOid, Oid* secondOid) {
+bool sortByOid(Oid* firstOid, Oid* secondOid) {
   return firstOid->getOid().compare(secondOid->getOid()) < 0;
+}
+
 }

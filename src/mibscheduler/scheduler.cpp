@@ -107,7 +107,7 @@ bool Scheduler::loadEvents() {
   //which identify columns
   std::vector<std::vector<std::string>> tableEntries;
   std::string query = "SELECT event_id, oid, mode, timeout FROM scheduled_events;";
-  if (!database::select(&tableEntries, query, &errorString)) {
+  if (!database::select(&tableEntries, query, errorString)) {
     logger::log(COMPONENT, LOG_ERROR, errorString);
     return false;
   }
@@ -128,7 +128,7 @@ bool Scheduler::loadEvents() {
     //Select commands for this event sorting by execution_order asc
     std::vector<std::vector<std::string>> commandListRows;
     query = "SELECT command FROM events_commands WHERE event_id = \"" + evId + "\" ORDER BY execution_order ASC;";
-    if (!database::select(&commandListRows, query, &errorString)) {
+    if (!database::select(&commandListRows, query, errorString)) {
       logger::log(COMPONENT, LOG_ERROR, errorString);
       return false;
     }
@@ -190,7 +190,7 @@ bool Scheduler::loadEvents() {
  * @returns int: amount of executed commands; 0 if no event is associated
 **/
 
-int Scheduler::fetchAndExec(std::string oid, EventMode mode) {
+int Scheduler::fetchAndExec(const std::string& oid, EventMode mode) {
 
   //NOTE: Mode cannot be auto! Automatic event (scheduled events) can only be executed by the scheduler thread
 
@@ -238,7 +238,7 @@ bool Scheduler::startScheduler() {
  * @param std::string oid associated to new event
  * @param EventMode mode for event
  * @param std::vector<std::string> list of commands
- * @param std::string* error string pointer
+ * @param std::string& error string pointer
  * @param int optional timeout (for scheduled events)
  * @returns bool: true if entry is valid
  * NOTE: an entry is valid if:
@@ -247,23 +247,23 @@ bool Scheduler::startScheduler() {
  * c) command list has at least one element
 **/
 
-bool Scheduler::parseScheduling(std::string oid, EventMode mode, std::vector<std::string> commandList, std::string* error, int timeout /*= 0*/) {
+bool Scheduler::parseScheduling(const std::string& oid, EventMode mode, const std::vector<std::string>& commandList, std::string& error, int timeout /*= 0*/) {
 
   //Try to get oid
   if (mibtable->getOidByOid(oid) == nullptr) {
-    *error = "Could not find OID " + oid;
+    error = "Could not find OID " + oid;
     return false;
   }
 
   //Check if timeout is set
   if (mode == EventMode::AUTO && timeout <= 0) {
-    *error = "Unset timeout for scheduled event";
+    error = "Unset timeout for scheduled event";
     return false;
   }
 
   //Check if command list is empty
   if (commandList.size() == 0) {
-    *error = "Command list is empty";
+    error = "Command list is empty";
     return false;
   }
 
@@ -275,19 +275,19 @@ bool Scheduler::parseScheduling(std::string oid, EventMode mode, std::vector<std
  * @function parseScheduling
  * @description parse a scheduling file
  * @param std::string filename
- * @param std::string* error string pointer
+ * @param std::string& error string pointer
  * @returns bool: true if parsing succeeded
  * NOTE: check documentation for scheduling file syntax
 **/
 
-bool Scheduler::parseScheduling(std::string filename, std::string* error) {
+bool Scheduler::parseScheduling(const std::string& filename, std::string& error) {
 
   std::ifstream schedulingStream;
 
   //Open scheduling stream
   schedulingStream.open(filename);
   if (!schedulingStream.is_open()) {
-    *error = "Could not open scheduling file " + filename;
+    error = "Could not open scheduling file " + filename;
     return false;
   }
 
@@ -301,7 +301,7 @@ bool Scheduler::parseScheduling(std::string filename, std::string* error) {
     if (eventTokens.size() < 3) {
       std::stringstream errSs;
       errSs << "Error at line " << std::to_string(lineNumber) << ". Not enough arguments";
-      *error = errSs.str();
+      error = errSs.str();
       return false;
     }
     //Get parts
@@ -323,7 +323,7 @@ bool Scheduler::parseScheduling(std::string filename, std::string* error) {
     } else {
       std::stringstream errSs;
       errSs << "Error at line " << std::to_string(lineNumber) << ". Unknown mode " << modeStr;
-      *error = errSs.str();
+      error = errSs.str();
       return false;
     }
 
@@ -334,13 +334,13 @@ bool Scheduler::parseScheduling(std::string filename, std::string* error) {
       if (timeout == 0) {
         std::stringstream errSs;
         errSs << "Error at line " << std::to_string(lineNumber) << ". Timeout 0 for event mode 'AUTO'";
-        *error = errSs.str();
+        error = errSs.str();
         return false;
       }
     } else if (modeStr == EVENTMODE_AUTO && eventTokens.size() < 4) {
       std::stringstream errSs;
       errSs << "Error at line " << std::to_string(lineNumber) << ". Timeout not provided for event mode 'AUTO'";
-      *error = errSs.str();
+      error = errSs.str();
       return false;
     }
 
@@ -351,8 +351,8 @@ bool Scheduler::parseScheduling(std::string filename, std::string* error) {
     bool parseRes = parseScheduling(oid, mode, commandList, error, timeout);
     if (!parseRes) {
       std::stringstream errSs;
-      errSs << "Error at line " << std::to_string(lineNumber) << " " << *error;
-      *error = errSs.str();
+      errSs << "Error at line " << std::to_string(lineNumber) << " " << error;
+      error = errSs.str();
       return false;
     }
     //Increase line counter
@@ -375,7 +375,7 @@ bool Scheduler::clearEvents() {
   std::string errorString;
   //Prepare DELETE query of scheduled_events
   std::string query = "DELETE FROM scheduled_events";
-  if (!database::exec(query, &errorString)) {
+  if (!database::exec(query, errorString)) {
     //Database query failed
     logger::log(COMPONENT, LOG_ERROR, errorString);
     return false;
@@ -383,7 +383,7 @@ bool Scheduler::clearEvents() {
 
   //DELETE from events commands
   query = "DELETE FROM events_commands";
-  if (!database::exec(query, &errorString)) {
+  if (!database::exec(query, errorString)) {
     //Database query failed
     logger::log(COMPONENT, LOG_ERROR, errorString);
     return false;
@@ -391,13 +391,13 @@ bool Scheduler::clearEvents() {
 
   //Delete from sequences
   query = "DELETE FROM sqlite_sequence WHERE name = \"scheduled_events\"";
-  if (!database::exec(query, &errorString)) {
+  if (!database::exec(query, errorString)) {
     //Database query failed
     logger::log(COMPONENT, LOG_ERROR, errorString);
     return false;
   }
   query = "DELETE FROM sqlite_sequence WHERE name = \"events_commands\"";
-  if (!database::exec(query, &errorString)) {
+  if (!database::exec(query, errorString)) {
     //Database query failed
     logger::log(COMPONENT, LOG_ERROR, errorString);
     return false;
@@ -421,7 +421,7 @@ bool Scheduler::clearEvents() {
  * @returns bool: true if successfully dumped 
 **/
 
-bool Scheduler::dumpScheduling(std::string filename /* = "" */) {
+bool Scheduler::dumpScheduling(const std::string& filename /* = "" */) {
 
   bool toStdout = filename.length() == 0 ? true : false;
   std::ofstream dumpStream;
@@ -561,7 +561,7 @@ int Scheduler::runScheduler() {
  * @returns bool: true if add successfully
 **/
 
-bool Scheduler::addEvent(std::string oid, EventMode mode, std::vector<std::string> commandList, int timeout /*= 0*/) {
+bool Scheduler::addEvent(const std::string& oid, EventMode mode, const std::vector<std::string>& commandList, int timeout /*= 0*/) {
 
   //Try to open database
   std::string errorString;
@@ -571,7 +571,7 @@ bool Scheduler::addEvent(std::string oid, EventMode mode, std::vector<std::strin
   queryStr << "SELECT event_id FROM scheduled_events WHERE oid = \"" << oid << "\" AND mode = \"" << dummyEv->getModeName() << "\";";
   delete dummyEv;
   std::vector<std::vector<std::string>> result;
-  if (!database::select(&result, queryStr.str(), &errorString)) {
+  if (!database::select(&result, queryStr.str(), errorString)) {
     logger::log(COMPONENT, LOG_ERROR, errorString);
     return false;
   }
@@ -582,7 +582,7 @@ bool Scheduler::addEvent(std::string oid, EventMode mode, std::vector<std::strin
     queryStr.str(std::string());
     queryStr << "SELECT execution_order FROM events_commands WHERE event_id = " << eventId << " ORDER BY execution_order DESC LIMIT 1;";
     result.clear();
-    if (!database::select(&result, queryStr.str(), &errorString)) {
+    if (!database::select(&result, queryStr.str(), errorString)) {
       logger::log(COMPONENT, LOG_ERROR, errorString);
     }
     //Get execution order
@@ -598,7 +598,7 @@ bool Scheduler::addEvent(std::string oid, EventMode mode, std::vector<std::strin
       cmdQueryStr << ++executionOrder << ", ";
       cmdQueryStr << eventId << ");";
       std::string query = cmdQueryStr.str();
-      if (!database::exec(query, &errorString)) {
+      if (!database::exec(query, errorString)) {
         //Database query failed
         logger::log(COMPONENT, LOG_ERROR, errorString);
         return false;
@@ -621,7 +621,7 @@ bool Scheduler::addEvent(std::string oid, EventMode mode, std::vector<std::strin
       evQueryStr << newEv->getTimeout() << ",\"";
       evQueryStr << newEv->getOid() << "\");";
       std::string query = evQueryStr.str();
-      if (!database::exec(query, &errorString)) {
+      if (!database::exec(query, errorString)) {
         //Database query failed
         logger::log(COMPONENT, LOG_ERROR, errorString);
         delete newEv;
@@ -636,7 +636,7 @@ bool Scheduler::addEvent(std::string oid, EventMode mode, std::vector<std::strin
       evQueryStr << newEv->getModeName() << "\",\"";
       evQueryStr << newEv->getOid() << "\");";
       std::string query = evQueryStr.str();
-      if (!database::exec(query, &errorString)) {
+      if (!database::exec(query, errorString)) {
         //Database query failed
         logger::log(COMPONENT, LOG_ERROR, errorString);
         delete newEv;
@@ -654,7 +654,7 @@ bool Scheduler::addEvent(std::string oid, EventMode mode, std::vector<std::strin
       cmdQueryStr << ++executionOrder << ", ";
       cmdQueryStr << nextEventId << ");";
       std::string query = cmdQueryStr.str();
-      if (!database::exec(query, &errorString)) {
+      if (!database::exec(query, errorString)) {
         //Database query failed
         logger::log(COMPONENT, LOG_ERROR, errorString);
         return false;

@@ -33,20 +33,20 @@ class Mibparser {
 public:
   Mibparser();
   ~Mibparser();
-  bool parseMibFile(std::string rootOid, std::string mibfile);
+  bool parseMibFile(const std::string& rootOid, const std::string& mibfile);
 
 private:
-  bool parseLine(std::string line);
+  bool parseLine(std::string& line);
   bool commitPreviousOid();
   //Parsing methods
-  bool handleModuleIdentity(std::string line);
-  bool handleInlineObject(std::string line);
-  bool handleObjectDeclaration(std::string line);
-  bool handleObjectSyntax(std::string line);
-  bool handleObjectStatus(std::string line);
-  bool handleObjectAccess(std::string line);
-  bool handleObjectGroup(std::string line);
-  bool handleSequence(std::string line);
+  bool handleModuleIdentity(std::string& line);
+  bool handleInlineObject(std::string& line);
+  bool handleObjectDeclaration(std::string& line);
+  bool handleObjectSyntax(std::string& line);
+  bool handleObjectStatus(std::string& line);
+  bool handleObjectAccess(std::string& line);
+  bool handleObjectGroup(std::string& line);
+  bool handleSequence(std::string& line);
   //Mibparser attributes
   Mibtable* mibtable;
   std::string rootOidStr;

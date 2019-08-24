@@ -38,7 +38,7 @@ extern std::string logfile;
 extern bool toStdout;
 extern int logLevel;
 
-void log(std::string component, int level, std::string logContent);
+void log(const std::string& component, int level, const std::string& logContent);
 
 } // namespace logger
 

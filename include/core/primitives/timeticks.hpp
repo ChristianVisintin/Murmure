@@ -35,8 +35,8 @@ template <typename primitiveType>
 class Timeticks : public Primitive<unsigned int> {
 
   public:
-  Timeticks(std::string value);
-  bool setValue(std::string oid, std::string value);
+  Timeticks(const std::string& value);
+  bool setValue(const std::string& oid, const std::string& value);
   primitiveType getValue();
   std::string getPrintableValue();
 

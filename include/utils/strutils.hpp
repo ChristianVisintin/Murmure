@@ -30,13 +30,13 @@
 namespace strutils {
 
 std::vector<std::string> split(const std::string& s, char delimiter);
-bool startsWith(const std::string& haystack, std::string needle);
-bool endsWith(const std::string& haystack, std::string needle);
+bool startsWith(const std::string& haystack, const std::string& needle);
+bool endsWith(const std::string& haystack, const std::string& needle);
 std::string itrim(const std::string& haystack);
 std::string ltrim(const std::string& haystack);
 std::string rtrim(const std::string& haystack);
 std::string trim(const std::string& haystack);
-std::string substring(std::string str, size_t startIndex, size_t endIndex = -1);
+std::string substring(const std::string& str, size_t startIndex, size_t endIndex = -1);
 
 } //namespace strutils
 

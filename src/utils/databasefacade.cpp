@@ -39,22 +39,22 @@ void database::init(const std::string& dbPath) {
 /**
  * @function open
  * @description Open database
- * @param std::string*: error string pointer
+ * @param std::string&: error string pointer
  * @returns bool: True if open succeeded
 **/
 
-bool open(std::string* error) {
+bool open(std::string& error) {
 
   if (!isOpen) {
     if (sqlite3_open(databasePath.c_str(), &db) == SQLITE_OK) {
       isOpen = true;
       return true;
     } else {
-      *error = std::string(sqlite3_errmsg(db));
+      error = std::string(sqlite3_errmsg(db));
       return false;
     }
   } else {
-    *error = "Database already open";
+    error = "Database already open";
     return true;
   }
 }
@@ -62,21 +62,21 @@ bool open(std::string* error) {
 /**
  * @function close
  * @description Close database
- * @param std::string*: error string pointer
+ * @param std::string&: error string pointer
  * @returns bool: True if closed successfully; if database wasn't open, true will be returned anyway
 **/
 
-bool close(std::string* error) {
+bool close(std::string& error) {
 
   //If database is open, try to close it
   if (isOpen) {
     if (sqlite3_close(db) != SQLITE_OK) {
       //Close failed
-      *error = std::string(sqlite3_errmsg(db));
+      error = std::string(sqlite3_errmsg(db));
       return false;
     }
   } else {
-    *error = "Database is already closed";
+    error = "Database is already closed";
   }
 
   isOpen = false;
@@ -90,11 +90,11 @@ bool close(std::string* error) {
  * @function exec
  * @description Exec a change in the database (e.g. update, insert, create, delete)
  * @param std::string query to exec
- * @param std::string*: error string pointer
+ * @param std::string&: error string pointer
  * @returns bool: True if succeeded
 **/
 
-bool database::exec(std::string query, std::string* error) {
+bool database::exec(std::string query, std::string& error) {
 
   //Open database
   if (!open(error)) {
@@ -107,7 +107,7 @@ bool database::exec(std::string query, std::string* error) {
     sqlite3_free(errMsg);
     rc = true;
   } else {
-    *error = std::string(errMsg);
+    error = std::string(errMsg);
     sqlite3_free(errMsg);
     rc = false;
   }
@@ -121,12 +121,12 @@ bool database::exec(std::string query, std::string* error) {
  * @function select
  * @description Select from database
  * @param std::string query: query to exec
- * @param std::string*: pointer to error string
+ * @param std::string&: pointer to error string
  * @param std::vector<std::vector<std::string>>*: pointer vector of rows of columns (strings); nullptr is returned if failed
  * @returns bool: True if select succeeded
 **/
 
-bool database::select(std::vector<std::vector<std::string>>* result, std::string query, std::string* error) {
+bool database::select(std::vector<std::vector<std::string>>* result, std::string query, std::string& error) {
   //Open database
   if (!open(error)) {
     return false;
@@ -136,7 +136,7 @@ bool database::select(std::vector<std::vector<std::string>>* result, std::string
 
   size_t vectorSize = 0;
   if (sqlite3_prepare_v2(db, query.c_str(), query.size(), &statement, NULL) != SQLITE_OK) {
-    *error = std::string(sqlite3_errmsg(db));
+    error = std::string(sqlite3_errmsg(db));
     sqlite3_finalize(statement);
     return false;
   }
@@ -147,7 +147,7 @@ bool database::select(std::vector<std::vector<std::string>>* result, std::string
     stepCode = sqlite3_step(statement);
     if (stepCode != SQLITE_ROW && stepCode != SQLITE_DONE) {
       //Is error
-      *error = std::string(sqlite3_errmsg(db));
+      error = std::string(sqlite3_errmsg(db));
       res = false;
     } else if (stepCode == SQLITE_ROW) {
       //Is SQLITE_ROW

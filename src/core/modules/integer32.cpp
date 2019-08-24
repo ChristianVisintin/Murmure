@@ -24,7 +24,7 @@
 #include <core/modules/integer32.hpp>
 #include <core/primitives/integer.hpp>
 
-using namespace murmure;
+namespace murmure {
 
 /**
  * @function Integer32
@@ -53,12 +53,12 @@ Integer32::~Integer32() {
 /**
  * @function setValue
  * @description initialize primitive and set its value
- * @param std::string
+ * @param const std::string&
  * @returns bool
  * NOTE: must be called in initialization only
 **/
 
-bool Integer32::setValue(std::string value) {
+bool Integer32::setValue(const std::string& value) {
   if (primitive == nullptr) {
     primitive = new Integer<int>(value);
   }
@@ -68,12 +68,12 @@ bool Integer32::setValue(std::string value) {
 /**
  * @function setValue
  * @description update primitive value associated to this module
- * @param std::string
- * @param std::string
+ * @param const std::string&
+ * @param const std::string&
  * @returns bool
 **/
 
-bool Integer32::setValue(std::string oid, std::string value) {
+bool Integer32::setValue(const std::string& oid, const std::string& value) {
   //Check if primitive is initialized
   if (primitive == nullptr) {
     return false;
@@ -109,4 +109,6 @@ std::string Integer32::getPrintableValue() {
 
 std::string Integer32::getPrimitiveType() {
   return primitiveType;
+}
+
 }

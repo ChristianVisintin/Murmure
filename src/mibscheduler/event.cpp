@@ -23,7 +23,7 @@
 
 #include <mibscheduler/event.hpp>
 
-using namespace murmure;
+namespace murmure {
 
 /**
  * @function Event
@@ -33,7 +33,7 @@ using namespace murmure;
  * @param std::vector<std::string> command commandList
 **/
 
-Event::Event(std::string oid, EventMode evMode, std::vector<std::string> commandList) {
+Event::Event(const std::string& oid, EventMode evMode, const std::vector<std::string>& commandList) {
 
   this->oid = oid;
   this->mode = evMode;
@@ -107,4 +107,6 @@ std::string Event::getModeName() {
 
 std::vector<std::string> Event::getCommandList() {
   return this->commandList;
+}
+
 }

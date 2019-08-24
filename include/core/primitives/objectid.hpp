@@ -35,8 +35,8 @@ template <typename primitiveType>
 class Objectid : public Primitive<std::string> {
 
   public:
-  Objectid(std::string value);
-  bool setValue(std::string oid, std::string value);
+  Objectid(const std::string& value);
+  bool setValue(const std::string& oid, const std::string& value);
   primitiveType getValue();
   std::string getPrintableValue();
 

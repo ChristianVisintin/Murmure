@@ -31,7 +31,7 @@
 namespace murmure {
 class Event {
 public:
-  Event(std::string oid, EventMode evMode, std::vector<std::string> commandList);
+  Event(const std::string& oid, EventMode evMode, const std::vector<std::string>& commandList);
   int executeCommands();
   std::string getOid();
   EventMode getMode();

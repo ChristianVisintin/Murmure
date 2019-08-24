@@ -24,7 +24,7 @@
 #include <core/modules/opaque.hpp>
 #include <core/primitives/string.hpp>
 
-using namespace murmure;
+namespace murmure {
 
 /**
  * @function Opaque
@@ -53,12 +53,12 @@ Opaque::~Opaque() {
 /**
  * @function setValue
  * @description initialize primitive and set its value
- * @param std::string
+ * @param const std::string&
  * @returns bool
  * NOTE: must be called in initialization only
 **/
 
-bool Opaque::setValue(std::string value) {
+bool Opaque::setValue(const std::string& value) {
   if (primitive == nullptr) {
     primitive = new String<std::string>(value);
   }
@@ -68,12 +68,12 @@ bool Opaque::setValue(std::string value) {
 /**
  * @function setValue
  * @description update primitive value associated to this module
- * @param std::string
- * @param std::string
+ * @param const std::string&
+ * @param const std::string&
  * @returns bool
 **/
 
-bool Opaque::setValue(std::string oid, std::string value) {
+bool Opaque::setValue(const std::string& oid, const std::string& value) {
   //Check if primitive is initialized
   if (primitive == nullptr) {
     return false;
@@ -105,4 +105,6 @@ std::string Opaque::getPrintableValue() {
 
 std::string Opaque::getPrimitiveType() {
   return primitiveType;
+}
+
 }

@@ -37,8 +37,8 @@ class Counter64 : public Module {
 public:
   Counter64();
   ~Counter64();
-  bool setValue(std::string value);
-  bool setValue(std::string oid, std::string value);
+  bool setValue(const std::string& value);
+  bool setValue(const std::string& oid, const std::string& value);
   std::string getPrintableValue();
   std::string getPrimitiveType();
 };

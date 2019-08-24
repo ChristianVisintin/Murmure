@@ -33,8 +33,8 @@
 namespace database {
 
 void init(const std::string& dbPath);
-bool exec(std::string query, std::string* error);
-bool select(std::vector<std::vector<std::string>>* result, std::string query, std::string* error);
+bool exec(std::string query, std::string& error);
+bool select(std::vector<std::vector<std::string>>* result, std::string query, std::string& error);
 
 }
 

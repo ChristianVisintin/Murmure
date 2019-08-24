@@ -35,8 +35,8 @@ template <typename primitiveType>
 class Counter : public Primitive<unsigned int> {
 
   public:
-  Counter(std::string value);
-  bool setValue(std::string oid, std::string value);
+  Counter(const std::string& value);
+  bool setValue(const std::string& oid, const std::string& value);
   primitiveType getValue();
   std::string getPrintableValue();
 

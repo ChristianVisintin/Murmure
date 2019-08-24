@@ -29,28 +29,28 @@
 
 #define COMPONENT "OID"
 
-using namespace murmure;
+namespace murmure {
 
 /**
  * @function Timeticks
  * @description Timeticks class constructor
- * @param std::string value to convert to primitive
+ * @param const std::string& value to convert to primitive
 **/
 
 template <>
-Timeticks<unsigned int>::Timeticks(std::string value) {
+Timeticks<unsigned int>::Timeticks(const std::string& value) {
   this->value = std::stoi(value);
 }
 
 /**
  * @function setValue
  * @description save new value on database and set new value to object
- * @param std::string oid associated to this value
+ * @param const std::string& oid associated to this value
  * @returns bool: true if set database operation succeeded
 **/
 
 template <>
-bool Timeticks<unsigned int>::setValue(std::string oid, std::string value) {
+bool Timeticks<unsigned int>::setValue(const std::string& oid, const std::string& value) {
   std::string errorString;
 
   if (std::stoi(value) > 4294967296) {
@@ -64,7 +64,7 @@ bool Timeticks<unsigned int>::setValue(std::string oid, std::string value) {
   std::string query = queryStream.str();
 
 
-  if (!database::exec(query, &errorString)) {
+  if (!database::exec(query, errorString)) {
     //Database query failed
     logger::log(COMPONENT, LOG_ERROR, errorString);
     return false;
@@ -95,4 +95,6 @@ template <>
 std::string Timeticks<unsigned int>::getPrintableValue() {
 
   return std::to_string(this->value);
+}
+
 }

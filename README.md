@@ -238,6 +238,7 @@ Contributions are welcomed, please follow [Murmure's contributions guide](https:
 * Log file is now an optional argument to pass. Compile option indicates the default path.
 * Log level is now an optional argument to pass. Compile option indicates the default path.
 * The license has changed from GNUGPLv3 to MIT
+* Many C++ Optimizations
 
 ### Murmure 1.0.1 (25/05/2019)
 

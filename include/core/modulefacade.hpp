@@ -36,9 +36,9 @@ class ModuleFacade {
 public:
   ModuleFacade();
   ~ModuleFacade();
-  bool findModule(std::string typeName);
-  bool setValue(std::string value);
-  bool setValue(std::string oid, std::string value);
+  bool findModule(const std::string& typeName);
+  bool setValue(const std::string& value);
+  bool setValue(const std::string& oid, const std::string& value);
   std::string getPrintableValue();
   std::string getPrimitiveType();
 

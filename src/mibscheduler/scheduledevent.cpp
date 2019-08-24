@@ -23,7 +23,7 @@
 
 #include <mibscheduler/scheduledevent.hpp>
 
-using namespace murmure;
+namespace murmure {
 
 /**
  * @function ScheduledEvent
@@ -34,7 +34,7 @@ using namespace murmure;
  * @param int command timeout
 **/
 
-ScheduledEvent::ScheduledEvent(std::string oid, EventMode evMode, std::vector<std::string> commandList, int timeout) : Event(oid, evMode, commandList) {
+ScheduledEvent::ScheduledEvent(const std::string& oid, EventMode evMode, const std::vector<std::string>& commandList, int timeout) : Event(oid, evMode, commandList) {
   this->timeout = timeout;
 }
 
@@ -130,7 +130,7 @@ std::vector<std::string> ScheduledEvent::getCommandList() {
  * @returns bool: true if this ScheduledEvent's timeout is < passed ScheduledEvent's timeout
 **/
 
-bool murmure::sortByTimeout(ScheduledEvent* firstEv, ScheduledEvent* secondEv) {
+bool sortByTimeout(ScheduledEvent* firstEv, ScheduledEvent* secondEv) {
   return firstEv->getTimeout() < secondEv->getTimeout();
 }
 
@@ -142,6 +142,8 @@ bool murmure::sortByTimeout(ScheduledEvent* firstEv, ScheduledEvent* secondEv) {
  * @returns bool: true if this ScheduledEvent's relative timeout is < passed ScheduledEvent's timeout
 **/
 
-bool murmure::sortByRelativeTimeout(ScheduledEvent* firstEv, ScheduledEvent* secondEv) {
+bool sortByRelativeTimeout(ScheduledEvent* firstEv, ScheduledEvent* secondEv) {
   return firstEv->getRelativeTimeout() < secondEv->getRelativeTimeout();
+}
+
 }

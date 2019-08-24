@@ -35,8 +35,8 @@ template <typename primitiveType>
 class Sequence : public Objectid<std::string> {
 
   public:
-  Sequence(std::string value);
-  bool setValue(std::string oid, std::string value);
+  Sequence(const std::string& value);
+  bool setValue(const std::string& oid, const std::string& value);
   primitiveType getValue();
   std::string getPrintableValue();
 

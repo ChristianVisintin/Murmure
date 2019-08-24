@@ -53,7 +53,7 @@ std::vector<std::string> strutils::split(const std::string& s, char delimiter) {
  * @returns bool: true if haystack starts with needle
 **/
 
-bool strutils::startsWith(const std::string& haystack, std::string needle) {
+bool strutils::startsWith(const std::string& haystack, const std::string& needle) {
 
   if (needle.length() > haystack.length()) {
       return false;
@@ -71,7 +71,7 @@ bool strutils::startsWith(const std::string& haystack, std::string needle) {
  * @returns bool: true if haystack ends with needle
 **/
 
-bool strutils::endsWith(const std::string& haystack, std::string needle) {
+bool strutils::endsWith(const std::string& haystack, const std::string& needle) {
 
   if (needle.length() > haystack.length()) {
       return false;
@@ -158,6 +158,7 @@ std::string strutils::trim(const std::string& haystack) {
  * @returns strd::string substring
 **/
 
-std::string strutils::substring(std::string str, size_t startIndex, size_t endIndex /* = -1 */) {
-  return str.substr(startIndex, endIndex - startIndex);
+std::string strutils::substring(const std::string& str, size_t startIndex, size_t endIndex /* = -1 */) {
+  std::string out = str;
+  return out.substr(startIndex, endIndex - startIndex);
 }

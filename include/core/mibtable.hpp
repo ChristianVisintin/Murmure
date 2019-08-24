@@ -38,11 +38,11 @@ public:
   bool addOid(Oid* newOid);
   bool clearMibtable();
   void sortMibTable();
-  Oid* getOidByOid(std::string oid);
-  Oid* getOidByName(std::string name);
-  std::string getNextOid(std::string oid);
-  std::string getPreviousOid(std::string oid);
-  bool isTableChild(std::string oid);
+  Oid* getOidByOid(const std::string& oid);
+  Oid* getOidByName(const std::string& name);
+  std::string getNextOid(const std::string& oid);
+  std::string getPreviousOid(const std::string& oid);
+  bool isTableChild(const std::string& oid);
 
 private:
   std::vector<Oid*> oids;

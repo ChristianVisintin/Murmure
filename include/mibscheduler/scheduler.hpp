@@ -38,17 +38,17 @@ public:
   Scheduler(Mibtable* mTable);
   ~Scheduler();
   bool loadEvents();
-  int fetchAndExec(std::string oid, EventMode mode);
+  int fetchAndExec(const std::string& oid, EventMode mode);
   bool startScheduler();
   //Scheduler setups
-  bool parseScheduling(std::string oid, EventMode mode, std::vector<std::string> commandList, std::string* error, int timeout = 0);
-  bool parseScheduling(std::string filename, std::string* error);
+  bool parseScheduling(const std::string& oid, EventMode mode, const std::vector<std::string>& commandList, std::string& error, int timeout = 0);
+  bool parseScheduling(const std::string& filename, std::string& error);
   bool clearEvents();
-  bool dumpScheduling(std::string dumpFile = "");
+  bool dumpScheduling(const std::string& dumpFile = "");
 
 private:
   static int runScheduler();
-  bool addEvent(std::string oid, EventMode mode, std::vector<std::string> commandList, int timeout = 0);
+  bool addEvent(const std::string& oid, EventMode mode, const std::vector<std::string>& commandList, int timeout = 0);
   static std::vector<Event*> events;
   static std::vector<ScheduledEvent*> scheduledEvents;
   Mibtable* mibtable;

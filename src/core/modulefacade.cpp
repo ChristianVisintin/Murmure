@@ -27,7 +27,7 @@
 
 #include <algorithm>
 
-using namespace murmure;
+namespace murmure {
 
 std::map<std::string, Module* (*)()> murmure::ModuleFacade::modules;
 bool murmure::ModuleFacade::modulesLoaded;
@@ -69,7 +69,7 @@ ModuleFacade::~ModuleFacade() {
  * @returns bool: true if module has been found and successfully initialized
 **/
 
-bool ModuleFacade::findModule(std::string typeName) {
+bool ModuleFacade::findModule(const std::string& typeName) {
 
   //Check if typename is in module list
   std::map<std::string, Module* (*)()>::iterator moduleIterator;
@@ -92,7 +92,7 @@ bool ModuleFacade::findModule(std::string typeName) {
  * NOTE: used in initialization of ModuleFacade
 **/
 
-bool ModuleFacade::setValue(std::string value) {
+bool ModuleFacade::setValue(const std::string& value) {
   if (module == nullptr) {
     return false;
   }
@@ -107,7 +107,7 @@ bool ModuleFacade::setValue(std::string value) {
  * @returns bool: true if value was successfully set
 **/
 
-bool ModuleFacade::setValue(std::string oid, std::string value) {
+bool ModuleFacade::setValue(const std::string& oid, const std::string& value) {
   if (module == nullptr) {
     return false;
   }
@@ -159,4 +159,6 @@ void ModuleFacade::loadModules() {
   //Set modules loaded to true
   modulesLoaded = true;
   return;
+}
+
 }

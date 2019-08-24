@@ -32,7 +32,7 @@
 namespace murmure {
 class ScheduledEvent : public Event {
 public:
-  ScheduledEvent(std::string oid, EventMode evMode, std::vector<std::string> commandList, int timeout);
+  ScheduledEvent(const std::string& oid, EventMode evMode, const std::vector<std::string>& commandList, int timeout);
   int executeCommands();
   int calcRelativeTimeout(time_t elapsedTime);
   std::string getOid();

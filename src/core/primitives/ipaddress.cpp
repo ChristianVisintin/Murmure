@@ -29,35 +29,35 @@
 
 #define COMPONENT "OID"
 
-using namespace murmure;
+namespace murmure {
 
 /**
  * @function IPAddress
  * @description IPAddress class constructor
- * @param std::string value to convert to primitive
+ * @param const std::string& value to convert to primitive
 **/
 
 template <>
-IPAddress<std::string>::IPAddress(std::string value) {
+IPAddress<std::string>::IPAddress(const std::string& value) {
   this->value = value;
 }
 
 /**
  * @function setValue
  * @description save new value on database and set new value to object
- * @param std::string oid associated to this value
+ * @param const std::string& oid associated to this value
  * @returns bool: true if set database operation succeeded
 **/
 
 template <>
-bool IPAddress<std::string>::setValue(std::string oid, std::string value) {
+bool IPAddress<std::string>::setValue(const std::string& oid, const std::string& value) {
   std::string errorString;
   //Build query string sstream
   std::stringstream queryStream;
   queryStream << "UPDATE oids SET value = \"" << value << "\" WHERE oid = \"" << oid << "\";";
   std::string query = queryStream.str();
 
-  if (!database::exec(query, &errorString)) {
+  if (!database::exec(query, errorString)) {
     //Database query failed
     logger::log(COMPONENT, LOG_ERROR, errorString);
     return false;
@@ -87,4 +87,6 @@ template <>
 std::string IPAddress<std::string>::getPrintableValue() {
 
   return this->value;
+}
+
 }

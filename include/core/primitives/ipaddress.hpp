@@ -34,8 +34,8 @@ template <typename primitiveType>
 class IPAddress : public Primitive<std::string> {
 
 public:
-  IPAddress(std::string value);
-  bool setValue(std::string oid, std::string value);
+  IPAddress(const std::string& value);
+  bool setValue(const std::string& oid, const std::string& value);
   primitiveType getValue();
   std::string getPrintableValue();
 };
