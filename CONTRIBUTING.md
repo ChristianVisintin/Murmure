@@ -30,23 +30,26 @@ Each module must implement the [Module interface](https://github.com/ChristianVi
 
 ```cpp
 /**
- *  Murmure - Net-SNMP MIB Versatile Extender
- *  Developed by $YOURNAME
+ *   Murmure - Net-SNMP MIB Versatile Extender
+ *   Developed by <author_name>
  *
- * Copyright (C) $CURRENTYEAR $YOURNAME
- *
- * This file is part of "Murmure"
- *
- *  Murmure is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *  Murmure is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
+ * MIT License
+ * Copyright (c) <year> <author_name>
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
 **/
 
 #ifndef DUMMY_HPP
@@ -57,7 +60,7 @@ Each module must implement the [Module interface](https://github.com/ChristianVi
 /**
  * @name: DUMMY
  * @ref: <https://www.ietf.org/rfc/rfcxxx.txt>
-**/
+ */
 
 namespace murmure {
 
@@ -65,8 +68,8 @@ class Dummy : public Module {
 public:
   Dummy();
   ~Dummy();
-  bool setValue(std::string value);
-  bool setValue(std::string oid, std::string value);
+  bool setValue(const std::string& value);
+  bool setValue(const std::string& oid, const std::string& value);
   std::string getPrintableValue();
   std::string getPrimitiveType();
 };
@@ -88,29 +91,32 @@ The module implementation will have the following structure:
 
 ```cpp
 /**
- *  Murmure - Net-SNMP MIB Versatile Extender
- *  Developed by $YOURNAME
+ *   Murmure - Net-SNMP MIB Versatile Extender
+ *   Developed by <author_name>
  *
- * Copyright (C) $CURRENTYEAR $YOURNAME
- *
- * This file is part of "Murmure"
- *
- *  Murmure is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *  Murmure is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
+ * MIT License
+ * Copyright (c) <year> <author_name>
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
 **/
 
 #include <core/modules/dummy.hpp>
 #include <core/primitives/???.hpp>
 
-using namespace murmure;
+namespace murmure {
 
 /**
  * @function Dummy
@@ -144,7 +150,7 @@ Dummy::~Dummy() {
  * NOTE: must be called in initialization only
 **/
 
-bool Dummy::setValue(std::string value) {
+bool Dummy::setValue(const std::string& value) {
   if (primitive == nullptr) {
     primitive = new ???<???>(value);
   }
@@ -159,7 +165,7 @@ bool Dummy::setValue(std::string value) {
  * @returns bool
 **/
 
-bool Dummy::setValue(std::string oid, std::string value) {
+bool Dummy::setValue(const std::string& oid, const std::string& value) {
   //Check if primitive is initialized
   //NOTE: transform value if your module needs to do that
   if (primitive == nullptr) {
@@ -194,7 +200,7 @@ std::string Dummy::getPrintableValue() {
 std::string Dummy::getPrimitiveType() {
   return primitiveType;
 }
-
+}
 ```
 
 Here it comes the hardest part (not really hard though).

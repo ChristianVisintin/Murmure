@@ -1,7 +1,7 @@
 AC_PREREQ([2.69])
 AC_INIT([murmure], [1.1.0], [https://github.com/ChristianVisintin/Murmure])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])
-AC_CONFIG_SRCDIR([include/murmure/mibtable.hpp])
+AC_CONFIG_SRCDIR([include/core/mibtable.hpp])
 AC_LANG(C++)
 AC_REQUIRE_CPP
 
@@ -44,17 +44,15 @@ AC_TYPE_UINT64_T
 AC_CHECK_FUNCS([select setenv strtol system])
 
 #Check for Python
-AC_DEFUN(AC_PROG_PYTHON, [AC_CHECK_PROG(PYTHON,python3,yes)])
-AC_PROG_PYTHON
-if test x"${PYTHON}" != x"yes" ; then
-    AC_MSG_ERROR([No Python3 in $(PATH), consider doing apt install python3])
+AC_CHECK_PROG(PYTHON, python3, yes)
+if test "${PYTHON}" != "yes"; then
+  AC_MSG_ERROR([No python3 in $(PATH), consider doing apt install python3])
 fi
 
 #Check for sqlite3
-AC_DEFUN(AC_PROG_SQLITE, [AC_CHECK_PROG(SQLITE,sqlite3,yes)])
-AC_PROG_SQLITE
-if test x"${SQLITE}" != x"yes" ; then
-    AC_MSG_ERROR([No Sqlite3 in $(PATH), consider doing apt install sqlite3])
+AC_CHECK_PROG(SQLITE3, sqlite3, yes)
+if test "${SQLITE3}" != "yes"; then
+  AC_MSG_ERROR([No sqlite3 in $(PATH), consider doing apt install sqlite3])
 fi
 
 #defines

@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-red.svg)](https://opensource.org/licenses/MIT)[![HitCount](http://hits.dwyl.io/ChristianVisintin/Murmure.svg)](http://hits.dwyl.io/ChristianVisintin/Murmure) [![Stars](https://img.shields.io/github/stars/ChristianVisintin/Murmure.svg)](https://github.com/ChristianVisintin/Murmure) [![Issues](https://img.shields.io/github/issues/ChristianVisintin/Murmure.svg)](https://github.com/ChristianVisintin/Murmure) [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/ChristianVisintin/Murmure/issues) [![MemoryLeaks](https://img.shields.io/badge/Memory%20Leaks-None-brightgreen.svg)](https://img.shields.io/badge/Memory%20Leaks-None-brightgreen.svg)
 
-**Net-SNMP** MIB Versatile Extender  
+Murmure: the **Net-SNMP** Versatile Extender  
 
 Developed by *Christian Visintin*  
 
@@ -50,7 +50,6 @@ Build is accomplished using GNU autotools.
 ### Build Procedure
 
 ```sh
-set -e
 python3 build/moduleSelector.py
 ./autogen.sh
 ./configure
@@ -239,6 +238,7 @@ Contributions are welcomed, please follow [Murmure's contributions guide](https:
 * Log level is now an optional argument to pass. Compile option indicates the default path.
 * The license has changed from GNUGPLv3 to MIT
 * Many C++ Optimizations
+* Fixed a memory leak in mibtable->clearOids()
 
 ### Murmure 1.0.1 (25/05/2019)
 

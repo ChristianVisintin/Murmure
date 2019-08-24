@@ -1,20 +1,26 @@
 #!/usr/bin/env python3
 
 """
- Murmure - Net-SNMP MIB Versatile Extender
- Developed by Christian Visintin
+  Murmure - Net-SNMP MIB Versatile Extender
+  Developed by Christian Visintin
 
-	Copyright (C) 2018 - 2019 Christian Visintin	This file is part of "Murmure"
- Murmure is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
- Murmure is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
+MIT License
+Copyright (c) 2019 Christian Visintin
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 """
 
 import os
@@ -32,9 +38,9 @@ except ImportError:
 ROOT_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 INCLUDE_PATH = ROOT_PATH + "/include/"
 SRC_PATH = ROOT_PATH + "/src/"
-MODULES_PATH = INCLUDE_PATH + "/murmure/modules/"
-MODULEFACADE_PATH = SRC_PATH + "/murmure/modulefacade.cpp"
-MODULEFACADE_BAK_PATH = SRC_PATH + "/murmure/modulefacade.orig.cpp"
+MODULES_PATH = INCLUDE_PATH + "/core/modules/"
+MODULEFACADE_PATH = SRC_PATH + "/core/modulefacade.cpp"
+MODULEFACADE_BAK_PATH = SRC_PATH + "/core/modulefacade.orig.cpp"
 MODULES_SRC_LIST = "/build/modulesSrc.list"
 MAKEFILE_AM = SRC_PATH + "Makefile.am"
 MAKEFILE_AM_BAK = SRC_PATH + "Makefile.am.bak"
@@ -133,9 +139,9 @@ if __name__ == "__main__":
   #Create backup of makefile
   copyfile(MAKEFILE_AM, MAKEFILE_AM_BAK)
   #Print sources in Makefile
-  sourcesFiles = "Murmure_SOURCES += "
+  sourcesFiles = "murmure_SOURCES += "
   for module in moduleSelectionList:
-    sourcesFiles += "murmure/modules/" + module + ".cpp "
+    sourcesFiles += "core/modules/" + module + ".cpp "
   try:
     hnd = open(MAKEFILE_AM, 'a')
     hnd.write("%s\n" % sourcesFiles)
