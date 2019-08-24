@@ -227,6 +227,7 @@ bool Mibparser::commitPreviousOid() {
     logStream << "Could not resolve type " << newOid->getType();
     logStream << " for OID " << newOid->getOid();
     logger::log(COMPONENT, LOG_ERROR, logStream.str());
+    delete newOid;
     return false;
   }
   //Try to add new OID to mibtable

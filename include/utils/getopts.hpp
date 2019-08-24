@@ -48,11 +48,11 @@ typedef struct {
   Command command;
   std::vector<std::string> args;
   std::string logFile;
-  bool logFileSet;
+  bool logFileSet = false;
   std::string dbPath;
-  bool dbPathSet;
+  bool dbPathSet = false;
   int logLevel;
-  bool logLevelSet;
+  bool logLevelSet = false;
 } options;
 
 bool getOpts(options* optStruct, int argc, char* argv[], std::string& error);

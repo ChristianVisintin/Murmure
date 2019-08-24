@@ -160,6 +160,10 @@ bool Mibtable::clearMibtable() {
     logger::log(COMPONENT, LOG_ERROR, errorString);
     return false;
   }
+  //Delete oids
+  for (auto& oid : oids) {
+    delete oid;
+  }
   //Finally clear OIDs vector
   oids.clear();
   return true;
