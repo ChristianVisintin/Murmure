@@ -44,7 +44,7 @@ void Octet<uint8_t*>::valueToHex(const std::string& ascii) {
   size_t asciiLength = ascii.length();
   const char* asciiBuf = ascii.c_str();
   for (size_t i = 0; i < asciiLength; i++) {
-    char digit[3];
+    char digit[4];
     digit[0] = *(asciiBuf++);
     digit[1] = *(asciiBuf++);
     digit[2] = '\0';
@@ -90,7 +90,7 @@ Octet<uint8_t*>::Octet(const std::string& value) {
   //data Length is value's length / 2 (because is ascii representation)
   this->dataLength = value.length() / 2;
   //Allocate value space
-  this->value = new uint8_t[dataLength];
+  this->value = new uint8_t[dataLength + 1];
   //Convert value to byte buffer
   valueToHex(value);
 }
