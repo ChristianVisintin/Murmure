@@ -1,12 +1,12 @@
 # Murmure
 
-[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0) [![HitCount](http://hits.dwyl.io/ChristianVisintin/Murmure.svg)](http://hits.dwyl.io/ChristianVisintin/Murmure) [![Stars](https://img.shields.io/github/stars/ChristianVisintin/Murmure.svg)](https://github.com/ChristianVisintin/Murmure) [![Issues](https://img.shields.io/github/issues/ChristianVisintin/Murmure.svg)](https://github.com/ChristianVisintin/Murmure) [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/ChristianVisintin/Murmure/issues) [![MemoryLeaks](https://img.shields.io/badge/Memory%20Leaks-None-brightgreen.svg)](https://img.shields.io/badge/Memory%20Leaks-None-brightgreen.svg)
+[![License: MIT](https://img.shields.io/badge/License-MIT-red.svg)](https://opensource.org/licenses/MIT)[![HitCount](http://hits.dwyl.io/ChristianVisintin/Murmure.svg)](http://hits.dwyl.io/ChristianVisintin/Murmure) [![Stars](https://img.shields.io/github/stars/ChristianVisintin/Murmure.svg)](https://github.com/ChristianVisintin/Murmure) [![Issues](https://img.shields.io/github/issues/ChristianVisintin/Murmure.svg)](https://github.com/ChristianVisintin/Murmure) [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/ChristianVisintin/Murmure/issues) [![MemoryLeaks](https://img.shields.io/badge/Memory%20Leaks-None-brightgreen.svg)](https://img.shields.io/badge/Memory%20Leaks-None-brightgreen.svg)
 
 **Net-SNMP** MIB Versatile Extender  
 
 Developed by *Christian Visintin*  
 
-Version 1.0.1
+Version 1.1.0
 
 ---
 
@@ -63,6 +63,7 @@ make install
 * DBPATH: Murmure database path
 * LOGFILE: Murmure logfile
 * LOGLEVEL: Log level used for logging
+  * 0: NONE
   * 1: FATAL
   * 2: ERROR
   * 3: WARN
@@ -83,6 +84,9 @@ make install
 * ```--dump-scheduling [outfile]``` Dump scheduling to a file if passed; if not is dumped to stdout
 * ```--reset``` Reset entire MIB and schedule tables
 * ```-C <oid> <value>``` Change manually the value associated to OID
+* ```-d <databasePath>``` the murmure database location
+* ```-L <logfile>``` log file location
+* ```-l <logLevel[0-5]>``` log level
 
 ---
 
@@ -228,6 +232,13 @@ Contributions are welcomed, please follow [Murmure's contributions guide](https:
 
 ## Changelog
 
+### Murmure 1.1.0 (24/08/2019)
+
+* Db path is now an optional argument to pass. Compile option indicates the default path.
+* Log file is now an optional argument to pass. Compile option indicates the default path.
+* Log level is now an optional argument to pass. Compile option indicates the default path.
+* The license has changed from GNUGPLv3 to MIT
+
 ### Murmure 1.0.1 (25/05/2019)
 
 * murmure directory renamed to core in order to allow 'murmure' executable name
@@ -258,5 +269,24 @@ Contributions are welcomed, please follow [Murmure's contributions guide](https:
 
 ## License
 
-Murmure is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. Murmure is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with Murmure.  
-If not, see <http://www.gnu.org/licenses/>.
+MIT License
+
+Copyright (c) 2019 Christian Visintin
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

@@ -86,3 +86,8 @@ m4/lt~obsolete.m4
 .dirstamp
 Makefile
 modulesSrc.list
+/config.h
+libtool
+
+#Artifacts
+src/murmure
