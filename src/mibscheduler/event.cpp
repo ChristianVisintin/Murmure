@@ -50,7 +50,7 @@ int Event::executeCommands() {
 
   int commandAmount = 0;
 
-  for (auto command : commandList) {
+  for (auto& command : commandList) {
     system(command.c_str());
     commandAmount++;
   }

@@ -81,11 +81,11 @@ Scheduler::~Scheduler() {
   }
 
   //Free event objects
-  for (auto event : events) {
+  for (auto& event : events) {
     delete event;
   }
 
-  for (auto event : scheduledEvents) {
+  for (auto& event : scheduledEvents) {
     delete event;
   }
 
@@ -116,7 +116,7 @@ bool Scheduler::loadEvents() {
   size_t scheduledEventListSize = 0;
 
   //Fetch rows
-  for (auto row : tableEntries) {
+  for (auto& row : tableEntries) {
     if (row.size() != 4) {
       logger::log(COMPONENT, LOG_ERROR, "Unexpected scheduled_event row size");
       return false;
@@ -141,7 +141,7 @@ bool Scheduler::loadEvents() {
     }
     //Okay, we have our command list now
     std::vector<std::string> commandList;
-    for (auto row : commandListRows) {
+    for (auto& row : commandListRows) {
       if (row.size() > 0) {
         commandList.push_back(row.at(0));
       }
@@ -194,7 +194,7 @@ int Scheduler::fetchAndExec(const std::string& oid, EventMode mode) {
 
   //NOTE: Mode cannot be auto! Automatic event (scheduled events) can only be executed by the scheduler thread
 
-  for (auto event : events) {
+  for (auto& event : events) {
     //If oid and mode mathces with event then execute associated events
     if (oid == event->getOid() && mode == event->getMode()) {
       logger::log(COMPONENT, LOG_INFO, "Executing events for OID " + event->getOid());
@@ -215,7 +215,7 @@ int Scheduler::fetchAndExec(const std::string& oid, EventMode mode) {
 bool Scheduler::startScheduler() {
 
   //Execute all INIT commands
-  for (auto event : events) {
+  for (auto& event : events) {
     if (event->getMode() == EventMode::INIT) {
       event->executeCommands();
     }
@@ -403,11 +403,11 @@ bool Scheduler::clearEvents() {
     return false;
   }
   //Delete objects
-  for (auto event : events) {
+  for (auto& event : events) {
     delete event;
   }
 
-  for (auto event : scheduledEvents) {
+  for (auto& event : scheduledEvents) {
     delete event;
   }
 
@@ -436,7 +436,7 @@ bool Scheduler::dumpScheduling(const std::string& filename /* = "" */) {
     }
   }
 
-  for (auto event : events) {
+  for (auto& event : events) {
     //Prepare dump line
     std::stringstream lineStream;
     lineStream << event->getOid() << ";";
@@ -466,7 +466,7 @@ bool Scheduler::dumpScheduling(const std::string& filename /* = "" */) {
     }
   }
 
-  for (auto event : scheduledEvents) {
+  for (auto& event : scheduledEvents) {
     //Prepare dump line
     std::stringstream lineStream;
     lineStream << event->getOid() << ";";
@@ -523,7 +523,7 @@ int Scheduler::runScheduler() {
     if (elapsedTime != 0 && elapsedTime % nextEventTime == 0) {
       //Execute commands for all events which satisfy previous condition
       //That because there could be more than one event with same relative timeout
-      for (auto event : scheduledEvents) {
+      for (auto& event : scheduledEvents) {
         //Check condition
         if (elapsedTime % event->getTimeout() == 0) {
           time_t tNow = std::chrono::duration_cast<std::chrono::seconds>(std::chrono::system_clock::now().time_since_epoch()).count();
@@ -591,7 +591,7 @@ bool Scheduler::addEvent(const std::string& oid, EventMode mode, const std::vect
       executionOrder = std::stoi(result.at(0).at(0));
     }
     //Let's find the execution order
-    for (auto cmd : commandList) {
+    for (auto& cmd : commandList) {
       std::stringstream cmdQueryStr;
       cmdQueryStr << "INSERT INTO events_commands(command, execution_order, event_id) VALUES(\"";
       cmdQueryStr << cmd << "\", ";
@@ -647,7 +647,7 @@ bool Scheduler::addEvent(const std::string& oid, EventMode mode, const std::vect
     }
     //Add commands to database
     int executionOrder = 0;
-    for (auto cmd : commandList) {
+    for (auto& cmd : commandList) {
       std::stringstream cmdQueryStr;
       cmdQueryStr << "INSERT INTO events_commands(command, execution_order, event_id) VALUES(\"";
       cmdQueryStr << cmd << "\", ";

@@ -317,7 +317,7 @@ int main(int argc, char* argv[]) {
     std::cout << "Murmure " << MURMURE_VERSION << " - Developed by Christian Visintin" << std::endl;
     std::cout << "<https://github.com/ChristianVisintin/Murmure> (C) 2018-2019" << std::endl;
     std::cout << USAGE << std::endl;
-  } else if (cmdLineOpts.command == Command::DAEMON) {
+  } else if (cmdLineOpts.command == Command::DAEMON) { //@! DAEMON
     //Daemon Mode
     //Set silent mode
     logger::toStdout = false;
@@ -397,7 +397,7 @@ int main(int argc, char* argv[]) {
     delete mibtab;       //Free mibtab
     delete mibScheduler; //Free scheduler
     logger::log(COMPONENT, LOG_INFO, "Murmure daemon terminated");
-  } else if (cmdLineOpts.command == Command::GET) {
+  } else if (cmdLineOpts.command == Command::GET) { //@! GET
     //Set silent mode
     logger::toStdout = false;
     //Instance new mibtable
@@ -431,7 +431,7 @@ int main(int argc, char* argv[]) {
     snmp_get(mibtab, mibScheduler, requestedOid);
     delete mibtab;       //Free mibtab
     delete mibScheduler; //Free scheduler
-  } else if (cmdLineOpts.command == Command::GET_NEXT) {
+  } else if (cmdLineOpts.command == Command::GET_NEXT) { //@! GET NEXT
     //Set silent mode
     logger::toStdout = false;
     //Instance new mibtable
@@ -465,7 +465,7 @@ int main(int argc, char* argv[]) {
     snmp_getnext(mibtab, mibScheduler, requestedOid);
     delete mibtab;       //Free mibtab
     delete mibScheduler; //Free scheduler
-  } else if (cmdLineOpts.command == Command::SET) {
+  } else if (cmdLineOpts.command == Command::SET) { //@! SET
     //Set silent mode
     logger::toStdout = false;
     //Instance new mibtable
@@ -503,7 +503,7 @@ int main(int argc, char* argv[]) {
     snmp_set(mibtab, mibScheduler, requestedOid, datatype, value);
     delete mibtab;       //Free mibtab
     delete mibScheduler; //Free scheduler
-  } else if (cmdLineOpts.command == Command::PARSE_MIB) {
+  } else if (cmdLineOpts.command == Command::PARSE_MIB) { //@! PARSE MIB
     std::string rootOid = cmdLineOpts.args.at(0);
     std::string mibFile = cmdLineOpts.args.at(1);
     Mibparser* mibParser = new Mibparser();

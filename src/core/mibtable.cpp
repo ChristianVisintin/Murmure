@@ -48,7 +48,7 @@ Mibtable::Mibtable() {
 Mibtable::~Mibtable() {
 
   //Delete oids in mibtable
-  for (auto oid : oids) {
+  for (auto&  oid : oids) {
     delete oid;
   }
 }
@@ -76,7 +76,7 @@ bool Mibtable::loadMibTable() {
 
   size_t mibTableSize = 0;
   //Fetch rows
-  for (auto row : tableEntries) {
+  for (auto& row : tableEntries) {
     if (row.size() != 5) {
       logger::log(COMPONENT, LOG_ERROR, "Unexpected oid row size");
       return false;
@@ -196,7 +196,7 @@ void Mibtable::sortMibTable() {
 
 Oid* Mibtable::getOidByOid(const std::string& oidString) {
 
-  for (auto oid : oids) {
+  for (auto& oid : oids) {
     //Check if the oid is the same
     if (oid->getOid() == oidString) {
       return oid;
@@ -215,7 +215,7 @@ Oid* Mibtable::getOidByOid(const std::string& oidString) {
 **/
 
 Oid* Mibtable::getOidByName(const std::string& oidName) {
-  for (auto oid : oids) {
+  for (auto& oid : oids) {
     //Check if the oid is the same
     if (oid->getName() == oidName) {
       return oid;
@@ -235,7 +235,7 @@ Oid* Mibtable::getOidByName(const std::string& oidName) {
 std::string Mibtable::getNextOid(const std::string& oidString) {
 
   bool oidFound = false;
-  for (auto oid : oids) {
+  for (auto& oid : oids) {
     //If oid has been found in the previous cycle, return oid (which is the 'next')
     if (oidFound) {
       return oid->getOid();
@@ -260,7 +260,7 @@ std::string Mibtable::getNextOid(const std::string& oidString) {
 std::string Mibtable::getPreviousOid(const std::string& oidString) {
 
   Oid* previousOid = nullptr;
-  for (auto oid : oids) {
+  for (auto& oid : oids) {
     //Check if previousOid is not nullptr and current oid is equal to provided one
     if (oid->getOid() == oidString && previousOid != nullptr) {
       return previousOid->getOid();
