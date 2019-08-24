@@ -21,61 +21,7 @@
  * SOFTWARE.
 **/
 
-#define MURMURE_VERSION "1.0.1"
-
-#define USAGE \
-  "\
-Usage:\n\
-\t-D\t\t\t\t\tStart Murmure as daemon (use for NET-SNMP pass_persist)\n\
-\t-g <OID>\t\t\t\tissue 'get' on specified OID\n\
-\t-n <OID>\t\t\t\tissue 'get next' on specified OID\n\
-\t-s <OID> <type> <value>\t\t\tissue 'set' on specified OID\n\
-\t-M --parse-mib <rootOID> <MIBfile>\tParse and configure Murmure for selected MIB\n\
-\t-S --schedule [schedule file]\t\tConfigure Murmure schedulation.\n\
-\t--dump-scheduling [outfile]\t\tDump scheduling.\n\
-\t--reset\t\t\t\t\tReset entire mib and event tables\n\
-\t-C --change <OID> <value>\t\tSet value for OID manually to value\n\
-\t-h --help\t\t\t\tShow this page\n\
-"
-
-#include <core/mibtable.hpp>
-#include <utils/getopts.hpp>
-#include <utils/logger.hpp>
-#include <utils/databasefacade.hpp>
-
-#include <mibparser/mibparser.hpp>
-#include <mibscheduler/scheduler.hpp>
-
-#include <algorithm>
-#include <fstream>
-#include <iostream>
-#include <sstream>
-
-//Logger
-#ifndef LOGFILE
-#define DEFAULT_MURMURE_LOGFILE "/var/log/murmure.log"
-#else
-#define DEFAULT_MURMURE_LOGFILE QUOTE(LOGFILE)
-#endif
-
-#ifndef LOGLEVEL
-#define DEFAULT_MURMURE_LOGFILE LOG_INFO
-#endif
-
-//SQL file for db build
-#ifndef SQLFILE
-#define DATABASE_SQLFILE "/usr/local/share/SQL/mibtable.sql"
-#else
-#define DATABASE_SQLFILE QUOTE(SQLFILE)
-#endif
-
-#ifndef DBPATH
-#define DEFAULT_DATABASEPATH "/usr/local/share/mib.db"
-#else
-#define DEFAULT_DATABASEPATH QUOTE(DBPATH)
-#endif
-
-#define COMPONENT "Main"
+#include <core/murmure.hpp>
 
 using namespace murmure;
 
@@ -292,10 +238,6 @@ inline void snmp_set(Mibtable* mibtab, Scheduler* mibScheduler, std::string requ
 
 inline bool initializeDatabase() {
   std::string error;
-  if(!database::open(&error)) {
-    logger::log(COMPONENT, LOG_ERROR, error);
-    return false;
-  }
   //open SQL file
   std::ifstream sqlStream;
   sqlStream.open(DATABASE_SQLFILE);
@@ -312,11 +254,6 @@ inline bool initializeDatabase() {
     logger::log(COMPONENT, LOG_ERROR, error);
     return false;
   }
-
-  if(!database::close(&error)) {
-    logger::log(COMPONENT, LOG_ERROR, error);
-    return false;
-  }
   return true;
 }
 
@@ -324,11 +261,6 @@ int main(int argc, char* argv[]) {
 
   //Exitcode declaration
   int exitcode = 0;
-
-  //Initialize logger variables
-  logger::logfile = "";
-  logger::logLevel = LOGLEVEL;
-  logger::toStdout = true;
 
   //Getopts
   /**
@@ -340,11 +272,14 @@ int main(int argc, char* argv[]) {
    * s set: set Command
    * n: get-next: command
    * h: help
+   * l: log level
+   * L: log file
+   * d: database path
    **/
 
   options cmdLineOpts;
   std::string optError;
-  if (!getOpts(&cmdLineOpts, argc, argv, &optError)) {
+  if (!getOpts(&cmdLineOpts, argc, argv, optError)) {
     std::cout << optError << std::endl;
     std::cout << "Murmure " << MURMURE_VERSION << " - Developed by Christian Visintin" << std::endl;
     std::cout << "<https://github.com/ChristianVisintin/Murmure> (C) 2018-2019" << std::endl;
@@ -352,12 +287,26 @@ int main(int argc, char* argv[]) {
     return 255;
   }
 
+  //Initialize logger variables
+  if (cmdLineOpts.logFileSet) {
+    logger::logfile = cmdLineOpts.logFile;
+  } else {
+    logger::logfile = DEFAULT_MURMURE_LOGFILE;
+  }
+  if (cmdLineOpts.logLevelSet) {
+    logger::logLevel = cmdLineOpts.logLevel;
+  } else {
+    logger::logLevel = DEFAULT_MURMURE_LOGLEVEL;
+  }
+  logger::toStdout = false;
+  //Initialize the database
+  if (cmdLineOpts.dbPathSet) {
+    database::init(cmdLineOpts.dbPath);
+  } else {
+    database::init(DEFAULT_DATABASEPATH);
+  }
+
   //Options are valid
-
-  //Init logger
-  logger::logfile = std::string(MURMURE_LOGFILE);
-  logger::toStdout = true;
-
   //Initialize database; create it if it doesn't exist
   if (!initializeDatabase()) {
     logger::log(COMPONENT, LOG_FATAL, "Could not initialize database");

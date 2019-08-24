@@ -23,7 +23,9 @@
 
 #include <utils/getopts.hpp>
 
-using namespace murmure;
+#include <stdexcept>
+
+namespace murmure {
 
 /**
  * @function getOpts
@@ -35,87 +37,123 @@ using namespace murmure;
  * @returns bool: True if options parsing succeeded; false otherwise
 **/
 
-bool murmure::getOpts(options* optStruct, int argc, char* argv[], std::string* error) {
+bool murmure::getOpts(options* optStruct, int argc, char* argv[], std::string& error) {
 
   if (argc < 2) {
-    *error = "Missing argument";
+    error = "Missing argument";
     return false;
   }
-
-  std::string arg = argv[1];
-
-  if (arg == "-D") {
-    optStruct->command = Command::DAEMON;
-  } else if (arg == "-g") {
-    //Get has 1 arg => OID
-    if (argc < 3) {
-      *error = "Missing OID argument";
-      return false;
-    }
-    optStruct->command = Command::GET;
-    optStruct->args.reserve(1);
-    optStruct->args.push_back(std::string(argv[2]));
-  } else if (arg == "-s") {
-    //Set has 3 args => OID, type, value
-    if (argc < 5) {
-      *error = "SET requires OID TYPE VALUE";
-      return false;
-    }
-    optStruct->command = Command::SET;
-    optStruct->args.reserve(3);
-    optStruct->args.push_back(std::string(argv[2]));
-    optStruct->args.push_back(std::string(argv[3]));
-    optStruct->args.push_back(std::string(argv[4]));
-  } else if (arg == "-n") {
-    //GetNext has 1 arg => OID
-    if (argc < 3) {
-      *error = "Missing OID argument";
-      return false;
-    }
-    optStruct->command = Command::GET_NEXT;
-    optStruct->args.reserve(1);
-    optStruct->args.push_back(std::string(argv[2]));
-  } else if (arg == "-M" || arg == "--parse-mib") {
-    //Mib parsing has 2 arg => [rootOid, mib file]
-    if (argc < 4) {
-      *error = "Missing RootOID/MIB file";
-      return false;
-    }
-    optStruct->command = Command::PARSE_MIB;
-    optStruct->args.reserve(2);
-    optStruct->args.push_back(std::string(argv[2]));
-    optStruct->args.push_back(std::string(argv[3]));
-  } else if (arg == "-S" || arg == "--schedule") {
-    //Can have file as argument
-    optStruct->command = Command::SCHEDULE;
-    if (argc > 2) {
+  for (size_t i = 1; i < argc; i++) {
+    const std::string arg = argv[i];
+    if (arg == "-D") {
+      optStruct->command = Command::DAEMON;
+    } else if (arg == "-g") {
+      //Get has 1 arg => OID
+      if (argc <= (i + 1)) {
+        error = "Missing OID argument";
+        return false;
+      }
+      optStruct->command = Command::GET;
       optStruct->args.reserve(1);
-      optStruct->args.push_back(std::string(argv[2]));
-    }
-  } else if (arg == "--dump-scheduling") {
-    //Can have file as argument
-    optStruct->command = Command::DUMP_SCHEDULE;
-    if (argc > 2) {
+      optStruct->args.push_back(std::string(argv[++i]));
+    } else if (arg == "-s") {
+      //Set has 3 args => OID, type, value
+      if (argc <= (i + 3)) {
+        error = "SET requires OID TYPE VALUE";
+        return false;
+      }
+      optStruct->command = Command::SET;
+      optStruct->args.reserve(3);
+      optStruct->args.push_back(std::string(argv[++i]));
+      optStruct->args.push_back(std::string(argv[++i]));
+      optStruct->args.push_back(std::string(argv[++i]));
+    } else if (arg == "-n") {
+      //GetNext has 1 arg => OID
+      if (argc <= (i + 1)) {
+        error = "Missing OID argument";
+        return false;
+      }
+      optStruct->command = Command::GET_NEXT;
       optStruct->args.reserve(1);
-      optStruct->args.push_back(std::string(argv[2]));
-    }
-  } else if (arg == "--reset") {
-    optStruct->command = Command::RESET;
-  } else if (arg == "-C" || arg == "--change") {
-    if (argc < 4) {
-      *error = "Missing OID and value arguments";
+      optStruct->args.push_back(std::string(argv[++i]));
+    } else if (arg == "-M" || arg == "--parse-mib") {
+      //Mib parsing has 2 arg => [rootOid, mib file]
+      if (argc <= (i + 2)) {
+        error = "Missing RootOID/MIB file";
+        return false;
+      }
+      optStruct->command = Command::PARSE_MIB;
+      optStruct->args.reserve(2);
+      optStruct->args.push_back(std::string(argv[++i]));
+      optStruct->args.push_back(std::string(argv[++i]));
+    } else if (arg == "-S" || arg == "--schedule") {
+      //Can have file as argument
+      optStruct->command = Command::SCHEDULE;
+      if (argc > (i + 1)) {
+        if (std::string(argv[i + 1]).at(0) != '-') {
+          optStruct->args.reserve(1);
+          optStruct->args.push_back(std::string(argv[++i]));
+        }
+      }
+    } else if (arg == "--dump-scheduling") {
+      //Can have file as argument
+      optStruct->command = Command::DUMP_SCHEDULE;
+      if (argc > (i + 1)) {
+        if (std::string(argv[i + 1]).at(0) != '-') {
+          optStruct->args.reserve(1);
+          optStruct->args.push_back(std::string(argv[++i]));
+        }
+      }
+    } else if (arg == "--reset") {
+      optStruct->command = Command::RESET;
+    } else if (arg == "-C" || arg == "--change") {
+      if (argc <= (i + 2)) {
+        error = "Missing OID and value arguments";
+        return false;
+      }
+      optStruct->command = Command::CHANGE;
+      optStruct->args.reserve(2);
+      optStruct->args.push_back(std::string(argv[++i]));
+      optStruct->args.push_back(std::string(argv[++i]));
+    } else if (arg == "-h" || arg == "--help") {
+      optStruct->command = Command::HELP;
+    } else if (arg == "-l") {
+      if (argc <= (i + 1)) {
+        error = "Missing log level argument";
+        return false;
+      }
+      optStruct->logLevelSet = true;
+      try {
+        optStruct->logLevel = std::stoi(argv[++i]);
+      } catch (std::invalid_argument& ex) {
+        error = "log level is not a number";
+        return false;
+      }
+      if (optStruct->logLevel > 5 && optStruct->logLevel < 0) {
+        error = "log level is not in range 0-5";
+        return false;
+      } 
+    } else if (arg == "-L") {
+      if (argc <= (i + 1)) {
+        error = "Missing log file argument";
+        return false;
+      }
+      optStruct->logFileSet = true;
+      optStruct->logFile = argv[++i];
+    } else if (arg == "-d") {
+      if (argc <= (i + 1)) {
+        error = "Missing database path argument";
+        return false;
+      }
+      optStruct->dbPathSet = true;
+      optStruct->dbPath = argv[++i];
+    } else {
+      error = "Unknown option";
       return false;
     }
-    optStruct->command = Command::CHANGE;
-    optStruct->args.reserve(2);
-    optStruct->args.push_back(std::string(argv[2]));
-    optStruct->args.push_back(std::string(argv[3]));
-  } else if (arg == "-h" || arg == "--help") {
-    optStruct->command = Command::HELP;
-  } else {
-    *error = "Unknown option";
-    return false;
   }
 
   return true;
+}
+
 }

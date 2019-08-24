@@ -47,9 +47,15 @@ enum class Command {
 typedef struct {
   Command command;
   std::vector<std::string> args;
+  std::string logFile;
+  bool logFileSet;
+  std::string dbPath;
+  bool dbPathSet;
+  int logLevel;
+  bool logLevelSet;
 } options;
 
-bool getOpts(options* optStruct, int argc, char* argv[], std::string* error);
+bool getOpts(options* optStruct, int argc, char* argv[], std::string& error);
 
 } // namespace murmure
 
