@@ -25,7 +25,7 @@
 #define MURMURE_HPP
 
 
-#define MURMURE_VERSION "1.1.0"
+#define MURMURE_VERSION "1.1.1"
 
 #define USAGE \
   "\

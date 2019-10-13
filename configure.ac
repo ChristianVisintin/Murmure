@@ -1,5 +1,5 @@
 AC_PREREQ([2.69])
-AC_INIT([murmure], [1.1.0], [https://github.com/ChristianVisintin/Murmure])
+AC_INIT([murmure], [1.1.1], [https://github.com/ChristianVisintin/Murmure])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign subdir-objects])
 AC_CONFIG_SRCDIR([include/core/mibtable.hpp])
 AC_LANG(C++)

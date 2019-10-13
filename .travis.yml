@@ -1,0 +1,14 @@
+language: cpp
+install: make get-deps
+compiler:
+  - g++
+addons:
+  apt:
+    packages:
+      - g++-7
+      - libsqlite3-dev
+      - python3
+    sources: &sources
+      - ubuntu-toolchain-r-test
+script: 
+  - python3 build/moduleSelector.py -a && ./autogen.sh && ./configure && make

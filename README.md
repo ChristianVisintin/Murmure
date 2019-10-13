@@ -1,6 +1,6 @@
 # Murmure
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-red.svg)](https://opensource.org/licenses/MIT)[![HitCount](http://hits.dwyl.io/ChristianVisintin/Murmure.svg)](http://hits.dwyl.io/ChristianVisintin/Murmure) [![Stars](https://img.shields.io/github/stars/ChristianVisintin/Murmure.svg)](https://github.com/ChristianVisintin/Murmure) [![Issues](https://img.shields.io/github/issues/ChristianVisintin/Murmure.svg)](https://github.com/ChristianVisintin/Murmure) [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/ChristianVisintin/Murmure/issues) [![MemoryLeaks](https://img.shields.io/badge/Memory%20Leaks-None-brightgreen.svg)](https://img.shields.io/badge/Memory%20Leaks-None-brightgreen.svg)
+[![License: MIT](https://img.shields.io/badge/License-MIT-red.svg)](https://opensource.org/licenses/MIT) [![HitCount](http://hits.dwyl.io/ChristianVisintin/Murmure.svg)](http://hits.dwyl.io/ChristianVisintin/Murmure) [![Stars](https://img.shields.io/github/stars/ChristianVisintin/Murmure.svg)](https://github.com/ChristianVisintin/Murmure) [![Issues](https://img.shields.io/github/issues/ChristianVisintin/Murmure.svg)](https://github.com/ChristianVisintin/Murmure) [![Build](https://api.travis-ci.org/ChristianVisintin/Murmure.svg?branch=master)](https://github.com/ChristianVisintin/Murmure)
 
 Murmure: the **Net-SNMP** Versatile Extender  
 
@@ -230,6 +230,11 @@ Contributions are welcomed, please follow [Murmure's contributions guide](https:
 * others: independent features under development
 
 ## Changelog
+
+### Murmure 1.1.1 (13/10/2019)
+
+* Fixed module selector
+* Added -a option to module selector to select all available modules
 
 ### Murmure 1.1.0 (24/08/2019)
 

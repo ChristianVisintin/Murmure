@@ -24,8 +24,7 @@ SOFTWARE.
 """
 
 import os
-from sys import exit
-import itertools
+from sys import exit, argv
 from shutil import copyfile, move
 
 useInquirer = True
@@ -46,6 +45,10 @@ MAKEFILE_AM = SRC_PATH + "Makefile.am"
 MAKEFILE_AM_BAK = SRC_PATH + "Makefile.am.bak"
 
 if __name__ == "__main__":
+  selectAll = False
+  if len(argv) > 1:
+    if argv[1] == "-a":
+      selectAll = True
   #List modules
   #Restore modulefacade if exists
   if os.path.isfile(MODULEFACADE_BAK_PATH):
@@ -62,20 +65,22 @@ if __name__ == "__main__":
     if module != "module.hpp":
       moduleList.append(os.path.splitext(module)[0])
 
-  #Let user select
-  if useInquirer:
-    modules = [inquirer.Checkbox(
-      'modules',
-      message="Select modules",
-      choices=moduleList,
-    )]
-    moduleSelectionList = inquirer.prompt(modules)['modules']
-  else: #Inquirer not supported
-    for module in moduleList:
-      choice = input("Module <%s> [Y/n]: " % module)
-      if choice.upper() == "Y":
-        moduleSelectionList.append(module)
-
+  if selectAll:
+    moduleSelectionList = moduleList
+  else:
+    #Let user select
+    if useInquirer:
+      modules = [inquirer.Checkbox(
+        'modules',
+        message="Select modules",
+        choices=moduleList,
+      )]
+      moduleSelectionList = inquirer.prompt(modules)['modules']
+    else: #Inquirer not supported
+      for module in moduleList:
+        choice = input("Module <%s> [Y/n]: " % module)
+        if choice.upper() == "Y":
+          moduleSelectionList.append(module)
 
   moduleClassList = [] #Contains class list of selected modules
   moduleTypeList = [] #Contains types list of selected modules
@@ -104,7 +109,7 @@ if __name__ == "__main__":
     moduleIncludes += "#include <core/modules/%s.hpp>\n" % include
   #Prepare instances
   moduleInstances = ""
-  for datatype, classname in itertools.product(moduleTypeList, moduleClassList):
+  for datatype, classname in zip(moduleTypeList, moduleClassList):
     moduleInstances += "modules[\"%s\"] = &getModuleInstance<%s>;\n" % (datatype, classname)
   
   #Create modulefacade.orig.cpp
