@@ -6,7 +6,7 @@ Murmure: the **Net-SNMP** Versatile Extender
 
 Developed by *Christian Visintin*  
 
-Version 1.1.0
+Version 1.1.1
 
 ---
 
